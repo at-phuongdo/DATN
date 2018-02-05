@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  status: 1
+  time_start: 2018-02-05 16:52:59
+  time_end: 2018-02-05 16:52:59
+  office_type: MyString
+  quantity: 1
+  user: one
+  workspace: one
+
+two:
+  status: 1
+  time_start: 2018-02-05 16:52:59
+  time_end: 2018-02-05 16:52:59
+  office_type: MyString
+  quantity: 1
+  user: two
+  workspace: two
