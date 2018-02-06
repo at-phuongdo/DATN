@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180205100234) do
+ActiveRecord::Schema.define(version: 20180206081546) do
 
   create_table "addresses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "latitude"
@@ -158,6 +158,7 @@ ActiveRecord::Schema.define(version: 20180205100234) do
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "friendly_url"
     t.index ["user_id"], name: "index_workspaces_on_user_id"
   end
 
