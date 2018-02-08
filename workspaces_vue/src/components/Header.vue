@@ -7,17 +7,20 @@
     </b-navbar-brand>
     <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
     <b-collapse is-nav id="nav_collapse">
-      <b-navbar-nav class="ml-auto">
+      <b-navbar-nav class="ml-auto" v-if="isLogin">
         <b-nav-item>
-          <b-navbar-brand href="#">
-            <span>Sign up </span>
-          </b-navbar-brand>
-        </b-nav-item>
-        <b-nav-item>
-          <b-button class="login-button">Login</b-button>
+          <b-button class="profile-button">{{currentUser.username}}</b-button>
         </b-nav-item>
         <b-nav-item>
           <b-button class="add-button">Add new space</b-button>
+        </b-nav-item>
+      </b-navbar-nav>
+      <b-navbar-nav class="ml-auto" v-if="!isLogin">
+        <b-nav-item>
+          <b-button variant="outline-success">Sign up</b-button>
+        </b-nav-item>
+        <b-nav-item>
+          <b-button class="login-button">Login</b-button>
         </b-nav-item>
       </b-navbar-nav>
     </b-collapse>
@@ -25,18 +28,28 @@
 </div>
 </template>
 <script>
-
+  export default {
+    data() {
+      return {
+        isLogin: true
+      }
+    },
+    created() {
+      this.$store.dispatch("getCurrentUser")
+    },
+    computed: {
+      currentUser() {
+        return this.$store.state.user.currentUser
+      }
+    }
+  }
 </script>
 <style scoped>
   span {
     color: #28a745;
   }
-  .login-button {
-    border: 2px solid #dedede;
-    margin-right: 8px;
-    padding: 6px 20px !important;
-  }
 
+  .profile-button,
   .add-button {
     background: #28a745;
     color: #fff;
