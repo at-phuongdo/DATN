@@ -8,8 +8,8 @@
      </b-row>
      <b-row>
        <b-col md="4" offset-md="4" class="search-content">
-        <b-form-input  type="text" placeholder="Please enter country or city you want to find..." class="search-input"></b-form-input>
-        <b-dropdown id="ddown-lg" size="lg" text="All spaces" variant="dropdown-button">
+        <b-form-input type="text" placeholder="Please enter country or city you want to find..." class="search-input"></b-form-input>
+        <b-dropdown text="All spaces" variant="dropdown-button">
           <b-dropdown-item-button>All spaces</b-dropdown-item-button>
           <b-dropdown-item-button>Meeting spaces</b-dropdown-item-button>
           <b-dropdown-item-button>Workspace</b-dropdown-item-button>
@@ -36,6 +36,7 @@
   }
   .search-title {
     color: white;
+    text-align: center;
     text-shadow: 6px 6px 4px #000000;
     font-weight: bold;
   }
@@ -54,5 +55,11 @@
 
   .search-button {
     margin-left: 10px;
+  }
+
+  .col-md-4,
+  .btn-group,
+  .btn {
+    position: static !important;
   }
 </style>
