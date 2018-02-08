@@ -1,11 +1,13 @@
 <template>
-  <banner-app></banner-app>
+  <div>
+    <banner-app></banner-app>
+  </div>
 </template>
 <script>
   import Banner from '../components/Banner.vue'
   export default {
     components: {
-      'banner-app' : Banner
+      'banner-app' : Banner,
     }
   }
 </script>

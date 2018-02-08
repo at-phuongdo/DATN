@@ -4,7 +4,7 @@
     <b-navbar toggleable="md" type="dark">
       <b-navbar-brand href="#">
         <img src="http://www.myiconfinder.com/uploads/iconsets/256-256-8d0b15014c0fd4c1edaed92510d161db.png" alt="" height="80px">
-        <span>COWORKER SPACES</span>
+        <span>COWORKING SPACES</span>
       </b-navbar-brand>
       <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
       <b-collapse is-nav id="nav_collapse">
@@ -16,7 +16,7 @@
             <b-button class="add-button">Add new space</b-button>
           </b-nav-item>
         </b-navbar-nav>
-        <b-navbar-nav class="ml-auto" v-if="!isLogin">
+        <b-navbar-nav class="ml-auto" v-else>
           <b-nav-item>
             <b-button variant="outline-success">Sign up</b-button>
           </b-nav-item>
