@@ -4,7 +4,7 @@ import VueResource from 'vue-resource'
 
 Vue.use(Vuex);
 Vue.use(VueResource);
-Vue.http.options.root = ""
+Vue.http.options.root = "http://localhost:3000/api/v1/users/"
 
 const state = {
   currentUser: []
@@ -25,6 +25,9 @@ const actions = {
     .catch((error => {
       console.log(error.statusText)
     }))
+  },
+  addUser(context, newUser) {
+    Vue.http.post('', newUser)
   }
 }
 
