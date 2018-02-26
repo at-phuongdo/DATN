@@ -18,20 +18,30 @@
         </b-navbar-nav>
         <b-navbar-nav class="ml-auto" v-else>
           <b-nav-item>
-            <b-button variant="outline-success">Sign up</b-button>
+            <b-button variant="outline-success" @click="signUp">Sign up</b-button>
           </b-nav-item>
           <b-nav-item>
-            <b-button class="login-button">Login</b-button>
+            <b-button class="login-button" @click="logIn">Login</b-button>
           </b-nav-item>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
   </div>
+  <signup-modal></signup-modal>
+  <login-modal></login-modal>
 </div>
 </template>
 <script>
+  import SignUpModal from './users/SignUpModal.vue'
+  import LoginModal from './users/LoginModal.vue'
+
   var $ = window.jQuery = require('jquery')
+  
   export default {
+    components: {
+      'signup-modal': SignUpModal,
+      'login-modal' :LoginModal
+    },
     data() {
       return {
         isLogin: false
@@ -43,6 +53,14 @@
     computed: {
       currentUser() {
         return this.$store.state.user.currentUser
+      }
+    },
+    methods: {
+      signUp: function() {
+        this.$root.$emit('bv::show::modal', 'signUpModal')
+      },
+      logIn: function() {
+        this.$root.$emit('bv::show::modal', 'logInModal')
       }
     }
   }
