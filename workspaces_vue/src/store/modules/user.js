@@ -4,10 +4,10 @@ import VueResource from 'vue-resource'
 
 Vue.use(Vuex);
 Vue.use(VueResource);
-Vue.http.options.root = "http://localhost:3000/api/v1/users/"
+// Vue.http.options.root = "http://localhost:3000/api/v1/"
 
 const state = {
-  currentUser: [],
+  currentUser: {},
   status: ''
 };
 
@@ -28,12 +28,21 @@ const actions = {
     }))
   },
   addUser(context, newUser) {
-    Vue.http.post('', newUser)
+    Vue.http.post('http://localhost:3000/api/v1/users', newUser)
     .then((response) => {
       state.status = response.body.status
     })
     .catch((error => {
       state.status = error.statusText
+    }))
+  },
+  logIn(context, userLogin) {
+    Vue.http.post('http://localhost:3000/api/v1/login', userLogin)
+    .then((response) => {
+      context.commit("CURRENT_USER", response.body.user)
+    })
+    .catch((error => {
+      console.log(error.statusText)
     }))
   }
 }
@@ -43,5 +52,3 @@ export default {
   mutations,
   actions
 }
-
-

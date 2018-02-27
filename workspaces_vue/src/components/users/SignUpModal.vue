@@ -26,7 +26,6 @@
              <span class="is-danger" v-if="errors.has('password')">{{errors.first('password')}}</span>
            </b-col>
          </b-row>
-
          <b-row>
           <b-col sm="1"><span class="fa fa-lock"></span></b-col>
           <b-col sm="11">
@@ -40,15 +39,10 @@
       <p><i>Already have account? Login <router-link v-on:click.native="logIn" to="/">here</router-link></i></p>
     </div>
   </b-modal>
-  <login-modal></login-modal>
 </div>
 </template>
 <script>
-  import LoginModal from './LoginModal.vue'
   export default {
-    components: {
-      'login-modal' : LoginModal
-    },
     data() {
       return {
         username: '',
