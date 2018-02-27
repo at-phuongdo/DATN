@@ -5,6 +5,6 @@ class User < ApplicationRecord
   has_many :comments
   has_secure_password
 
-  # validates :email, uniqueness: true
-  # validates :password, presence: true, on: :create
+  validates :email, uniqueness: true
+  validates :email, presence: true
 end

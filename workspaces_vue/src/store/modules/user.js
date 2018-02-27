@@ -7,7 +7,8 @@ Vue.use(VueResource);
 Vue.http.options.root = "http://localhost:3000/api/v1/users/"
 
 const state = {
-  currentUser: []
+  currentUser: [],
+  status: ''
 };
 
 const mutations = {
@@ -28,6 +29,12 @@ const actions = {
   },
   addUser(context, newUser) {
     Vue.http.post('', newUser)
+    .then((response) => {
+      state.status = response.body.status
+    })
+    .catch((error => {
+      state.status = error.statusText
+    }))
   }
 }
 
