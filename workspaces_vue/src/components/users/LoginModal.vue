@@ -19,7 +19,7 @@
            </b-col>
          </b-row>
          <b-button @click="login" variant="primary" >Login</b-button>
-         <b-btn variant="danger"  @click="hideModal" >Close</b-btn>
+         <b-btn variant="danger" @click="hideModal" >Close</b-btn>
        </b-form>
        <p><i>New user? Sign up<router-link v-on:click.native="signUp" to="/"> here</router-link></i></p>
      </div>
@@ -45,7 +45,8 @@
         }
         this.$store.dispatch('logIn', { "session": userLogin })
         setTimeout(() => {
-          console.log(this.$store.state.user.currentUser) 
+          var user = this.$store.state.user.currentUser
+          localStorage.setItem("token", user.confirm_token);
           this.$refs.logInModal.hide()
         }, 500)
       },

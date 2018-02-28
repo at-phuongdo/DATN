@@ -7,4 +7,8 @@ class User < ApplicationRecord
 
   validates :email, uniqueness: true
   validates :email, presence: true
+
+  def self.create_token
+    SecureRandom.urlsafe_base64.to_s
+  end
 end

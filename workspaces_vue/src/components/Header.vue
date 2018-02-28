@@ -43,17 +43,19 @@
       'login-modal' :LoginModal
     },
     data() {
-      return {
-        isLogin: false
-      }
+      return {}
     },
     created() {
-      this.$store.dispatch("getCurrentUser")
+      this.$store.dispatch("getCurrentUser", localStorage.getItem("token"))
     },
     computed: {
+      isLogin() {
+        return this.$store.state.user.isLogin
+      },
       currentUser() {
         return this.$store.state.user.currentUser
       }
+
     },
     methods: {
       signUp: function() {
@@ -65,39 +67,39 @@
     }
   }
   $(function(){
-        var headerTop = $('#header').offset().top;
+    var headerTop = $('#header').offset().top;
 
-        $(window).scroll(function(){
-          if( $(window).scrollTop() > headerTop ) {
-            $('#header').css({position: 'fixed', top: '0px'});
-          } else {
-            $('#header').css({position: 'static', top: '0px'});
-          }
-        });
-      });
+    $(window).scroll(function(){
+      if( $(window).scrollTop() > headerTop ) {
+        $('#header').css({position: 'fixed', top: '0px'});
+      } else {
+        $('#header').css({position: 'static', top: '0px'});
+      }
+    });
+  });
 </script>
 <style scoped>
-#header {
-  background-color: white;
-  width: 100%;
-}
-span {
-  color: #28a745;
-}
+  #header {
+    background-color: white;
+    width: 100%;
+  }
+  span {
+    color: #28a745;
+  }
 
-.profile-button,
-.add-button {
-  background: #28a745;
-  color: #fff;
-  padding: 8px 20px !important;
-  display: inline-block;
-}
+  .profile-button,
+  .add-button {
+    background: #28a745;
+    color: #fff;
+    padding: 8px 20px !important;
+    display: inline-block;
+  }
 
-.add-button:hover {
-  color: #fff;
-}
+  .add-button:hover {
+    color: #fff;
+  }
 
-.navbar-toggler {
-  background-color: #28a745;
-}
+  .navbar-toggler {
+    background-color: #28a745;
+  }
 </style>
