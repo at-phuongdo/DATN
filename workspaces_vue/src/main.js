@@ -9,6 +9,7 @@ import Vuex from 'vuex'
 import { store } from './store/index'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import swal from 'sweetalert'
 
 Vue.use(Vuex)
 Vue.use(BootstrapVue);

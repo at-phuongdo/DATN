@@ -38,6 +38,32 @@
       hideModal: function() {
         this.$refs.logInModal.hide()
       },
+      alert(options) {
+        swal(options)
+      },
+      alertSuccess({
+        title = "Success!", 
+        text = "Welcome to our website!", 
+        timer = 2000, 
+        showConfirmationButton = false
+      } = {}) {
+        this.alert({
+          title: title,
+          text: text,
+          timer: timer,
+          button: showConfirmationButton,
+          icon: 'success'
+        });
+      },
+      alertError({
+        title = "Error!", text = "Oops...Email or password invalid"
+      } = {}) {
+        this.alert({
+          title: title,
+          text: text,
+          icon: 'error'
+        });
+      },
       login: function() {
         var userLogin = {
           email: this.email,
@@ -50,9 +76,10 @@
           if(!checkLogin){
             localStorage.setItem("token", user.confirm_token);
             this.$refs.logInModal.hide()
+            this.alertSuccess()
           }
           else{
-            alert("Email or password invalid")
+            this.alertError()
           }
         }, 500)
       },

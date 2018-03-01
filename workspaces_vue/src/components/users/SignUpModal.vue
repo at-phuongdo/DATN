@@ -54,6 +54,32 @@
       hideModal:function() {
         this.$refs.signUpModal.hide()
       },
+      alert(options) {
+        swal(options)
+      },
+      alertSuccess({
+        title = "Success!", 
+        text = "Welcome to our website!", 
+        timer = 2000, 
+        showConfirmationButton = false
+      } = {}) {
+        this.alert({
+          title: title,
+          text: text,
+          timer: timer,
+          button: showConfirmationButton,
+          icon: 'success'
+        });
+      },
+      alertError({
+        title = "Error!", text = "Oops...Email already exist!"
+      } = {}) {
+        this.alert({
+          title: title,
+          text: text,
+          icon: 'error'
+        });
+      },
       addUser:function() {
         var newUser = {
           username : this.username,
@@ -65,9 +91,10 @@
             this.$store.dispatch('addUser', {"user":newUser})
             setTimeout(()=> {
               if(this.$store.state.user.status != "ok") {
-                alert("Email already exists")
+                this.alertError();
               } else {
                 this.$refs.signUpModal.hide()
+                this.alertSuccess()
               }
             }, 500)
           }

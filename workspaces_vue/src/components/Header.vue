@@ -40,7 +40,7 @@
   import LoginModal from './users/LoginModal.vue'
 
   var $ = window.jQuery = require('jquery')
-  
+
   export default {
     components: {
       'signup-modal': SignUpModal,
