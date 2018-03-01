@@ -46,8 +46,14 @@
         this.$store.dispatch('logIn', { "session": userLogin })
         setTimeout(() => {
           var user = this.$store.state.user.currentUser
-          localStorage.setItem("token", user.confirm_token);
-          this.$refs.logInModal.hide()
+          var checkLogin = Object.keys(user).length === 0
+          if(!checkLogin){
+            localStorage.setItem("token", user.confirm_token);
+            this.$refs.logInModal.hide()
+          }
+          else{
+            alert("Email or password invalid")
+          }
         }, 500)
       },
       signUp: function() {

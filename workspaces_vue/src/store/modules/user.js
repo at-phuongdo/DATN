@@ -24,6 +24,7 @@ const mutations = {
     }
   },
   LOGOUT_VALUE(state) {
+    state.currentUser = {}
     state.isLogin = false
   }
 }
