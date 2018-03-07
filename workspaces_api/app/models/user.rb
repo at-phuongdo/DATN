@@ -11,4 +11,18 @@ class User < ApplicationRecord
   def self.create_token
     SecureRandom.urlsafe_base64.to_s
   end
+
+  def send_activation_email
+    UserMailer.email_confirmation(self).deliver_now
+  end
+
+  def active_email?
+    if confirm_send + 2.days >= Time.now
+      update(confirm_at: Time.now)
+    else
+      new_email_token = User.create_token
+      update(confirm_token: new_email_token)
+      false
+    end
+  end
 end

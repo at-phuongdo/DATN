@@ -57,20 +57,6 @@
       alert(options) {
         swal(options)
       },
-      alertSuccess({
-        title = "Success!", 
-        text = "Welcome to our website!", 
-        timer = 2000, 
-        showConfirmationButton = false
-      } = {}) {
-        this.alert({
-          title: title,
-          text: text,
-          timer: timer,
-          button: showConfirmationButton,
-          icon: 'success'
-        });
-      },
       alertError({
         title = "Error!", text = "Oops...Email already exist!"
       } = {}) {
@@ -89,19 +75,26 @@
         this.$validator.validateAll().then(() => {
           if(this.errors.items.length === 1) {
             this.$store.dispatch('addUser', {"user":newUser})
+            console.log(this.$store.state.user.newUser)
             setTimeout(()=> {
-              if(this.$store.state.user.status != "ok") {
-                this.alertError();
-              } else {
-                this.$refs.signUpModal.hide()
-                this.alertSuccess()
-              }
-            }, 500)
+                var status = this.$store.state.user.status
+                if( status != "ok") {
+                  this.alertError();
+                } else {
+                  this.$emit('getUser', this.$store.state.user.newUser)
+                  this.$refs.signUpModal.hide()
+                  this.confirmEmail()
+                }
+            }, 5000)
           }
         })
       },
       logIn: function() {
         this.$root.$emit('bv::show::modal', 'logInModal')
+      },
+      confirmEmail: function() {
+
+        this.$root.$emit('bv::show::modal', 'confirmModal')
       }
     }
   }

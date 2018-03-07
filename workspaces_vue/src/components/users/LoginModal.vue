@@ -64,6 +64,15 @@
           icon: 'error'
         });
       },
+      alertConfirm({
+        title = "Error!", text = "Your account is not confirm. \nPlease check mail to confirm your account!"
+      } = {}) {
+        this.alert({
+          title: title,
+          text: text,
+          icon: 'error'
+        });
+      },
       login: function() {
         var userLogin = {
           email: this.email,
@@ -72,11 +81,15 @@
         this.$store.dispatch('logIn', { "session": userLogin })
         setTimeout(() => {
           var user = this.$store.state.user.currentUser
-          var checkLogin = Object.keys(user).length === 0
-          if(!checkLogin){
+          var status = this.$store.state.user.status
+          if(status === 'ok'){
             localStorage.setItem("token", user.confirm_token);
             this.$refs.logInModal.hide()
             this.alertSuccess()
+          }
+          else if (status === 'no_content') {
+            this.$emit('getUser', user)
+            this.confirm()
           }
           else{
             this.alertError()
@@ -85,6 +98,9 @@
       },
       signUp: function() {
         this.$root.$emit('bv::show::modal', 'signUpModal')
+      },
+      confirm: function() {
+        this.$root.$emit('bv::show::modal', 'confirmModal')
       }
     }
   }

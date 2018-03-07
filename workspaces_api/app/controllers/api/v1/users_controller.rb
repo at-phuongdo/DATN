@@ -7,6 +7,7 @@ class Api::V1::UsersController < ApplicationController
     @user.confirm_token = User.create_token
     if @user.save
       render json: { user: @user, status: :ok }
+      @user.send_activation_email
     else
       render json: @user.errors, status: :unprocessable_entity
     end
@@ -20,6 +21,16 @@ class Api::V1::UsersController < ApplicationController
       else
         render json: { status: :not_found }
       end
+    end
+  end
+
+  def confirm_email
+    @user = User.find_by(confirm_token: params[:id])
+    if @user.active_email?
+      render json: { user: @user, status: :ok }
+    else
+      user.send_activation_email
+      render json: { user: @user, status: :unprocessable_entity }
     end
   end
 
