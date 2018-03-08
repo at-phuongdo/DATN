@@ -76,6 +76,7 @@
       logOut: function() {
         localStorage.removeItem("token")
         this.$store.commit('LOGOUT_VALUE')
+        location.reload()
       },
       getUser: function(user) {
         this.user = user

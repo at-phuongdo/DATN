@@ -51,7 +51,6 @@ const actions = {
     .then((response) => {
       state.newUser = response.body.user
       state.status = response.body.status
-      console.log(state.newUser)
     })
     .catch((error => {
       state.status = error.statusText
@@ -61,7 +60,6 @@ const actions = {
     Vue.http.post(baseUrl + 'login', userLogin)
     .then((response) => {
       state.status = response.body.status
-      console.log(state.status)
       context.commit("CURRENT_USER", response.body.user)
     })
     .catch((error => {

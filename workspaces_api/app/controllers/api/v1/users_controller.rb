@@ -29,8 +29,8 @@ class Api::V1::UsersController < ApplicationController
     if @user.active_email?
       render json: { user: @user, status: :ok }
     else
-      user.send_activation_email
       render json: { user: @user, status: :unprocessable_entity }
+      user.send_activation_email
     end
   end
 

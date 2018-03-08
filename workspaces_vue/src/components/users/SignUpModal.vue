@@ -5,6 +5,11 @@
         <b-form>
           <h1><strong>SIGN UP</strong></h1>
           <h1><span class="decorate-span">Who are you?</span></h1>
+          <b-row align-h="center">
+            <b-col sm="2">
+              <circle4 v-show="loading"></circle4>
+            </b-col>
+          </b-row>
           <b-row>
             <b-col sm="1"><span class="fa fa-user"></span></b-col>
             <b-col sm="11">
@@ -42,12 +47,17 @@
 </div>
 </template>
 <script>
+  import {Circle4} from 'vue-loading-spinner'
   export default {
+    components: {
+      Circle4
+    },
     data() {
       return {
         username: '',
         email: '',
-        password: ''
+        password: '',
+        loading: false
       }
     },
     methods: {
@@ -75,16 +85,17 @@
         this.$validator.validateAll().then(() => {
           if(this.errors.items.length === 1) {
             this.$store.dispatch('addUser', {"user":newUser})
-            console.log(this.$store.state.user.newUser)
+            this.loading = true
             setTimeout(()=> {
-                var status = this.$store.state.user.status
-                if( status != "ok") {
-                  this.alertError();
-                } else {
-                  this.$emit('getUser', this.$store.state.user.newUser)
-                  this.$refs.signUpModal.hide()
-                  this.confirmEmail()
-                }
+              this.loading = false
+              var status = this.$store.state.user.status
+              if( status != "ok") {
+                this.alertError();
+              } else {
+                this.$emit('getUser', this.$store.state.user.newUser)
+                this.$refs.signUpModal.hide()
+                this.confirmEmail()
+              }
             }, 5000)
           }
         })
