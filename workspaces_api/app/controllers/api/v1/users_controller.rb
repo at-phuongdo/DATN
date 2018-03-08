@@ -26,11 +26,15 @@ class Api::V1::UsersController < ApplicationController
 
   def confirm_email
     @user = User.find_by(confirm_token: params[:id])
-    if @user.active_email?
-      render json: { user: @user, status: :ok }
+    if @user
+      if @user.active_email?
+        render json: { user: @user, status: :ok }
+      else
+        render json: { user: @user, status: :unprocessable_entity }
+        user.send_activation_email
+      end
     else
-      render json: { user: @user, status: :unprocessable_entity }
-      user.send_activation_email
+      render json: { status: :not_found }
     end
   end
 

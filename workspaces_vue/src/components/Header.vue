@@ -34,12 +34,16 @@
   <signup-modal v-on:getUser="getUser($event)"></signup-modal>
   <login-modal v-on:getUser="getUser($event)"></login-modal>
   <confirm-modal :user="user" ></confirm-modal>
+  <mail-modal></mail-modal>
+  <reset-password></reset-password>
 </div>
 </template>
 <script>
   import SignUpModal from './users/SignUpModal.vue'
   import LoginModal from './users/LoginModal.vue'
   import ConfirmModal from './users/ConfirmModal.vue'
+  import MailToReset from './users/MailToReset.vue'
+  import ResetPassword from './users/ResetPassword.vue'
 
   var $ = window.jQuery = require('jquery')
 
@@ -47,7 +51,10 @@
     components: {
       'signup-modal': SignUpModal,
       'login-modal' :LoginModal,
-      'confirm-modal' :ConfirmModal
+      'confirm-modal' :ConfirmModal,
+      'mail-modal' :MailToReset,
+      'reset-password' :ResetPassword
+
     },
     data() {
       return {

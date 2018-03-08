@@ -76,35 +76,32 @@
           icon: 'error'
         });
       },
-      addUser:function() {
+      addUser: function() {
         var newUser = {
           username : this.username,
           email : this.email,
           password: this.password
         }
-        this.$validator.validateAll().then(() => {
+        this.$validator.validateAll().then( async () => {
           if(this.errors.items.length === 1) {
-            this.$store.dispatch('addUser', {"user":newUser})
-            this.loading = true
-            setTimeout(()=> {
-              this.loading = false
-              var status = this.$store.state.user.status
-              if( status != "ok") {
-                this.alertError();
-              } else {
-                this.$emit('getUser', this.$store.state.user.newUser)
-                this.$refs.signUpModal.hide()
-                this.confirmEmail()
-              }
-            }, 5000)
+           this.loading = true
+           await this.$store.dispatch('addUser', {"user":newUser})
+           this.loading = false
+           var status = this.$store.state.user.status
+           if( status != "ok") {
+            this.alertError();
+          } else {
+            this.$emit('getUser', this.$store.state.user.newUser)
+            this.$refs.signUpModal.hide()
+            this.confirmEmail()
           }
-        })
+        }
+      })
       },
       logIn: function() {
         this.$root.$emit('bv::show::modal', 'logInModal')
       },
       confirmEmail: function() {
-
         this.$root.$emit('bv::show::modal', 'confirmModal')
       }
     }

@@ -18,9 +18,15 @@
              <span class="is-danger" v-if="errors.has('password')">{{errors.first('password')}}</span>
            </b-col>
          </b-row>
+         <b-row>
+           <b-col sm="11" offset="1">
+           <i class="resetPassword"><router-link v-on:click.native="resetPassword" to="/">Forgot your password</router-link></i>
+           </b-col>
+         </b-row>
          <b-button @click="login" variant="primary" >Login</b-button>
          <b-btn variant="danger" @click="hideModal" >Close</b-btn>
        </b-form>
+       <br>
        <p><i>New user? Sign up<router-link v-on:click.native="signUp" to="/"> here</router-link></i></p>
      </div>
    </b-modal>
@@ -101,7 +107,15 @@
       },
       confirm: function() {
         this.$root.$emit('bv::show::modal', 'confirmModal')
+      },
+      resetPassword: function() {
+        this.$root.$emit('bv::show::modal', 'mailToReset')
       }
     }
   }
 </script>
+<style scoped>
+  .resetPassword {
+    float: left;
+  }
+</style>

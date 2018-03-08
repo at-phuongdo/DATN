@@ -46,8 +46,8 @@ const actions = {
       console.log(error.statusText)
     }))
   },
-  addUser(context, newUser) {
-    Vue.http.post(baseUrl + 'users', newUser)
+  addUser: async function(context, newUser) {
+    await Vue.http.post(baseUrl + 'users', newUser)
     .then((response) => {
       state.newUser = response.body.user
       state.status = response.body.status
@@ -66,11 +66,23 @@ const actions = {
       console.log(error.statusText)
     }))
   },
-  confirmEmail(context, auth_token, code) {
-    Vue.http.post(baseUrl+ 'users/' + auth_token + '/confirm')
+  confirmEmail: async function(context,code) {
+    await Vue.http.post(baseUrl + 'users/' + code + '/confirm')
     .then((response) => {
       state.status = response.body.status
       context.commit("CURRENT_USER", response.body.user)
+    })
+  },
+  sendEmailToReset: async function(context, email) {
+    await Vue.http.post(baseUrl + 'reset_passwords', email)
+    .then((response) => {
+      state.status = response.body.status
+    })
+  },
+  resetPassword: async function(context, params ){
+    await Vue.http.put(baseUrl + 'reset_passwords/' + params.token, params)
+    .then((response) => {
+      state.status = response.body.status
     })
   }
 }

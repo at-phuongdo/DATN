@@ -8,5 +8,6 @@ Rails.application.routes.draw do
     end
 
     post 'login' => 'sessions#create'
+    resources :reset_passwords, only: %i[create update]
   end
 end

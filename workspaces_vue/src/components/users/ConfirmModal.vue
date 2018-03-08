@@ -46,11 +46,26 @@
           icon: 'success'
         });
       },
-      confirm: function() {
-        this.$store.dispatch('confirmEmail', this.user.confirm_token, this.code)
-        localStorage.setItem('token', this.user.confirm_token);
-        this.hideModal()
-        this.alertSuccess();
+      alertError({
+        title = "Error!", text = "Oops...Your code is wrong. Please check mail again!"
+      } = {}) {
+        this.alert({
+          title: title,
+          text: text,
+          icon: 'error'
+        });
+      },
+      confirm: async function() {
+        await this.$store.dispatch('confirmEmail',this.code)
+        var status = this.$store.state.user.status
+        if ( status === 'ok'){
+          localStorage.setItem('token', this.user.confirm_token)
+          this.hideModal()
+          this.alertSuccess()
+        }
+        else {
+          this.alertError()
+        }
       }
     }
   }
