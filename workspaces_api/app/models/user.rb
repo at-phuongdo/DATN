@@ -8,10 +8,6 @@ class User < ApplicationRecord
   validates :email, uniqueness: true
   validates :email, presence: true
 
-  def self.create_token
-    SecureRandom.urlsafe_base64.to_s
-  end
-
   def send_activation_email
     UserMailer.email_confirmation(self).deliver_now
   end
@@ -20,7 +16,7 @@ class User < ApplicationRecord
     if confirm_send + 2.days >= Time.now
       update(confirm_at: Time.now)
     else
-      new_email_token = User.create_token
+      new_email_token = SecureRandom.hex(8)
       update(confirm_token: new_email_token)
       false
     end
@@ -31,7 +27,7 @@ class User < ApplicationRecord
   end
 
   def reset_password_token
-    token = User.create_token
+    token = SecureRandom.hex(3)
     update(password_reset_token: token)
   end
 end

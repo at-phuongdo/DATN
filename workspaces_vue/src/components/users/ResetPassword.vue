@@ -21,6 +21,7 @@
           <b-col sm="1"><span class="fa fa-user"></span></b-col>
           <b-col sm="11">
             <b-form-input v-validate="'required'" name="token" type="text" v-model="token" placeholder="Code"></b-form-input>
+            <span class="is-danger" v-if="errors.has('token')">{{errors.first('token')}}</span>
           </b-col>
         </b-row>
         <b-button @click="resetPassword" variant="primary" >OK</b-button>
@@ -70,19 +71,23 @@
           icon: 'error'
         });
       },
-      resetPassword: async function() {
+      resetPassword: function() {
         var paramsReset = {
           token: this.token,
           password: this.password
         }
-        await this.$store.dispatch('resetPassword', paramsReset)
-        if (this.$store.state.user.status === 'ok') {
-          this.alertSuccess()
-          this.hideModal()
-        }
-        else {
-          this.alertError()
-        }
+        this.$validator.validateAll().then( async () => {
+          if(this.errors.items.length === 1) {
+            await this.$store.dispatch('resetPassword', paramsReset)
+            if (this.$store.state.user.status === 'ok') {
+              this.alertSuccess()
+              this.hideModal()
+            }
+            else {
+              this.alertError()
+            }
+          }
+        })
       }
     }
   }
