@@ -14,7 +14,7 @@ class Api::V1::ResetPasswordsController < ApplicationController
     user = User.find_by(password_reset_token: params[:id])
     if user
       user.update(password: params[:password])
-      render json: { status: :ok }
+      render json: { user: user, status: :ok }
     else
       render json: { status: :not_found }
     end

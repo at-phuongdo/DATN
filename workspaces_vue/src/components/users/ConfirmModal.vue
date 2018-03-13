@@ -58,7 +58,7 @@
       confirm: async function() {
         await this.$store.dispatch('confirmEmail',this.code)
         var status = this.$store.state.user.status
-        if ( status === 'ok'){
+        if ( status === this.$getConst('STATUS_OK')){
           localStorage.setItem('token', this.user.confirm_token)
           this.hideModal()
           this.alertSuccess()

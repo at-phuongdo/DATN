@@ -93,6 +93,7 @@
           if(this.errors.items.length === 0) {
             await this.$store.dispatch('resetPassword', paramsReset)
             if (this.$store.state.user.status === this.$getConst('STATUS_OK')) {
+              localStorage.setItem('token', this.$store.state.user.currentUser.confirm_token)
               this.alertSuccess()
               this.hideModal()
             }

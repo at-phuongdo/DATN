@@ -18,7 +18,7 @@ const mutations = {
   CURRENT_USER(state, user) {
     if(user) {
       state.currentUser = user
-      if (state.status === this.$getConst('STATUS_OK')) {
+      if (state.status === Vue.prototype.$getConst('STATUS_OK')) {
         state.isLogin = true
       }
       else {
@@ -83,6 +83,7 @@ const actions = {
     await Vue.http.put(baseUrl + 'reset_passwords/' + params.token, params)
     .then((response) => {
       state.status = response.body.status
+      context.commit("CURRENT_USER", response.body.user)
     })
   }
 }
