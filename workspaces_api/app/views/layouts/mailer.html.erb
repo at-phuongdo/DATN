@@ -1,13 +1,31 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <style>
-      /* Email styles need to be inline */
-    </style>
-  </head>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <style>
+    @import url('https://fonts.googleapis.com/css?family=Pacifico');
+    .container{
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: #e2e9ef;
+      padding: 50px 100px;
+    }
 
-  <body>
-    <%= yield %>
-  </body>
+    .title {
+      color: #28a745;
+      text-align: center;
+      font-family: 'Pacifico', cursive;
+      font-size: 3em;
+    }
+
+    span {
+      color: red;
+    }
+
+  </style>
+</head>
+
+<body>
+  <%= yield %>
+</body>
 </html>

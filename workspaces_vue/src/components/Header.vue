@@ -31,23 +31,35 @@
       </b-collapse>
     </b-navbar>
   </div>
-  <signup-modal></signup-modal>
-  <login-modal></login-modal>
+  <signup-modal v-on:getUser="getUser($event)"></signup-modal>
+  <login-modal v-on:getUser="getUser($event)"></login-modal>
+  <confirm-modal :user="user" ></confirm-modal>
+  <mail-modal></mail-modal>
+  <reset-password></reset-password>
 </div>
 </template>
 <script>
   import SignUpModal from './users/SignUpModal.vue'
   import LoginModal from './users/LoginModal.vue'
+  import ConfirmModal from './users/ConfirmModal.vue'
+  import MailToReset from './users/MailToReset.vue'
+  import ResetPassword from './users/ResetPassword.vue'
 
   var $ = window.jQuery = require('jquery')
 
   export default {
     components: {
       'signup-modal': SignUpModal,
-      'login-modal' :LoginModal
+      'login-modal' : LoginModal,
+      'confirm-modal' : ConfirmModal,
+      'mail-modal' : MailToReset,
+      'reset-password' : ResetPassword
+
     },
     data() {
-      return {}
+      return {
+        user: ''
+      }
     },
     created() {
       this.$store.dispatch("getCurrentUser", localStorage.getItem("token"))
@@ -71,6 +83,10 @@
       logOut: function() {
         localStorage.removeItem("token")
         this.$store.commit('LOGOUT_VALUE')
+        location.reload()
+      },
+      getUser: function(user) {
+        this.user = user
       }
     }
   }

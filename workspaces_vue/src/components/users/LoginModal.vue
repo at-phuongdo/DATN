@@ -18,9 +18,15 @@
              <span class="is-danger" v-if="errors.has('password')">{{errors.first('password')}}</span>
            </b-col>
          </b-row>
+         <b-row>
+           <b-col sm="11" offset="1">
+           <i class="resetPassword"><router-link v-on:click.native="resetPassword" to="/">Forgot your password</router-link></i>
+           </b-col>
+         </b-row>
          <b-button @click="login" variant="primary" >Login</b-button>
          <b-btn variant="danger" @click="hideModal" >Close</b-btn>
        </b-form>
+       <br>
        <p><i>New user? Sign up<router-link v-on:click.native="signUp" to="/"> here</router-link></i></p>
      </div>
    </b-modal>
@@ -64,6 +70,15 @@
           icon: 'error'
         });
       },
+      alertConfirm({
+        title = "Error!", text = "Your account is not confirm. \nPlease check mail to confirm your account!"
+      } = {}) {
+        this.alert({
+          title: title,
+          text: text,
+          icon: 'error'
+        });
+      },
       login: function() {
         var userLogin = {
           email: this.email,
@@ -72,11 +87,15 @@
         this.$store.dispatch('logIn', { "session": userLogin })
         setTimeout(() => {
           var user = this.$store.state.user.currentUser
-          var checkLogin = Object.keys(user).length === 0
-          if(!checkLogin){
+          var status = this.$store.state.user.status
+          if(status === this.$getConst('STATUS_OK')){
             localStorage.setItem("token", user.confirm_token);
             this.$refs.logInModal.hide()
             this.alertSuccess()
+          }
+          else if (status === 'no_content') {
+            this.$emit('getUser', user)
+            this.confirm()
           }
           else{
             this.alertError()
@@ -85,7 +104,18 @@
       },
       signUp: function() {
         this.$root.$emit('bv::show::modal', 'signUpModal')
+      },
+      confirm: function() {
+        this.$root.$emit('bv::show::modal', 'confirmModal')
+      },
+      resetPassword: function() {
+        this.$root.$emit('bv::show::modal', 'mailToReset')
       }
     }
   }
 </script>
+<style scoped>
+  .resetPassword {
+    float: left;
+  }
+</style>

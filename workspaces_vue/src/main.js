@@ -10,9 +10,11 @@ import { store } from './store/index'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import swal from 'sweetalert'
+import GlobalConsts  from './constants/constant.js'
 
 Vue.use(Vuex)
-Vue.use(BootstrapVue);
+Vue.use(BootstrapVue)
+Vue.use(GlobalConsts)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

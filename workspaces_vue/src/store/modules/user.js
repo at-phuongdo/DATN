@@ -10,14 +10,20 @@ const baseUrl = "http://localhost:3000/api/v1/"
 const state = {
   currentUser: {},
   status: '',
-  isLogin: false
+  isLogin: false,
+  newUser: {}
 };
 
 const mutations = {
   CURRENT_USER(state, user) {
     if(user) {
       state.currentUser = user
-      state.isLogin = true
+      if (state.status === Vue.prototype.$getConst('STATUS_OK')) {
+        state.isLogin = true
+      }
+      else {
+        state.isLogin = false
+      }
     }
     else {
       state.isLogin = false
@@ -33,15 +39,17 @@ const actions = {
   getCurrentUser({ commit }, auth_token) {
     Vue.http.get(baseUrl+ 'users/' + auth_token)
     .then((response) => {
+      state.status = response.body.status
       commit("CURRENT_USER", response.body.user)
     })
     .catch((error => {
       console.log(error.statusText)
     }))
   },
-  addUser(context, newUser) {
-    Vue.http.post(baseUrl + 'users', newUser)
+  addUser: async function(context, newUser) {
+    await Vue.http.post(baseUrl + 'users', newUser)
     .then((response) => {
+      state.newUser = response.body.user
       state.status = response.body.status
     })
     .catch((error => {
@@ -51,11 +59,32 @@ const actions = {
   logIn(context, userLogin) {
     Vue.http.post(baseUrl + 'login', userLogin)
     .then((response) => {
+      state.status = response.body.status
       context.commit("CURRENT_USER", response.body.user)
     })
     .catch((error => {
       console.log(error.statusText)
     }))
+  },
+  confirmEmail: async function(context,code) {
+    await Vue.http.post(baseUrl + 'users/' + code + '/confirm')
+    .then((response) => {
+      state.status = response.body.status
+      context.commit("CURRENT_USER", response.body.user)
+    })
+  },
+  sendEmailToReset: async function(context, email) {
+    await Vue.http.post(baseUrl + 'reset_passwords', email)
+    .then((response) => {
+      state.status = response.body.status
+    })
+  },
+  resetPassword: async function(context, params ){
+    await Vue.http.put(baseUrl + 'reset_passwords/' + params.token, params)
+    .then((response) => {
+      state.status = response.body.status
+      context.commit("CURRENT_USER", response.body.user)
+    })
   }
 }
 
