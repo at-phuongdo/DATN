@@ -4,7 +4,8 @@ class Api::V1::UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-    @user.confirm_token = User.create_token
+    @user.confirm_token = SecureRandom.hex(8)
+    @user.provider = 'Email'
     if @user.save
       render json: { user: @user, status: :ok }
       @user.send_activation_email
