@@ -53,7 +53,7 @@
         this.loading = true
         await this.$store.dispatch('sendEmailToReset', {'email': this.email})
         this.loading = false
-        if (this.$store.state.user.status === 'ok') {
+        if (this.$store.state.user.status === this.$getConst('STATUS_OK')) {
           this.resetPassword()
         }
         else {

@@ -92,7 +92,7 @@
         this.$validator.validateAll().then( async () => {
           if(this.errors.items.length === 0) {
             await this.$store.dispatch('resetPassword', paramsReset)
-            if (this.$store.state.user.status === 'ok') {
+            if (this.$store.state.user.status === this.$getConst('STATUS_OK')) {
               this.alertSuccess()
               this.hideModal()
             }

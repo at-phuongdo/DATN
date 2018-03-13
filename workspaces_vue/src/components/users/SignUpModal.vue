@@ -98,10 +98,10 @@
         this.$validator.validateAll().then( async () => {
           if(this.errors.items.length === 0) {
            this.loading = true
-           await this.$store.dispatch('addUser', {"user":newUser})
+           await this.$store.dispatch('addUser', {'user':newUser})
            this.loading = false
            var status = this.$store.state.user.status
-           if( status != "ok") {
+           if( status !== this.$getConst('STATUS_OK')) {
             this.alertError();
           } else {
             this.$emit('getUser', this.$store.state.user.newUser)

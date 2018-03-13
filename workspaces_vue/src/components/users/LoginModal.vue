@@ -88,7 +88,7 @@
         setTimeout(() => {
           var user = this.$store.state.user.currentUser
           var status = this.$store.state.user.status
-          if(status === 'ok'){
+          if(status === this.$getConst('STATUS_OK')){
             localStorage.setItem("token", user.confirm_token);
             this.$refs.logInModal.hide()
             this.alertSuccess()

@@ -18,7 +18,7 @@ const mutations = {
   CURRENT_USER(state, user) {
     if(user) {
       state.currentUser = user
-      if (state.status === 'ok') {
+      if (state.status === this.$getConst('STATUS_OK')) {
         state.isLogin = true
       }
       else {

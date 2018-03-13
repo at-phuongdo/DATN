@@ -50,10 +50,10 @@
   export default {
     components: {
       'signup-modal': SignUpModal,
-      'login-modal' :LoginModal,
-      'confirm-modal' :ConfirmModal,
-      'mail-modal' :MailToReset,
-      'reset-password' :ResetPassword
+      'login-modal' : LoginModal,
+      'confirm-modal' : ConfirmModal,
+      'mail-modal' : MailToReset,
+      'reset-password' : ResetPassword
 
     },
     data() {
