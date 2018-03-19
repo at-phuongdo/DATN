@@ -21,7 +21,28 @@ Vue.config.productionTip = false
 new Vue({
   store: store,
   el: '#app',
-  router,
-  components: { App },
-  template: '<App/>'
+  created: function () {
+   window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '2068048373431539',
+      cookie     : true,  // enable cookies to allow the server to access 
+                          // the session
+      xfbml      : true,  // parse social plugins on this page
+      version    : 'v2.12' // use graph api version 2.8
+    });
+    window.FB.AppEvents.logPageView();
+  };
+  (function (d, s, id) {
+    var js
+    var fjs = d.getElementsByTagName(s)[0]
+    if (d.getElementById(id)) return
+      js = d.createElement(s)
+      js.id = id
+      js.src = 'https://connect.facebook.net/en_US/sdk.js'
+      fjs.parentNode.insertBefore(js, fjs)
+    }(document, 'script', 'facebook-jssdk'))
+},
+router,
+components: { App },
+template: '<App/>'
 })

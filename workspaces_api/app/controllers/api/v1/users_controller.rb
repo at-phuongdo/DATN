@@ -15,13 +15,12 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def show
-    if params[:id]
-      @user = User.find_by(confirm_token: params[:id])
-      if @user
-        render json: { user: @user, status: :ok }
-      else
-        render json: { status: :not_found }
-      end
+    retturn unless params[:id]
+    @user = User.find_by(confirm_token: params[:id])
+    if @user
+      render json: { user: @user, status: :ok }
+    else
+      render json: { status: :not_found }
     end
   end
 

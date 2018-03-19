@@ -5,6 +5,12 @@
         <b-form>
           <h1><span class="decorate-span">Welcome to Our website</span></h1>
           <b-row>
+            <b-col sm="1"></b-col>
+            <b-col sm="11">
+              <div class="fb-login-button" data-width="348px" data-max-rows="1" data-size="large" data-button-type="login_with" data-show-faces="false" data-use-continue-as="false" onlogin="checkLoginState()"></div>
+            </b-col>
+          </b-row>
+          <b-row>
             <b-col sm="1"><span class="fa fa-envelope"></span></b-col>
             <b-col sm="11">
               <b-form-input v-validate="'required|email'" name="email" v-model="email" type="text" placeholder="Email"></b-form-input>
@@ -20,7 +26,7 @@
          </b-row>
          <b-row>
            <b-col sm="11" offset="1">
-           <i class="resetPassword"><router-link v-on:click.native="resetPassword" to="/">Forgot your password</router-link></i>
+             <i class="resetPassword"><router-link v-on:click.native="resetPassword" to="/">Forgot your password</router-link></i>
            </b-col>
          </b-row>
          <b-button @click="login" variant="primary" >Login</b-button>
@@ -37,8 +43,16 @@
     data() {
       return {
         email: '',
-        password: ''
+        password: '',
+        newUser: {},
+        fbSignInParams: {
+          scope: 'email,user_likes',
+          return_scopes: true
+        }
       }
+    },
+    created() {
+      window.checkLoginState = this.checkLoginState
     },
     methods: {
       hideModal: function() {
@@ -110,6 +124,27 @@
       },
       resetPassword: function() {
         this.$root.$emit('bv::show::modal', 'mailToReset')
+      },
+      getUserData: function() {
+        window.FB.api('/me', 'GET', { fields: 'id,name,email' },
+          userInformation => {
+            this.$store.dispatch('loginFacebook', 
+              {'session': { 
+                uid: userInformation.id,
+                email: userInformation.email,
+                username: userInformation.username
+              }
+            })
+          }
+          );
+        setTimeout(() => {
+          var user = this.$store.state.user.currentUser
+          localStorage.setItem("token", user.confirm_token)
+        }, 500)
+      },
+      checkLoginState: function() {
+        this.getUserData()
+        this.hideModal()
       }
     }
   }
