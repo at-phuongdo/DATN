@@ -44,11 +44,7 @@
       return {
         email: '',
         password: '',
-        newUser: {},
-        fbSignInParams: {
-          scope: 'email,user_likes',
-          return_scopes: true
-        }
+        newUser: {}
       }
     },
     created() {
@@ -126,13 +122,16 @@
         this.$root.$emit('bv::show::modal', 'mailToReset')
       },
       getUserData: function() {
-        window.FB.api('/me', 'GET', { fields: 'id,name,email' },
+        window.FB.api('/me', 'GET', { fields: 'id, name, email' },
           userInformation => {
+            console.log(userInformation.id),
+            console.log(userInformation.email),
+            console.log(userInformation.name),
             this.$store.dispatch('loginFacebook', 
               {'session': { 
                 uid: userInformation.id,
-                email: userInformation.email,
-                username: userInformation.username
+                username: userInformation.name,
+                email: userInformation.email
               }
             })
           }
