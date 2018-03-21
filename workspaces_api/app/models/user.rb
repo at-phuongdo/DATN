@@ -5,8 +5,7 @@ class User < ApplicationRecord
   has_many :comments
   has_secure_password validations: false
 
-  validates :email, presence: true
-  validates :email, uniqueness: { scope: :provider }
+  validates :email, presence: true, uniqueness: true
 
   def send_activation_email
     UserMailer.email_confirmation(self).deliver_now

@@ -123,7 +123,7 @@
         this.$root.$emit('bv::show::modal', 'mailToReset')
       },
       getUserData: function() {
-        var This = this
+        self = this
         FB.login(function(response) {
           var session = {}
           FB.api('/me?access_token='+response.authResponse.accessToken, { fields: 'id, name, email, picture' },
@@ -134,8 +134,8 @@
                 email: userInformation.email,
                 avatar: userInformation.picture.data.url
               }
-              await This.$store.dispatch('loginFacebook', {'session': session })
-              var user = This.$store.state.user.currentUser
+              await self.$store.dispatch('loginFacebook', {'session': session })
+              var user = self.$store.state.user.currentUser
               localStorage.setItem("token", user.confirm_token)
             });
         }, {scope: 'email'});

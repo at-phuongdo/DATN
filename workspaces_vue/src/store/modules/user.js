@@ -10,6 +10,7 @@ const baseUrl = "http://localhost:3000/api/v1/"
 const state = {
   currentUser: {},
   status: '',
+  status: '',
   isLogin: false,
   newUser: {}
 };
@@ -51,6 +52,7 @@ const actions = {
     .then((response) => {
       state.newUser = response.body.user
       state.status = response.body.status
+      state.message = response.body.message
     })
     .catch((error => {
       state.status = error.statusText
@@ -92,6 +94,10 @@ const actions = {
       state.status = response.body.status
       context.commit("CURRENT_USER", response.body.user)
     })
+  },
+  registerEmailFacebook: async function(context, user) {
+    state.status = "ok"
+    context.commit("CURRENT_USER", user)
   }
 }
 

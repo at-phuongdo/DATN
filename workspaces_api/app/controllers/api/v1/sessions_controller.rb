@@ -1,8 +1,9 @@
 class Api::V1::SessionsController < ApplicationController
   before_action :facebook_params, only: :login_facebook
 
-  PROVIDER_GMAIL = 'Gmail'.freeze
+  PROVIDER_EMAIL = 'Email'.freeze
   PROVIDER_FACEBOOK = 'Facebook'.freeze
+  PROVIDER_BOTH = 'Both'.freeze
 
   def create
     user = User.find_by_email(params[:session][:email])
@@ -20,10 +21,10 @@ class Api::V1::SessionsController < ApplicationController
   def login_facebook
     user = User.find_by_email(params[:session][:email])
     if user
-      user.update(uid: params[:session][:uid]) if user.provider == PROVIDER_GMAIL
+      user.update(uid: params[:session][:uid], provider: PROVIDER_BOTH, avatar: params[:session][:avatar]) if user.provider == PROVIDER_EMAIL
     else
       user = User.create(facebook_params)
-      user.update(provider: PROVIDER_FACEBOOK)
+      user.update(provider: PROVIDER_FACEBOOK, confirm_at: Time.now)
       user.update(confirm_token: SecureRandom.hex(8))
     end
     render json: { user: user, status: :ok }
