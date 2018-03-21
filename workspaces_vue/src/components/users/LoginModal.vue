@@ -42,6 +42,7 @@
   export default {
     data() {
       return {
+        uid: '',
         email: '',
         password: '',
         newUser: {}
@@ -122,24 +123,22 @@
         this.$root.$emit('bv::show::modal', 'mailToReset')
       },
       getUserData: function() {
-        window.FB.api('/me', 'GET', { fields: 'id, name, email' },
-          userInformation => {
-            console.log(userInformation.id),
-            console.log(userInformation.email),
-            console.log(userInformation.name),
-            this.$store.dispatch('loginFacebook', 
-              {'session': { 
+        var This = this
+        FB.login(function(response) {
+          var session = {}
+          FB.api('/me?access_token='+response.authResponse.accessToken, { fields: 'id, name, email, picture' },
+            async function(userInformation) {
+              session = {
                 uid: userInformation.id,
                 username: userInformation.name,
-                email: userInformation.email
+                email: userInformation.email,
+                avatar: userInformation.picture.data.url
               }
-            })
-          }
-          );
-        setTimeout(() => {
-          var user = this.$store.state.user.currentUser
-          localStorage.setItem("token", user.confirm_token)
-        }, 500)
+              await This.$store.dispatch('loginFacebook', {'session': session })
+              var user = This.$store.state.user.currentUser
+              localStorage.setItem("token", user.confirm_token)
+            });
+        }, {scope: 'email'});
       },
       checkLoginState: function() {
         this.getUserData()

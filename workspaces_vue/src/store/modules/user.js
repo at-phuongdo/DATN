@@ -86,8 +86,8 @@ const actions = {
       context.commit("CURRENT_USER", response.body.user)
     })
   },
-  loginFacebook: function( context, newUser ){
-    Vue.http.post(baseUrl + 'login_facebook', newUser)
+  loginFacebook: async function( context, newUser ){
+    await Vue.http.post(baseUrl + 'login_facebook', newUser)
     .then((response) => {
       state.status = response.body.status
       context.commit("CURRENT_USER", response.body.user)

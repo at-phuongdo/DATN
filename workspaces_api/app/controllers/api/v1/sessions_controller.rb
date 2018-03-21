@@ -32,6 +32,6 @@ class Api::V1::SessionsController < ApplicationController
   private
 
   def facebook_params
-    params.require(:session).permit(:username, :email, :uid)
+    params.require(:session).permit(:username, :email, :uid, :avatar)
   end
 end
