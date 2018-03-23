@@ -10,7 +10,6 @@ const baseUrl = "http://localhost:3000/api/v1/"
 const state = {
   currentUser: {},
   status: '',
-  status: '',
   isLogin: false,
   newUser: {}
 };

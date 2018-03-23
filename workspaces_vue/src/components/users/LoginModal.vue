@@ -123,7 +123,7 @@
         this.$root.$emit('bv::show::modal', 'mailToReset')
       },
       getUserData: function() {
-        self = this
+        var self = this
         FB.login(function(response) {
           var session = {}
           FB.api('/me?access_token='+response.authResponse.accessToken, { fields: 'id, name, email, picture' },

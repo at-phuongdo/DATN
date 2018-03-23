@@ -110,18 +110,18 @@
           password: this.password
         }
         this.$validator.validateAll().then( async () => {
-          if(this.errors.items.length === 0) {
+          if (this.errors.items.length === 0) {
             this.loading = true
             await this.$store.dispatch('addUser', {'user':newUser})
             this.loading = false
             var status = this.$store.state.user.status
-            if( status !== this.$getConst('STATUS_OK')) {
+            if (status !== this.$getConst('STATUS_OK')) {
               this.alertError();
             } else {
               var user = this.$store.state.user.newUser
               this.$emit('getUser', user)
               this.$refs.signUpModal.hide()
-              if( this.$store.state.user.message === '') {
+              if (this.$store.state.user.message === '') {
                 this.confirmEmail()
               } else {
                 this.$store.dispatch('registerEmailFacebook', user)
