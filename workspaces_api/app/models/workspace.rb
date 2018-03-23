@@ -7,4 +7,6 @@ class Workspace < ApplicationRecord
   has_many :addresses
   has_many :comments
   has_many :favorites
+  has_one :price
+  has_one :opening_hour
 end

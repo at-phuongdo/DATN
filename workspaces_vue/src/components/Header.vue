@@ -3,7 +3,7 @@
    <div class="container">
     <b-navbar toggleable="md" type="dark">
       <b-navbar-brand href="#">
-        <img src="http://www.myiconfinder.com/uploads/iconsets/256-256-8d0b15014c0fd4c1edaed92510d161db.png" alt="" height="80px">
+        <img src="http://www.myiconfinder.com/uploads/iconsets/256-256-8d0b15014c0fd4c1edaed92510d161db.png" alt="" height="60px">
         <span>COWORKING SPACES</span>
       </b-navbar-brand>
       <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
@@ -11,8 +11,8 @@
         <b-navbar-nav class="ml-auto" v-if="isLogin">
           <b-nav-item>
             <div  class="dropdown">
-            <img class="avatar" :src="currentUser.avatar" width="70px" v-if="currentUser.avatar">
-              <img class="avatar" src="https://research.kent.ac.uk/clho/wp-content/plugins/wp-person-cpt/images/featured-default.png" width="70px" v-else>
+            <img class="avatar" :src="currentUser.avatar" width="60px" v-if="currentUser.avatar">
+              <img class="avatar" src="https://research.kent.ac.uk/clho/wp-content/plugins/wp-person-cpt/images/featured-default.png" width="60px" v-else>
               <b-button class="profile-button">
                 Hi, {{currentUser.username}}
               </b-button>
@@ -110,6 +110,7 @@
   #header {
     background-color: white;
     width: 100%;
+    z-index: 1;
   }
 
   span {

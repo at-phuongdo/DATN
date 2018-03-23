@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import user from './modules/user.js';
+import workspace from './modules/workspace.js';
 import VeeValidate from 'vee-validate';
 
 Vue.use(VeeValidate);
@@ -11,5 +12,8 @@ export const store = new Vuex.Store({
   state: {},
   mutations: {},
   actions: {},
-  modules: { user }
+  modules: { 
+    user,
+    workspace 
+  }
 })

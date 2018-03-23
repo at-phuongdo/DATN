@@ -9,6 +9,8 @@ Rails.application.routes.draw do
 
     post 'login' => 'sessions#create'
     post 'login_facebook' => 'sessions#login_facebook'
+
+    resources :workspaces
     resources :reset_passwords, only: %i[create update]
   end
 end
