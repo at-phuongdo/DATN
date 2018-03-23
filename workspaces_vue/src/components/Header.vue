@@ -9,14 +9,18 @@
       <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
       <b-collapse is-nav id="nav_collapse">
         <b-navbar-nav class="ml-auto" v-if="isLogin">
-          <b-nav-item class="dropdown">
-            <b-button class="profile-button">Hi, {{currentUser.username}}</b-button>
-            <div class="dropdown-content" style="left:0;">
-              <router-link v-on:click.native="editProfile" to="/"> Edit profile</router-link>
-              <router-link v-on:click.native="logOut" to="/"> Log out</router-link>
-            </div>
-          </b-nav-item>
           <b-nav-item>
+            <div  class="dropdown">
+            <img class="avatar" :src="currentUser.avatar" width="70px" v-if="currentUser.avatar">
+              <img class="avatar" src="https://research.kent.ac.uk/clho/wp-content/plugins/wp-person-cpt/images/featured-default.png" width="70px" v-else>
+              <b-button class="profile-button">
+                Hi, {{currentUser.username}}
+              </b-button>
+              <div class="dropdown-content" style="left:0;">
+                <router-link v-on:click.native="editProfile" to="/"> Edit profile</router-link>
+                <router-link v-on:click.native="logOut" to="/"> Log out</router-link>
+              </div>
+            </div>
             <b-button class="add-button"><span class="fa fa-plus"></span>Add new space</b-button>
           </b-nav-item>
         </b-navbar-nav>
@@ -107,6 +111,7 @@
     background-color: white;
     width: 100%;
   }
+
   span {
     color: #28a745;
   }
@@ -120,7 +125,6 @@
   .add-button {
     background: #28a745;
     color: #fff;
-    padding: 8px 20px !important;
     display: inline-block;
   }
 
@@ -168,5 +172,9 @@
 
   .dropdown:hover .profile-button {
     background-color: #3a71c9;
-  } 
+  }
+
+  .avatar {
+    border-radius: 50%;
+  }
 </style>
