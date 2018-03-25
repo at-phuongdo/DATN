@@ -12,36 +12,23 @@
 
           <b-row>
             <b-col v-for="item in top_reviewed" :key="item.id" class="workspace">
-              <!-- <b-card overlay
-              :img-src="item.avatar"
-              text-variant="white"
-              :title="item.name">
-              <div class="card-text">
-                <p>{{item.city}}</p>
-                <span v-bind:class="[item.rating > 0 ? checkedStar : uncheckStar]"></span>
-                <span v-bind:class="[item.rating > 1 ? checkedStar : uncheckStar]" ></span>
-                <span v-bind:class="[item.rating > 2 ? checkedStar : uncheckStar]" ></span>
-                <span v-bind:class="[item.rating > 3 ? checkedStar : uncheckStar]" ></span>
-                <span v-bind:class="[item.rating > 4 ? checkedStar : uncheckStar]" ></span>
+              <div class="workspace-contain" :style="{ backgroundImage: 'url(' + item.avatar + ')' }">
+                <div class="card-text">
+                  <h3>{{item.name}}</h3>
+                  <p>{{item.city}}</p>
+                  <span v-bind:class="[item.rating > 0 ? checkedStar : uncheckStar]"></span>
+                  <span v-bind:class="[item.rating > 1 ? checkedStar : uncheckStar]" ></span>
+                  <span v-bind:class="[item.rating > 2 ? checkedStar : uncheckStar]" ></span>
+                  <span v-bind:class="[item.rating > 3 ? checkedStar : uncheckStar]" ></span>
+                  <span v-bind:class="[item.rating > 4 ? checkedStar : uncheckStar]" ></span>
+                </div>
               </div>
-            </b-card> -->
-            <div class="workspace-contain" :style="{ backgroundImage: 'url(' + item.avatar + ')' }">
-              <div class="card-text">
-                <p>{{item.name}}</p>
-                <p>{{item.city}}</p>
-                <span v-bind:class="[item.rating > 0 ? checkedStar : uncheckStar]"></span>
-                <span v-bind:class="[item.rating > 1 ? checkedStar : uncheckStar]" ></span>
-                <span v-bind:class="[item.rating > 2 ? checkedStar : uncheckStar]" ></span>
-                <span v-bind:class="[item.rating > 3 ? checkedStar : uncheckStar]" ></span>
-                <span v-bind:class="[item.rating > 4 ? checkedStar : uncheckStar]" ></span>
-              </div>
-            </div>
-          </b-col>
-        </b-row>
+            </b-col>
+          </b-row>
+        </div>
       </div>
     </div>
   </div>
-</div>
 </template>
 <script>
   import { mapActions } from 'vuex'
@@ -116,6 +103,7 @@
 
   .card-title,
   .card-text {
+    color: white;
     text-align: center;
     font-weight: bold;
     background: rgba(88, 86, 85, 0.7);

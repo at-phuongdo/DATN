@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180308030736) do
+ActiveRecord::Schema.define(version: 20180324025534) do
 
   create_table "addresses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "latitude"
@@ -50,20 +50,6 @@ ActiveRecord::Schema.define(version: 20180308030736) do
     t.index ["workspace_id"], name: "index_favorites_on_workspace_id"
   end
 
-  create_table "opening_hours", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string "mon"
-    t.string "tue"
-    t.string "wed"
-    t.string "thurs"
-    t.string "fri"
-    t.string "sat"
-    t.string "sun"
-    t.bigint "workspace_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["workspace_id"], name: "index_opening_hours_on_workspace_id"
-  end
-
   create_table "orders", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "status"
     t.datetime "time_start"
@@ -76,18 +62,6 @@ ActiveRecord::Schema.define(version: 20180308030736) do
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_orders_on_user_id"
     t.index ["workspace_id"], name: "index_orders_on_workspace_id"
-  end
-
-  create_table "prices", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string "price_hour"
-    t.string "price_day"
-    t.string "price_month"
-    t.string "price_year"
-    t.string "unit"
-    t.bigint "workspace_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["workspace_id"], name: "index_prices_on_workspace_id"
   end
 
   create_table "types", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -160,6 +134,19 @@ ActiveRecord::Schema.define(version: 20180308030736) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "friendly_url"
+    t.string "price_hour"
+    t.string "price_day"
+    t.string "price_week"
+    t.string "price_month"
+    t.string "price_year"
+    t.string "unit"
+    t.string "open_mon"
+    t.string "open_tue"
+    t.string "open_wed"
+    t.string "open_thurs"
+    t.string "open_fri"
+    t.string "open_sat"
+    t.string "open_sun"
     t.index ["user_id"], name: "index_workspaces_on_user_id"
   end
 
@@ -168,10 +155,8 @@ ActiveRecord::Schema.define(version: 20180308030736) do
   add_foreign_key "comments", "workspaces"
   add_foreign_key "favorites", "users"
   add_foreign_key "favorites", "workspaces"
-  add_foreign_key "opening_hours", "workspaces"
   add_foreign_key "orders", "users"
   add_foreign_key "orders", "workspaces"
-  add_foreign_key "prices", "workspaces"
   add_foreign_key "workspace_convenients", "convenients"
   add_foreign_key "workspace_convenients", "workspaces"
   add_foreign_key "workspace_images", "workspaces"
