@@ -130,7 +130,6 @@ ActiveRecord::Schema.define(version: 20180324025534) do
     t.string "street"
     t.text "description"
     t.integer "rating"
-    t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "friendly_url"
@@ -147,7 +146,6 @@ ActiveRecord::Schema.define(version: 20180324025534) do
     t.string "open_fri"
     t.string "open_sat"
     t.string "open_sun"
-    t.index ["user_id"], name: "index_workspaces_on_user_id"
   end
 
   add_foreign_key "addresses", "workspaces"
@@ -162,5 +160,4 @@ ActiveRecord::Schema.define(version: 20180324025534) do
   add_foreign_key "workspace_images", "workspaces"
   add_foreign_key "workspace_types", "types"
   add_foreign_key "workspace_types", "workspaces"
-  add_foreign_key "workspaces", "users"
 end
