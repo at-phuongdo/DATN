@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "bootstrap-vue": "^2.0.0-rc.1",
+    "element-ui": "^2.2.2",
     "ssri": "^5.2.4",
     "sweetalert": "^2.1.0",
     "vee-validate": "^2.0.4",
