@@ -69,6 +69,11 @@
             </div>
             <!-- /Contact -->
             <!-- Location -->
+            <div class="location" v-if="tab==3">
+              <google-map
+              name="example"
+              ></google-map>
+            </div>
             <!-- /Location -->
             <!-- Amenities -->
             <div class="amenities" v-if="tab==4">
@@ -231,10 +236,14 @@
 </div>
 </template>
 <script>
+import MapComponent from './Map.vue'
   export default {
+    components: {
+      'google-map' : MapComponent
+    },
     data() {
       return {
-        tab: 5,
+        tab: 3,
         info: {
           name: '',
           description: ''
@@ -248,12 +257,12 @@
         checked: 'fa fa-check',
         typing: 'typing',
         options_amenities: [
-          { text: 'Free-wifi', value: 'wifi'},
-          { text: 'Free coffee', value: 'coffee'},
-          { text: 'Air Conditioning', value: 'air-conditioning'},
-          { text: 'Kitchen', value: 'kitchen'},
-          { text: 'Free water', value: 'water'},
-          { text: 'Lounge Area', value: 'lounge-area'},
+        { text: 'Free-wifi', value: 'wifi'},
+        { text: 'Free coffee', value: 'coffee'},
+        { text: 'Air Conditioning', value: 'air-conditioning'},
+        { text: 'Kitchen', value: 'kitchen'},
+        { text: 'Free water', value: 'water'},
+        { text: 'Lounge Area', value: 'lounge-area'},
         ],
         amenities_selected: [],
         privateNumber: '',
@@ -273,25 +282,25 @@
           openRoom: []
         },
         priceTypes: [
-          { name : 'hour', price: 0 },
-          { name : 'day', price: 0 },
-          { name : 'week', price: 0 },
-          { name : 'month', price: 0 },
-          { name : 'year', price: 0 }
+        { name : 'hour', price: 0 },
+        { name : 'day', price: 0 },
+        { name : 'week', price: 0 },
+        { name : 'month', price: 0 },
+        { name : 'year', price: 0 }
         ],
         unit: [
-          {text: 'VND', value: 'vnd'},
-          {text: 'USD', value: 'usd'}
+        {text: 'VND', value: 'vnd'},
+        {text: 'USD', value: 'usd'}
         ],
         unit_default: 'vnd',
         openingHours: [
-          { day: 'mon', open: '', close: '', text: 'Monday'},
-          { day: 'tue', open: '', close: '', text: 'Tuesday'},
-          { day: 'wed', open: '', close: '', text: 'Wednesday'},
-          { day: 'thurs', open: '', close: '', text: 'Thursday'},
-          { day: 'fri', open: '', close: '', text: 'Friday'},
-          { day: 'sat', open: '', close: '', text: 'Saturday'},
-          { day: 'sun', open: '', close: '', text: 'Sunday'},
+        { day: 'mon', open: '', close: '', text: 'Monday'},
+        { day: 'tue', open: '', close: '', text: 'Tuesday'},
+        { day: 'wed', open: '', close: '', text: 'Wednesday'},
+        { day: 'thurs', open: '', close: '', text: 'Thursday'},
+        { day: 'fri', open: '', close: '', text: 'Friday'},
+        { day: 'sat', open: '', close: '', text: 'Saturday'},
+        { day: 'sun', open: '', close: '', text: 'Sunday'},
         ]
       }
     },
