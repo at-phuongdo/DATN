@@ -22,11 +22,11 @@
               <div class="form-content">
                 <b-form>
                   <b-form-group id="group-name" label="Workspace's name" label-for="workspace-name">
-                    <b-form-input id="workspace-name" type="text" placeholder="Enter name">
+                    <b-form-input id="workspace-name" type="text" v-model="info.name" placeholder="Enter name">
                     </b-form-input>
                   </b-form-group>
                   <b-form-group id="group-description" label="Description" label-for="workspace-description">
-                    <b-form-textarea id="workspace-description" :rows="3" placeholder="Description">
+                    <b-form-textarea id="workspace-description" :rows="3" v-model="info.description" placeholder="Description">
                     </b-form-textarea>
                   </b-form-group>
                 </b-form>
@@ -41,15 +41,15 @@
                 <div class="form-content">
                   <b-form>
                     <b-form-group id="group-contact-email" label="Email" label-for="workspace-email">
-                      <b-form-input id="workspace-email" type="email" placeholder="Enter email">
+                      <b-form-input id="workspace-email" type="email" v-model="contact.email" placeholder="Enter email">
                       </b-form-input>
                     </b-form-group>
                     <b-form-group id="group-contact-phone" label="Phone" label-for="workspace-phone">
-                      <b-form-input id="workspace-phone" type="text" placeholder="Enter phone number">
+                      <b-form-input id="workspace-phone" type="text" v-model="contact.phone" placeholder="Enter phone number">
                       </b-form-input>
                     </b-form-group>
                     <b-form-group id="group-contact-website" label="Website URL" label-for="workspace-website">
-                      <b-form-input id="workspace-website" type="text" placeholder="Enter website">
+                      <b-form-input id="workspace-website" type="text" v-model="contact.website" placeholder="Enter website">
                       </b-form-input>
                     </b-form-group>
                   </b-form>
@@ -60,7 +60,7 @@
                 <div class="form-content">
                   <b-form>
                     <b-form-group id="group-contact-facebook" label="Facebook" label-for="workspace-facebook">
-                      <b-form-input id="workspace-facebook" type="text" placeholder="Enter facebook">
+                      <b-form-input id="workspace-facebook" type="text" v-model="contact.facebook" placeholder="Enter facebook">
                       </b-form-input>
                     </b-form-group>
                   </b-form>
@@ -86,21 +86,21 @@
               <div class="private-room">
                 <h4>Private office</h4>
                 <div class="form-content">
-                  <select v-model="private_number">
+                  <select v-model="privateNumber">
                     <option value="">---</option>
                     option
                     <option v-for="option in 10" v-bind:value="option" :key="option">
                       {{ option }}
                     </option>
                   </select>
-                  <div v-for="room in private_number" :key="room">
+                  <div v-for="room in privateNumber" :key="room">
                     <b-row>
                       <b-col>
-                        <b-form-input type="text" placeholder="Enter name">
+                        <b-form-input type="text" v-model="nameRoom.privateRoom[room-1]" placeholder="Enter name">
                         </b-form-input>
                       </b-col>
                       <b-col>
-                        <b-form-input type="number" placeholder="Number of people">
+                        <b-form-input type="number" v-model="numberOfPeoplePerRoom.privateRoom[room-1]" placeholder="Number of people">
                         </b-form-input>
                       </b-col>
                     </b-row>
@@ -110,20 +110,20 @@
               <div class="meeting-room">
                 <h4>Meeting room</h4>
                 <div class="form-content">
-                  <select v-model="meeting_number">
+                  <select v-model="meetingNumber">
                     <option value="">---</option>
                     <option v-for="option in 10" v-bind:value="option" :key="option">
                       {{ option }}
                     </option>
                   </select>
-                  <div v-for="room in meeting_number" :key="room">
+                  <div v-for="room in meetingNumber" :key="room">
                     <b-row>
                       <b-col>
-                        <b-form-input type="text" placeholder="Enter name">
+                        <b-form-input type="text" v-model="nameRoom.meetingRomm[room-1]" placeholder="Enter name">
                         </b-form-input>
                       </b-col>
                       <b-col>
-                        <b-form-input type="number" placeholder="Number of people">
+                        <b-form-input type="number" v-model="numberOfPeoplePerRoom.meetingRomm[room-1]" placeholder="Number of people">
                         </b-form-input>
                       </b-col>
                     </b-row>
@@ -133,20 +133,20 @@
               <div class="common-room">
                 <h4>Common area</h4>
                 <div class="form-content">
-                  <select v-model="common_number">
+                  <select v-model="commonNumber">
                     <option value="">---</option>
                     <option v-for="option in 10" v-bind:value="option" :key="option">
                       {{ option }}
                     </option>
                   </select>
-                  <div v-for="room in common_number" :key="room">
+                  <div v-for="room in commonNumber" :key="room">
                     <b-row>
                       <b-col>
-                        <b-form-input type="text" placeholder="Enter name">
+                        <b-form-input type="text" v-model="nameRoom.commonRoom[room-1]" placeholder="Enter name">
                         </b-form-input>
                       </b-col>
                       <b-col>
-                        <b-form-input type="number" placeholder="Number of people">
+                        <b-form-input type="number" v-model="numberOfPeoplePerRoom.commonRoom[room-1]" placeholder="Number of people">
                         </b-form-input>
                       </b-col>
                     </b-row>
@@ -156,20 +156,20 @@
               <div class="open-room">
                <h4>Open plan office</h4>
                <div class="form-content">
-                 <select v-model="open_number">
+                 <select v-model="openNumber">
                    <option value="">---</option>
                    <option v-for="option in 10" v-bind:value="option" :key="option">
                     {{ option }}
                   </option>
                 </select>
-                <div v-for="room in open_number" :key="room">
+                <div v-for="room in openNumber" :key="room">
                   <b-row>
                     <b-col>
-                      <b-form-input type="text" placeholder="Enter name">
+                      <b-form-input type="text" v-model="nameRoom.openRoom[room-1]" placeholder="Enter name">
                       </b-form-input>
                     </b-col>
                     <b-col>
-                      <b-form-input type="number" placeholder="Number of people">
+                      <b-form-input type="number" v-model="numberOfPeoplePerRoom.openRoom[room-1]" placeholder="Number of people">
                       </b-form-input>
                     </b-col>
                   </b-row>
@@ -182,16 +182,16 @@
           <div class="opening-hours" v-if="tab==6">
             <h3>When you open your workspace?</h3>
             <div class="form-content">
-              <div v-for="day in week" :key="day">
-                <p>{{day}}</p>
+              <div v-for="day in openingHours" :key="day.name">
+                <p>{{day.text}}</p>
                 <b-row>
                   <b-col>
-                    <el-time-select :picker-options="{ start: '00:00', step: '00:15', end: '23:30'}"
+                    <el-time-select v-model="day.open" :picker-options="{ start: '00:00', step: '00:15', end: '23:30'}"
                     placeholder="Open time">
                   </el-time-select>
                 </b-col>
                 <b-col>
-                  <el-time-select :picker-options="{ start: '00:30', step: '00:15', end: '23:30'}"
+                  <el-time-select v-model="day.close" :picker-options="{ start: '00:30', step: '00:15', end: '23:30'}"
                   placeholder="Close time">
                 </el-time-select>
               </b-col>
@@ -207,9 +207,9 @@
         <div class="form-content">
           <h3>Price</h3>
           <b-container fluid>
-            <b-row class="my-1" v-for="type in types" :key="type">
-              <b-col sm="3"><label :for="`type-${type}`">1 {{ type }}</label></b-col>
-              <b-col sm="6"><b-form-input :id="`type-${type}`" type="number"></b-form-input></b-col>
+            <b-row class="my-1" v-for="type in priceTypes" :key="type.name">
+              <b-col sm="3"><label :for="`type-${type.name}`">1 {{ type.name }}</label></b-col>
+              <b-col sm="6"><b-form-input :id="`type-${type.name}`" type="number" v-model="type.price" :value="type.price"></b-form-input></b-col>
               <b-col sm="3"><b-form-select v-model="unit_default" :options="unit" class="mb-3"></b-form-select></b-col>
             </b-row>
           </b-container>
@@ -234,29 +234,65 @@
   export default {
     data() {
       return {
-        tab: 1,
+        tab: 5,
+        info: {
+          name: '',
+          description: ''
+        },
+        contact: {
+          email: '',
+          phone: '',
+          website: '',
+          facebook: ''
+        },
         checked: 'fa fa-check',
         typing: 'typing',
         options_amenities: [
-        { text: 'Free-wifi', value: 'wifi'},
-        { text: 'Free coffee', value: 'coffee'},
-        { text: 'Air Conditioning', value: 'air-conditioning'},
-        { text: 'Kitchen', value: 'kitchen'},
-        { text: 'Free water', value: 'water'},
-        { text: 'Lounge Area', value: 'lounge-area'},
+          { text: 'Free-wifi', value: 'wifi'},
+          { text: 'Free coffee', value: 'coffee'},
+          { text: 'Air Conditioning', value: 'air-conditioning'},
+          { text: 'Kitchen', value: 'kitchen'},
+          { text: 'Free water', value: 'water'},
+          { text: 'Lounge Area', value: 'lounge-area'},
         ],
         amenities_selected: [],
-        private_number: '',
-        meeting_number: '',
-        common_number: '',
-        open_number: '',
-        week: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-        types: ['hour', 'day', 'week', 'month', 'year'],
-        unit: [
-        {value: 'vnd', text: 'VND'},
-        {value: 'usd', text: 'USD'}
+        privateNumber: '',
+        meetingNumber: '',
+        commonNumber: '',
+        openNumber: '',
+        nameRoom: {
+          privateRoom: [],
+          meetingRoom: [],
+          commonRoom: [],
+          openRoom: []
+        },
+        numberOfPeoplePerRoom: {
+          privateRoom: [],
+          meetingRoom: [],
+          commonRoom: [],
+          openRoom: []
+        },
+        priceTypes: [
+          { name : 'hour', price: 0 },
+          { name : 'day', price: 0 },
+          { name : 'week', price: 0 },
+          { name : 'month', price: 0 },
+          { name : 'year', price: 0 }
         ],
-        unit_default: 'vnd'
+        unit: [
+          {text: 'VND', value: 'vnd'},
+          {text: 'USD', value: 'usd'}
+        ],
+        unit_default: 'vnd',
+        openingHours: [
+          { day: 'mon', open: '', close: '', text: 'Monday'},
+          { day: 'tue', open: '', close: '', text: 'Tuesday'},
+          { day: 'wed', open: '', close: '', text: 'Wednesday'},
+          { day: 'thurs', open: '', close: '', text: 'Thursday'},
+          { day: 'fri', open: '', close: '', text: 'Friday'},
+          { day: 'sat', open: '', close: '', text: 'Saturday'},
+          { day: 'sun', open: '', close: '', text: 'Sunday'},
+        ]
       }
     },
     methods: {
@@ -291,11 +327,6 @@
     padding: 10px;
     margin: 10px 0;
     background-color: #F9F9F9;
-  }
-
-  li:hover {
-    background-color: #28a745;
-    color: white;
   }
 
   li i {
