@@ -6,6 +6,8 @@ Vue.use(Vuex);
 Vue.use(VueResource);
 
 const baseUrl = "http://localhost:3000/api/v1/workspaces"
+const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dophuong/upload"
+const COUNDINARY_UPLOAD_PRESET = "kbtjckge"
 
 const state = {
   list_top_reviewed: []
@@ -22,6 +24,13 @@ const actions = {
     Vue.http.get(baseUrl + '?key=top_reviewed')
     .then((response) => {
       context.commit('TOP_REVIEWED', response.body.workspaces)
+    })
+  },
+
+  uploadImage: function(context, form) {
+    Vue.http.post(CLOUDINARY_URL, form)
+    .then(function(res) {
+      console.log(res)
     })
   }
 }

@@ -26,228 +26,245 @@
                     </b-form-input>
                   </b-form-group>
                   <b-form-group id="group-description" label="Description" label-for="workspace-description">
-                    <b-form-textarea id="workspace-description" :rows="3" v-model="info.description" placeholder="Description">
-                    </b-form-textarea>
+                    <ckeditor 
+                    v-model="info.description" 
+                    :config="config" 
+                    @blur="onBlur($event)" 
+                    @focus="onFocus($event)">
+                  </ckeditor>
+                </b-form-group>
+              </b-form>
+            </div>
+          </div>
+          <!-- /Description -->
+          <!-- Contact -->
+          <div class="contact" v-if="tab==2">
+            <h3>How can I contact you? </h3>
+            <div class="official-contact">
+              <h4>Official contact details</h4>
+              <div class="form-content">
+                <b-form>
+                  <b-form-group id="group-contact-email" label="Email" label-for="workspace-email">
+                    <b-form-input id="workspace-email" type="email" v-model="contact.email" placeholder="Enter email">
+                    </b-form-input>
+                  </b-form-group>
+                  <b-form-group id="group-contact-phone" label="Phone" label-for="workspace-phone">
+                    <b-form-input id="workspace-phone" type="text" v-model="contact.phone" placeholder="Enter phone number">
+                    </b-form-input>
+                  </b-form-group>
+                  <b-form-group id="group-contact-website" label="Website URL" label-for="workspace-website">
+                    <b-form-input id="workspace-website" type="text" v-model="contact.website" placeholder="Enter website">
+                    </b-form-input>
                   </b-form-group>
                 </b-form>
               </div>
             </div>
-            <!-- /Description -->
-            <!-- Contact -->
-            <div class="contact" v-if="tab==2">
-              <h3>How can I contact you? </h3>
-              <div class="official-contact">
-                <h4>Official contact details</h4>
-                <div class="form-content">
-                  <b-form>
-                    <b-form-group id="group-contact-email" label="Email" label-for="workspace-email">
-                      <b-form-input id="workspace-email" type="email" v-model="contact.email" placeholder="Enter email">
-                      </b-form-input>
-                    </b-form-group>
-                    <b-form-group id="group-contact-phone" label="Phone" label-for="workspace-phone">
-                      <b-form-input id="workspace-phone" type="text" v-model="contact.phone" placeholder="Enter phone number">
-                      </b-form-input>
-                    </b-form-group>
-                    <b-form-group id="group-contact-website" label="Website URL" label-for="workspace-website">
-                      <b-form-input id="workspace-website" type="text" v-model="contact.website" placeholder="Enter website">
-                      </b-form-input>
-                    </b-form-group>
-                  </b-form>
-                </div>
-              </div>
-              <div class="social-contact">
-                <h4>Social contact</h4>
-                <div class="form-content">
-                  <b-form>
-                    <b-form-group id="group-contact-facebook" label="Facebook" label-for="workspace-facebook">
-                      <b-form-input id="workspace-facebook" type="text" v-model="contact.facebook" placeholder="Enter facebook">
-                      </b-form-input>
-                    </b-form-group>
-                  </b-form>
-                </div>
-              </div>
-            </div>
-            <!-- /Contact -->
-            <!-- Location -->
-            <div class="location" v-if="tab==3">
-              <google-map
-              name="example"
-              ></google-map>
-            </div>
-            <!-- /Location -->
-            <!-- Amenities -->
-            <div class="amenities" v-if="tab==4">
-              <h3>Tell us about your amenities</h3>
+            <div class="social-contact">
+              <h4>Social contact</h4>
               <div class="form-content">
-                <b-form-group label="Amenities of our workspace">
-                  <b-form-checkbox-group plain stacked v-model="amenities_selected" :options="options_amenities" />
-                </b-form-group>
+                <b-form>
+                  <b-form-group id="group-contact-facebook" label="Facebook" label-for="workspace-facebook">
+                    <b-form-input id="workspace-facebook" type="text" v-model="contact.facebook" placeholder="Enter facebook">
+                    </b-form-input>
+                  </b-form-group>
+                </b-form>
               </div>
             </div>
-            <!-- /Amenities -->
-            <!-- Room -->
-            <div class="room" v-if="tab==5">
-              <h3>Got any office types?</h3>
-              <div class="private-room">
-                <h4>Private office</h4>
-                <div class="form-content">
-                  <select v-model="privateNumber">
-                    <option value="">---</option>
-                    option
-                    <option v-for="option in 10" v-bind:value="option" :key="option">
-                      {{ option }}
-                    </option>
-                  </select>
-                  <div v-for="room in privateNumber" :key="room">
-                    <b-row>
-                      <b-col>
-                        <b-form-input type="text" v-model="nameRoom.privateRoom[room-1]" placeholder="Enter name">
-                        </b-form-input>
-                      </b-col>
-                      <b-col>
-                        <b-form-input type="number" v-model="numberOfPeoplePerRoom.privateRoom[room-1]" placeholder="Number of people">
-                        </b-form-input>
-                      </b-col>
-                    </b-row>
-                  </div>
-                </div>
-              </div>
-              <div class="meeting-room">
-                <h4>Meeting room</h4>
-                <div class="form-content">
-                  <select v-model="meetingNumber">
-                    <option value="">---</option>
-                    <option v-for="option in 10" v-bind:value="option" :key="option">
-                      {{ option }}
-                    </option>
-                  </select>
-                  <div v-for="room in meetingNumber" :key="room">
-                    <b-row>
-                      <b-col>
-                        <b-form-input type="text" v-model="nameRoom.meetingRomm[room-1]" placeholder="Enter name">
-                        </b-form-input>
-                      </b-col>
-                      <b-col>
-                        <b-form-input type="number" v-model="numberOfPeoplePerRoom.meetingRomm[room-1]" placeholder="Number of people">
-                        </b-form-input>
-                      </b-col>
-                    </b-row>
-                  </div>
-                </div>
-              </div>
-              <div class="common-room">
-                <h4>Common area</h4>
-                <div class="form-content">
-                  <select v-model="commonNumber">
-                    <option value="">---</option>
-                    <option v-for="option in 10" v-bind:value="option" :key="option">
-                      {{ option }}
-                    </option>
-                  </select>
-                  <div v-for="room in commonNumber" :key="room">
-                    <b-row>
-                      <b-col>
-                        <b-form-input type="text" v-model="nameRoom.commonRoom[room-1]" placeholder="Enter name">
-                        </b-form-input>
-                      </b-col>
-                      <b-col>
-                        <b-form-input type="number" v-model="numberOfPeoplePerRoom.commonRoom[room-1]" placeholder="Number of people">
-                        </b-form-input>
-                      </b-col>
-                    </b-row>
-                  </div>
-                </div>
-              </div>
-              <div class="open-room">
-               <h4>Open plan office</h4>
-               <div class="form-content">
-                 <select v-model="openNumber">
-                   <option value="">---</option>
-                   <option v-for="option in 10" v-bind:value="option" :key="option">
+          </div>
+          <!-- /Contact -->
+          <!-- Location -->
+          <div class="location" v-if="tab==3">
+            <google-map
+            name="example"
+            ></google-map>
+          </div>
+          <!-- /Location -->
+          <!-- Amenities -->
+          <div class="amenities" v-if="tab==4">
+            <h3>Tell us about your amenities</h3>
+            <div class="form-content">
+              <b-form-group label="Amenities of our workspace">
+                <b-form-checkbox-group plain stacked v-model="amenities_selected" :options="options_amenities" />
+              </b-form-group>
+            </div>
+          </div>
+          <!-- /Amenities -->
+          <!-- Room -->
+          <div class="room" v-if="tab==5">
+            <h3>Got any office types?</h3>
+            <div class="private-room">
+              <h4>Private office</h4>
+              <div class="form-content">
+                <select v-model="privateNumber">
+                  <option value="">---</option>
+                  option
+                  <option v-for="option in 10" v-bind:value="option" :key="option">
                     {{ option }}
                   </option>
                 </select>
-                <div v-for="room in openNumber" :key="room">
+                <div v-for="room in privateNumber" :key="room">
                   <b-row>
                     <b-col>
-                      <b-form-input type="text" v-model="nameRoom.openRoom[room-1]" placeholder="Enter name">
+                      <b-form-input type="text" v-model="nameRoom.privateRoom[room-1]" placeholder="Enter name">
                       </b-form-input>
                     </b-col>
                     <b-col>
-                      <b-form-input type="number" v-model="numberOfPeoplePerRoom.openRoom[room-1]" placeholder="Number of people">
+                      <b-form-input type="number" v-model="numberOfPeoplePerRoom.privateRoom[room-1]" placeholder="Number of people">
                       </b-form-input>
                     </b-col>
                   </b-row>
                 </div>
               </div>
             </div>
-          </div>
-          <!-- /Room -->
-          <!-- Opening hours -->
-          <div class="opening-hours" v-if="tab==6">
-            <h3>When you open your workspace?</h3>
-            <div class="form-content">
-              <div v-for="day in openingHours" :key="day.name">
-                <p>{{day.text}}</p>
+            <div class="meeting-room">
+              <h4>Meeting room</h4>
+              <div class="form-content">
+                <select v-model="meetingNumber">
+                  <option value="">---</option>
+                  <option v-for="option in 10" v-bind:value="option" :key="option">
+                    {{ option }}
+                  </option>
+                </select>
+                <div v-for="room in meetingNumber" :key="room">
+                  <b-row>
+                    <b-col>
+                      <b-form-input type="text" v-model="nameRoom.meetingRomm[room-1]" placeholder="Enter name">
+                      </b-form-input>
+                    </b-col>
+                    <b-col>
+                      <b-form-input type="number" v-model="numberOfPeoplePerRoom.meetingRomm[room-1]" placeholder="Number of people">
+                      </b-form-input>
+                    </b-col>
+                  </b-row>
+                </div>
+              </div>
+            </div>
+            <div class="common-room">
+              <h4>Common area</h4>
+              <div class="form-content">
+                <select v-model="commonNumber">
+                  <option value="">---</option>
+                  <option v-for="option in 10" v-bind:value="option" :key="option">
+                    {{ option }}
+                  </option>
+                </select>
+                <div v-for="room in commonNumber" :key="room">
+                  <b-row>
+                    <b-col>
+                      <b-form-input type="text" v-model="nameRoom.commonRoom[room-1]" placeholder="Enter name">
+                      </b-form-input>
+                    </b-col>
+                    <b-col>
+                      <b-form-input type="number" v-model="numberOfPeoplePerRoom.commonRoom[room-1]" placeholder="Number of people">
+                      </b-form-input>
+                    </b-col>
+                  </b-row>
+                </div>
+              </div>
+            </div>
+            <div class="open-room">
+             <h4>Open plan office</h4>
+             <div class="form-content">
+               <select v-model="openNumber">
+                 <option value="">---</option>
+                 <option v-for="option in 10" v-bind:value="option" :key="option">
+                  {{ option }}
+                </option>
+              </select>
+              <div v-for="room in openNumber" :key="room">
                 <b-row>
                   <b-col>
-                    <el-time-select v-model="day.open" :picker-options="{ start: '00:00', step: '00:15', end: '23:30'}"
-                    placeholder="Open time">
-                  </el-time-select>
-                </b-col>
-                <b-col>
-                  <el-time-select v-model="day.close" :picker-options="{ start: '00:30', step: '00:15', end: '23:30'}"
-                  placeholder="Close time">
-                </el-time-select>
-              </b-col>
-            </b-row>
+                    <b-form-input type="text" v-model="nameRoom.openRoom[room-1]" placeholder="Enter name">
+                    </b-form-input>
+                  </b-col>
+                  <b-col>
+                    <b-form-input type="number" v-model="numberOfPeoplePerRoom.openRoom[room-1]" placeholder="Number of people">
+                    </b-form-input>
+                  </b-col>
+                </b-row>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <!-- /Opening hours -->
-      <!-- Photos -->
-      <!-- /Photos -->
-      <!-- Prices -->
-      <div class="price" v-if="tab==8">
-        <div class="form-content">
-          <h3>Price</h3>
-          <b-container fluid>
-            <b-row class="my-1" v-for="type in priceTypes" :key="type.name">
-              <b-col sm="3"><label :for="`type-${type.name}`">1 {{ type.name }}</label></b-col>
-              <b-col sm="6"><b-form-input :id="`type-${type.name}`" type="number" v-model="type.price" :value="type.price"></b-form-input></b-col>
-              <b-col sm="3"><b-form-select v-model="unit_default" :options="unit" class="mb-3"></b-form-select></b-col>
-            </b-row>
-          </b-container>
+        <!-- /Room -->
+        <!-- Opening hours -->
+        <div class="opening-hours" v-if="tab==6">
+          <h3>When you open your workspace?</h3>
+          <div class="form-content">
+            <div v-for="day in openingHours" :key="day.name">
+              <p>{{day.text}}</p>
+              <b-row>
+                <b-col>
+                  <el-time-select v-model="day.open" :picker-options="{ start: '00:00', step: '00:15', end: '23:30'}"
+                  placeholder="Open time">
+                </el-time-select>
+              </b-col>
+              <b-col>
+                <el-time-select v-model="day.close" :picker-options="{ start: '00:30', step: '00:15', end: '23:30'}"
+                placeholder="Close time">
+              </el-time-select>
+            </b-col>
+          </b-row>
         </div>
       </div>
-      <!-- /rices -->
-    </b-col>
-  </b-row>
-  <b-row>
-   <b-col cols="2" offset="10">
-     <div class="btn-control">
-      <b-button type="button" variant="primary previous-btn" @click="decreaseTab" v-if="tab>1">Previous</b-button>
-      <b-button type="button" variant="primary next-btn" @click="increaseTab" v-if="tab<8">Next</b-button>
     </div>
+    <!-- /Opening hours -->
+    <!-- Photos -->
+    <workspace-photos v-if="tab==7" v-on:getAvatar="getAvatar"></workspace-photos>
+    <!-- /Photos -->
+    <!-- Prices -->
+    <div class="price" v-if="tab==8">
+      <div class="form-content">
+        <h3>Price</h3>
+        <b-container fluid>
+          <b-row class="my-1" v-for="type in priceTypes" :key="type.name">
+            <b-col sm="3"><label :for="`type-${type.name}`">1 {{ type.name }}</label></b-col>
+            <b-col sm="6"><b-form-input :id="`type-${type.name}`" type="number" v-model="type.price" :value="type.price"></b-form-input></b-col>
+            <b-col sm="3"><b-form-select v-model="unit_default" :options="unit" class="mb-3"></b-form-select></b-col>
+          </b-row>
+        </b-container>
+      </div>
+    </div>
+    <!-- /prices -->
   </b-col>
+</b-row>
+<b-row>
+ <b-col cols="2" offset="10">
+   <div class="btn-control">
+    <b-button type="button" variant="primary previous-btn" @click="decreaseTab" v-if="tab>1">Previous</b-button>
+    <b-button type="button" variant="primary next-btn" @click="increaseTab" v-if="tab<8">Next</b-button>
+  </div>
+</b-col>
 </b-row>
 </div>
 </div>
 </div>
 </template>
 <script>
-import MapComponent from './Map.vue'
+  import MapComponent from './Map.vue'
+  import Photos from './Photos.vue'
+  import Ckeditor from 'vue-ckeditor2'
   export default {
     components: {
-      'google-map' : MapComponent
+      'google-map' : MapComponent,
+      'workspace-photos' : Photos,
+      'ckeditor' : Ckeditor
     },
     data() {
       return {
-        tab: 3,
+        tab: 1 ,
         info: {
           name: '',
           description: ''
         },
+        content: '',
+        config: {
+          toolbar: [
+          [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript' ]
+          ],
+          height: 300
+        },
+        avatar: '',
         contact: {
           email: '',
           phone: '',
@@ -310,6 +327,15 @@ import MapComponent from './Map.vue'
       },
       decreaseTab: function() {
         this.tab -=1
+      },
+      onBlur (editor) {
+        console.log(editor)
+      },
+      onFocus (editor) {
+        console.log(editor)
+      },
+      getAvatar: function(avatar) {
+        this.avatar = avatar
       }
     }
   }
