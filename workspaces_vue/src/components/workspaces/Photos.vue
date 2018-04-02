@@ -41,7 +41,8 @@
     },
     methods: {
       ...mapActions({
-        uploadCloudinary: 'workspace/uploadImage'
+        uploadAvatarCloudinary: 'workspace/uploadAvatar',
+        uploadPhotosCloudinary: 'workspace/uploadPhotos'
       }),
       previewAvatar() {
         var avatarInput = this.$refs.avatarRefs.files[0]
@@ -51,13 +52,11 @@
         reader.onload = (e) => {
           this.avatar.push(e.target.result)
         }
-        console.log(this.avatarArr[0])
         reader.readAsDataURL(this.avatarArr[0])
       },
       previewPhotos() {
         var myfile = this.$refs.photoRefs
         var files = this.$refs.photoRefs.files
-        console.log(files)
         for (var i = 0; i < files.length; i++) {
           this.photosArr.push(files[i])
           this.createImage(myfile, files[i]);
@@ -80,10 +79,15 @@
         this.photosArr.splice(n-1,1)
       },
       upload: function() {
-        var formData = new FormData();
-        formData.append('file', this.avatar[0])
-        formData.append('upload_preset', 'kbtjckge')
-        this.uploadCloudinary(formData)
+        this.uploadAvatar()
+        this.uploadPhotos()
+      },
+      uploadAvatar: function() {
+        this.uploadAvatarCloudinary(this.avatar[0])
+      },
+      uploadPhotos: function() {
+        this.uploadPhotosCloudinary(this.listPhotos)
+
       }
     },
     watch: {

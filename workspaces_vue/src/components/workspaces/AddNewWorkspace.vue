@@ -11,8 +11,8 @@
               <li v-bind:class="[tab == 4 ? typing : '' ]">4. Amenities<i v-bind:class="[tab > 4 ? checked : '' ]"></i></li>
               <li v-bind:class="[tab == 5 ? typing : '' ]">5. Room<i v-bind:class="[tab > 5 ? checked : '' ]"></i></li>
               <li v-bind:class="[tab == 6 ? typing : '' ]">6. Opening hours<i v-bind:class="[tab > 6 ? checked : '' ]"></i></li>
-              <li v-bind:class="[tab == 7 ? typing : '' ]">7. Photos<i v-bind:class="[tab > 7 ? checked : '' ]"></i></li>
-              <li v-bind:class="[tab == 8 ? typing : '' ]">8. Prices<i v-bind:class="[tab > 8 ? checked : '' ]"></i></li>
+              <li v-bind:class="[tab == 7 ? typing : '' ]">7. Prices<i v-bind:class="[tab > 7 ? checked : '' ]"></i></li>
+              <li v-bind:class="[tab == 8 ? typing : '' ]">8. Photos<i v-bind:class="[tab > 8 ? checked : '' ]"></i></li>
             </ul>
           </b-col>
           <b-col cols="9">
@@ -22,12 +22,12 @@
               <div class="form-content">
                 <b-form>
                   <b-form-group id="group-name" label="Workspace's name" label-for="workspace-name">
-                    <b-form-input id="workspace-name" type="text" v-model="info.name" placeholder="Enter name">
+                    <b-form-input id="workspace-name" type="text" v-model="workspace.name" placeholder="Enter name">
                     </b-form-input>
                   </b-form-group>
                   <b-form-group id="group-description" label="Description" label-for="workspace-description">
                     <ckeditor 
-                    v-model="info.description" 
+                    v-model="workspace.description" 
                     :config="config" 
                     @blur="onBlur($event)" 
                     @focus="onFocus($event)">
@@ -45,17 +45,17 @@
               <div class="form-content">
                 <b-form>
                   <b-form-group id="group-contact-email" label="Email" label-for="workspace-email">
-                    <b-form-input id="workspace-email" type="email" v-model="contact.email" placeholder="Enter email">
+                    <b-form-input id="workspace-email" type="email" v-model="workspace.email" placeholder="Enter email">
                     </b-form-input>
                   </b-form-group>
                   <b-form-group id="group-contact-phone" label="Phone" label-for="workspace-phone">
-                    <b-form-input id="workspace-phone" type="text" v-model="contact.phone" placeholder="Enter phone number">
+                    <b-form-input id="workspace-phone" type="text" v-model="workspace.phone" placeholder="Enter phone number">
                     </b-form-input>
                   </b-form-group>
                   <b-form-group id="group-contact-website" label="Website URL" label-for="workspace-website">
-                    <b-form-input id="workspace-website" type="text" v-model="contact.website" placeholder="Enter website">
+                    <b-form-input id="workspace-website" type="text" v-model="workspace.website" placeholder="Enter website">
                     </b-form-input>
-                  </b-form-group>
+                  </b-form-group>workspace
                 </b-form>
               </div>
             </div>
@@ -64,7 +64,7 @@
               <div class="form-content">
                 <b-form>
                   <b-form-group id="group-contact-facebook" label="Facebook" label-for="workspace-facebook">
-                    <b-form-input id="workspace-facebook" type="text" v-model="contact.facebook" placeholder="Enter facebook">
+                    <b-form-input id="workspace-facebook" type="text" v-model="workspace.facebook" placeholder="Enter facebook">
                     </b-form-input>
                   </b-form-group>
                 </b-form>
@@ -75,7 +75,7 @@
           <!-- Location -->
           <div class="location" v-if="tab==3">
             <google-map
-            name="example"
+            name="location" @getAddress="getAddress" :addressWorkspace="workspace"
             ></google-map>
           </div>
           <!-- /Location -->
@@ -128,11 +128,11 @@
                 <div v-for="room in meetingNumber" :key="room">
                   <b-row>
                     <b-col>
-                      <b-form-input type="text" v-model="nameRoom.meetingRomm[room-1]" placeholder="Enter name">
+                      <b-form-input type="text" v-model="nameRoom.meetingRoom[room-1]" placeholder="Enter name">
                       </b-form-input>
                     </b-col>
                     <b-col>
-                      <b-form-input type="number" v-model="numberOfPeoplePerRoom.meetingRomm[room-1]" placeholder="Number of people">
+                      <b-form-input type="number" v-model="numberOfPeoplePerRoom.meetingRoom[room-1]" placeholder="Number of people">
                       </b-form-input>
                     </b-col>
                   </b-row>
@@ -209,11 +209,8 @@
       </div>
     </div>
     <!-- /Opening hours -->
-    <!-- Photos -->
-    <workspace-photos v-if="tab==7" v-on:getAvatar="getAvatar"></workspace-photos>
-    <!-- /Photos -->
     <!-- Prices -->
-    <div class="price" v-if="tab==8">
+    <div class="price" v-if="tab==7">
       <div class="form-content">
         <h3>Price</h3>
         <b-container fluid>
@@ -226,13 +223,17 @@
       </div>
     </div>
     <!-- /prices -->
+    <!-- Photos -->
+    <workspace-photos v-if="tab==8" v-on:getAvatar="getAvatar"></workspace-photos>
+    <!-- /Photos -->
   </b-col>
 </b-row>
 <b-row>
  <b-col cols="2" offset="10">
    <div class="btn-control">
     <b-button type="button" variant="primary previous-btn" @click="decreaseTab" v-if="tab>1">Previous</b-button>
-    <b-button type="button" variant="primary next-btn" @click="increaseTab" v-if="tab<8">Next</b-button>
+    <b-button type="button" variant="primary next-btn" @click="clickNextBtn" v-if="tab<8">Next</b-button>
+    <b-button type="button" variant="primary next-btn" @click="clickNextBtn" v-if="tab==8">OK</b-button>
   </div>
 </b-col>
 </b-row>
@@ -252,11 +253,7 @@
     },
     data() {
       return {
-        tab: 1 ,
-        info: {
-          name: '',
-          description: ''
-        },
+        tab: 8 ,
         content: '',
         config: {
           toolbar: [
@@ -265,12 +262,6 @@
           height: 300
         },
         avatar: '',
-        contact: {
-          email: '',
-          phone: '',
-          website: '',
-          facebook: ''
-        },
         checked: 'fa fa-check',
         typing: 'typing',
         options_amenities: [
@@ -311,14 +302,43 @@
         ],
         unit_default: 'vnd',
         openingHours: [
-        { day: 'mon', open: '', close: '', text: 'Monday'},
-        { day: 'tue', open: '', close: '', text: 'Tuesday'},
-        { day: 'wed', open: '', close: '', text: 'Wednesday'},
-        { day: 'thurs', open: '', close: '', text: 'Thursday'},
-        { day: 'fri', open: '', close: '', text: 'Friday'},
-        { day: 'sat', open: '', close: '', text: 'Saturday'},
-        { day: 'sun', open: '', close: '', text: 'Sunday'},
-        ]
+        { day: 'open_mon', open: '', close: '', text: 'Monday'},
+        { day: 'open_tue', open: '', close: '', text: 'Tuesday'},
+        { day: 'open_wed', open: '', close: '', text: 'Wednesday'},
+        { day: 'open_thurs', open: '', close: '', text: 'Thursday'},
+        { day: 'open_fri', open: '', close: '', text: 'Friday'},
+        { day: 'open_sat', open: '', close: '', text: 'Saturday'},
+        { day: 'open_sun', open: '', close: '', text: 'Sunday'},
+        ],
+        workspace: {
+          name: '',
+          description: '',
+          email: '',
+          phone: '',
+          website: '',
+          facebook: '',
+          street: '',
+          town: '',
+          district: '',
+          city: '',
+          country: '',
+          stringAddress: '',
+          lat: '',
+          lng: '',
+          open_mon: '',
+          open_tue: '',
+          open_wed: '',
+          open_thurs: '',
+          open_fri: '',
+          open_sat: '',
+          open_sun: '',
+          price_hour: '',
+          price_day: '',
+          price_week: '',
+          price_month: '',
+          price_year: '',
+          unit: ''
+        }
       }
     },
     methods: {
@@ -334,8 +354,49 @@
       onFocus (editor) {
         console.log(editor)
       },
+      getAddress: function(address) {
+        this.workspace.country = address.country
+        this.workspace.city = address.city
+        this.workspace.district = address.district
+        this.workspace.town = address.town
+        this.workspace.street = address.street
+        this.workspace.lat = address.lat
+        this.workspace.lng = address.lng
+      },
+      openingTime: function() {
+        this.workspace.open_mon = this.openingHours[0].open + '-' + this.openingHours[0].close
+        this.workspace.open_tue = this.openingHours[1].open + '-' + this.openingHours[1].close
+        this.workspace.open_wed = this.openingHours[2].open + '-' + this.openingHours[2].close
+        this.workspace.open_thurs = this.openingHours[3].open + '-' + this.openingHours[3].close
+        this.workspace.open_fri = this.openingHours[4].open + '-' + this.openingHours[4].close
+        this.workspace.open_sat = this.openingHours[5].open + '-' + this.openingHours[5].close
+        this.workspace.open_sun = this.openingHours[6].open + '-' + this.openingHours[6].close
+      },
+      getPrice: function() {
+        this.workspace.price_hour = this.priceTypes[0].price
+        this.workspace.price_day = this.priceTypes[1].price
+        this.workspace.price_week = this.priceTypes[2].price
+        this.workspace.price_month = this.priceTypes[3].price
+        this.workspace.price_year = this.priceTypes[4].price
+      },
       getAvatar: function(avatar) {
         this.avatar = avatar
+      },
+
+      clickNextBtn: function() {
+        if (this.tab < 8) {
+          this.increaseTab()
+          if (this.tab == 6) this.openingTime()
+        } else {
+          this.getPrice()
+        }
+        console.log(this.amenities_selected)
+        console.log(this.nameRoom)
+        console.log(this.numberOfPeoplePerRoom)
+        console.log(this.workspace)
+      },
+      submit: function() {
+
       }
     }
   }

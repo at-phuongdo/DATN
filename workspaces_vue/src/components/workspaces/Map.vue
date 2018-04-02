@@ -1,40 +1,38 @@
 <template>
   <div>
-    <div id="floating-panel">
-      <input id="address" type="textbox" value="Sydney, NSW">
-      <input id="submit" type="button" value="Geocode" @click="geocodeAddress">
-    </div>
-    <div class="google-map" :id="mapName"></div>
     <div class="address">
       <p>Confirm and complete any missing details in the location information below:</p>
       <b-row>
         <b-col>
-          <b-form-group label="Street" label-for="street">
-            <b-form-input id="street" v-model="street"></b-form-input>
+          <b-form-group label="Country*" label-for="country">
+            <b-form-input id="country" v-model="address.country"></b-form-input>
           </b-form-group>
           <b-form-group label="District*" label-for="district">
-            <b-form-input id="district" v-model="district"></b-form-input>
+            <b-form-input id="district" v-model="address.district"></b-form-input>
           </b-form-group>
-          <b-form-group label="Country*" label-for="country">
-            <b-form-input id="country" v-model="country"></b-form-input>
+          <b-form-group label="Street" label-for="street">
+            <b-form-input id="street" v-model="address.street"></b-form-input>
           </b-form-group>
         </b-col>
         <b-col>
-         <b-form-group label="Town*" label-for="town">
-          <b-form-input id="town" v-model="town"></b-form-input>
+         <b-form-group label="City*" label-for="city">
+          <b-form-input id="city" v-model="address.city"></b-form-input>
         </b-form-group>
-        <b-form-group label="City*" label-for="city">
-          <b-form-input id="city" v-model="city"></b-form-input>
-        </b-form-group>
-      </b-col>
-    </b-row>
-  </div>
+        <b-form-group label="Town*" label-for="town">
+         <b-form-input id="town" v-model="address.town"></b-form-input>
+       </b-form-group>
+     </b-col>
+   </b-row>
+   <p class="notice">If you sure about your information, please generate to map to save location.</p>
+   <b-btn variant="danger" @click="geocodeAddress">Generate to map?</b-btn>
+ </div>
+ <div class="google-map" :id="mapName"></div>
 </div>
 </template>
 <script>
   export default {
     name: 'google-map',
-    props: ['name'],
+    props: ['name', 'addressWorkspace'],
     data: function () {
       return {
         mapName: this.name + "-map",
@@ -42,11 +40,16 @@
           latitude: 16.056115,
           longitude: 108.190248
         }],
-        street : '',
-        town : '',
-        district : '',
-        city : '',
-        country : ''
+        address: {
+          street : this.addressWorkspace.street,
+          town : this.addressWorkspace.town,
+          district : this.addressWorkspace.district,
+          city : this.addressWorkspace.city,
+          country : this.addressWorkspace.country,
+          stringAddress: '',
+          lat: this.addressWorkspace.lat,
+          lng: this.addressWorkspace.lng
+        }
       }
     },
 
@@ -54,7 +57,8 @@
       const element = document.getElementById(this.mapName)
       const options = {
         zoom: 6,
-        center: new google.maps.LatLng(16.056115,108.190248)
+        // center: new google.maps.LatLng(16.056115,108.190248)
+        center: new google.maps.LatLng(this.address.lat, this.address.lng)
       }
       const map = new google.maps.Map(element, options)
       this.markerCoordinates.forEach((coord) => {
@@ -65,8 +69,8 @@
           map : map
         });
         google.maps.event.addListener(marker, 'dragend', function(ev){
-        alert(marker.getPosition())
-      });
+          alert(marker.getPosition())
+        });
       });
     },
 
@@ -79,10 +83,13 @@
           center: new google.maps.LatLng(16.056115,108.190248)
         }
         const map = new google.maps.Map(element, options);
-        var address = document.getElementById('address').value;
+        var address = this.stringAddress();
+        var self = this
         geocoder.geocode({'address': address}, function(results, status) {
           if (status === 'OK') {
-            map.setCenter(results[0].geometry.location);
+            var location = results[0].geometry.location
+            map.setCenter(location)
+            self.parseLatLng(location)
             var marker = new google.maps.Marker({
               map: map,
               position: results[0].geometry.location
@@ -90,7 +97,19 @@
           } else {
             alert('Geocode was not successful for the following reason: ' + status)
           }
+          google.maps.event.addListener(marker, 'dragend', function(ev){
+            alert(marker.getPosition())
+          });
         });
+      },
+      stringAddress: function() {
+        this.address.stringAddress =  this.address.street + ' ' + this.address.town + ' ' + this.address.district + ' ' + this.address.city + ' ' + this.address.country
+        return this.address.stringAddress
+      },
+      parseLatLng: function(location) {
+        this.address.lat = location.lat().toString()
+        this.address.lng = location.lng().toString()
+        this.$emit('getAddress', this.address)
       }
     }
   }
@@ -105,5 +124,8 @@
   .address {
     background-color: #F9F9F9;
     padding: 20px;
+  }
+  .notice {
+    color: red;
   }
 </style>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180324025534) do
+ActiveRecord::Schema.define(version: 20180402021555) do
 
   create_table "addresses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "latitude"
@@ -127,8 +127,13 @@ ActiveRecord::Schema.define(version: 20180324025534) do
     t.string "country"
     t.string "city"
     t.string "district"
+    t.string "town"
     t.string "street"
     t.text "description"
+    t.string "email"
+    t.string "website"
+    t.string "phone"
+    t.string "facebook"
     t.integer "rating"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

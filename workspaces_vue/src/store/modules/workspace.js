@@ -27,11 +27,29 @@ const actions = {
     })
   },
 
-  uploadImage: function(context, form) {
-    Vue.http.post(CLOUDINARY_URL, form)
+  uploadAvatar: function(context, avatar) {
+    console.log(avatar)
+    var formData = new FormData();
+    formData.append('file', avatar)
+    formData.append('upload_preset', COUNDINARY_UPLOAD_PRESET)
+    Vue.http.post(CLOUDINARY_URL, formData)
     .then(function(res) {
-      console.log(res)
+      console.log(res.body.secure_url)
     })
+  },
+
+  uploadPhotos: function(context, listPhotos) {
+    var resPhotos = []
+    for (var i = 0; i < listPhotos.length; i++) {
+      var formData = new FormData();
+      formData.append('file', listPhotos[i])
+      formData.append('upload_preset', COUNDINARY_UPLOAD_PRESET)
+      Vue.http.post(CLOUDINARY_URL, formData)
+      .then(function(res) {
+        resPhotos.push(res.body.secure_url)
+      })
+      console.log(resPhotos)
+    }
   }
 }
 
