@@ -12,5 +12,6 @@ Rails.application.routes.draw do
 
     resources :workspaces
     resources :reset_passwords, only: %i[create update]
+    resources :convenients, only: :index
   end
 end

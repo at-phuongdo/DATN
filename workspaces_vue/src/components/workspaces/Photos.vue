@@ -3,28 +3,28 @@
     <div class="workspace-avatar">
       <h4>Insert workspace's avatar(only one)</h4>
       <label class="input-image">
-        <input type="file" ref="avatarRefs" @change="previewAvatar" style="display: none">
+        <input type="file" ref="avatarRefs" @change="previewAvatar" style="display: none" accept=".jpg, .jpeg, .png" required>
         Select your avatar
       </label>
-      <div v-if="avatar.length>0">
-        <img  :src="avatar"/>
+      <div v-if="avatarToUpload.length>0">
+        <img  :src="avatarToUpload"/>
         <span class="fa fa-times-circle" @click="removeAvatar()"></span>
       </div>
     </div>
     <div class="workspace-photos">
       <h4>Insert your workspace's photos(5 photos)</h4>
       <label class="input-image">
-        <input type="file" ref="photoRefs" @change="previewPhotos" multiple style="display: none">
+        <input type="file" ref="photoRefs" @change="previewPhotos" multiple style="display: none" accept=".jpg, .jpeg, .png">
         Select photos
       </label>
-      <div class="photos-list" v-if="photosArr.length>0">
-        <div v-for="n in photosArr.length" :key="n">
-          <img  :src="listPhotos[n-1]"/>
+      <div class="photos-list" v-if="photoToShow.length>0">
+        <div v-for="n in photoToShow.length" :key="n">
+          <img  :src="photoToUpload[n-1]"/>
           <span class="fa fa-times-circle" @click="removePhoto(n)"></span>
         </div>
       </div>
     </div>
-    <button type="" @click="upload">OK</button>
+    <button type="submit" @click="upload">OK</button>
   </div>
 </template>
 <script>
@@ -33,11 +33,17 @@
   export default {
     data() {
       return {
-        avatar: [],
-        avatarArr: [],
-        photosArr: [],
-        listPhotos: []
+        avatarToUpload: [],
+        avatarToShow: [],
+        photoToShow: [],
+        photoToUpload: [],
+        allPhoto: []
       }
+    },
+    computed: {
+      ...mapState({
+        photosURL: state => state.workspace.listPhotos
+      })
     },
     methods: {
       ...mapActions({
@@ -46,19 +52,19 @@
       }),
       previewAvatar() {
         var avatarInput = this.$refs.avatarRefs.files[0]
-        this.avatarArr.push(avatarInput)
+        this.avatarToShow.push(avatarInput)
         var reader = new FileReader()
 
         reader.onload = (e) => {
-          this.avatar.push(e.target.result)
+          this.avatarToUpload.push(e.target.result)
         }
-        reader.readAsDataURL(this.avatarArr[0])
+        reader.readAsDataURL(this.avatarToShow[0])
       },
       previewPhotos() {
         var myfile = this.$refs.photoRefs
         var files = this.$refs.photoRefs.files
         for (var i = 0; i < files.length; i++) {
-          this.photosArr.push(files[i])
+          this.photoToShow.push(files[i])
           this.createImage(myfile, files[i]);
         }
       },
@@ -66,33 +72,33 @@
         var reader = new FileReader()
 
         reader.onload = (e) => {
-          this.listPhotos.push(e.target.result)
+          this.photoToUpload.push(e.target.result)
         };
         reader.readAsDataURL(file)
       },
       removeAvatar: function() {
-        this.avatar = []
-        this.avatarArr = []
+        this.avatarToUpload = []
+        this.avatarToShow = []
       },
       removePhoto: function (n) {
-        this.listPhotos.splice(n-1,1)
-        this.photosArr.splice(n-1,1)
+        this.photoToUpload.splice(n-1,1)
+        this.photoToShow.splice(n-1,1)
       },
       upload: function() {
-        this.uploadAvatar()
+        this.allPhoto.push(this.avatarToUpload[0])
+        for (var i = 0; i < this.photoToUpload.length; i++) {
+          this.allPhoto.push(this.photoToUpload[i])
+        }
         this.uploadPhotos()
       },
-      uploadAvatar: function() {
-        this.uploadAvatarCloudinary(this.avatar[0])
-      },
       uploadPhotos: function() {
-        this.uploadPhotosCloudinary(this.listPhotos)
-
+        this.uploadPhotosCloudinary(this.allPhoto)
       }
     },
     watch: {
-      avatar: function() {
-        this.$emit('getAvatar', this.avatar)
+      photosURL: function() {
+        console.log(this.photosURL)
+        this.$emit('getPhotos', this.photosURL)
       }
     }
   }

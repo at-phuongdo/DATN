@@ -84,7 +84,13 @@
             <h3>Tell us about your amenities</h3>
             <div class="form-content">
               <b-form-group label="Amenities of our workspace">
-                <b-form-checkbox-group plain stacked v-model="amenities_selected" :options="options_amenities" />
+                <span v-for="amenity in amenities" :key="amenity.id">
+                  <input
+                  type='checkbox'
+                  :value="amenity.id"
+                  v-model='amenities_selected'> {{amenity.name}}
+                  <br>
+                </span>
               </b-form-group>
             </div>
           </div>
@@ -224,7 +230,7 @@
     </div>
     <!-- /prices -->
     <!-- Photos -->
-    <workspace-photos v-if="tab==8" v-on:getAvatar="getAvatar"></workspace-photos>
+    <workspace-photos v-if="tab==8" v-on:getPhotos="getPhotos"></workspace-photos>
     <!-- /Photos -->
   </b-col>
 </b-row>
@@ -233,7 +239,7 @@
    <div class="btn-control">
     <b-button type="button" variant="primary previous-btn" @click="decreaseTab" v-if="tab>1">Previous</b-button>
     <b-button type="button" variant="primary next-btn" @click="clickNextBtn" v-if="tab<8">Next</b-button>
-    <b-button type="button" variant="primary next-btn" @click="clickNextBtn" v-if="tab==8">OK</b-button>
+    <b-button type="button" variant="primary next-btn" @click="submit" v-if="tab==8">OK</b-button>
   </div>
 </b-col>
 </b-row>
@@ -245,6 +251,8 @@
   import MapComponent from './Map.vue'
   import Photos from './Photos.vue'
   import Ckeditor from 'vue-ckeditor2'
+  import { mapActions } from 'vuex'
+  import { mapState } from 'vuex'
   export default {
     components: {
       'google-map' : MapComponent,
@@ -253,25 +261,16 @@
     },
     data() {
       return {
-        tab: 8 ,
-        content: '',
+        tab: 1,
         config: {
           toolbar: [
           [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript' ]
           ],
           height: 300
         },
-        avatar: '',
         checked: 'fa fa-check',
         typing: 'typing',
-        options_amenities: [
-        { text: 'Free-wifi', value: 'wifi'},
-        { text: 'Free coffee', value: 'coffee'},
-        { text: 'Air Conditioning', value: 'air-conditioning'},
-        { text: 'Kitchen', value: 'kitchen'},
-        { text: 'Free water', value: 'water'},
-        { text: 'Lounge Area', value: 'lounge-area'},
-        ],
+        amenities: [],
         amenities_selected: [],
         privateNumber: '',
         meetingNumber: '',
@@ -313,6 +312,7 @@
         workspace: {
           name: '',
           description: '',
+          avatar: '',
           email: '',
           phone: '',
           website: '',
@@ -322,7 +322,6 @@
           district: '',
           city: '',
           country: '',
-          stringAddress: '',
           lat: '',
           lng: '',
           open_mon: '',
@@ -338,10 +337,29 @@
           price_month: '',
           price_year: '',
           unit: ''
-        }
+        },
+        workspacePhotos: []
       }
     },
+    created() {
+      this.getConvenient()
+    },
+    watch: {
+      convenients: function() {
+        this.amenities = this.convenients
+      }
+    },
+    computed: {
+      ...mapState({
+        convenients:state => state.convenient.listConvenient
+      })
+    },
     methods: {
+      ...mapActions({
+        addNewSpace: 'workspace/addNew',
+        getConvenient: 'convenient/getAllConvenient'
+      }),
+
       increaseTab: function() {
         this.tab += 1 
       },
@@ -379,24 +397,27 @@
         this.workspace.price_month = this.priceTypes[3].price
         this.workspace.price_year = this.priceTypes[4].price
       },
-      getAvatar: function(avatar) {
-        this.avatar = avatar
+      getPhotos: function(photos) {
+        this.workspace.avatar = photos[0]
+        this.workspacePhotos = photos.slice(1)
       },
 
       clickNextBtn: function() {
-        if (this.tab < 8) {
-          this.increaseTab()
-          if (this.tab == 6) this.openingTime()
-        } else {
+        this.increaseTab()
+        if (this.tab == 7) {
+          this.openingTime()
+        } else if (this.tab == 8) {
           this.getPrice()
         }
-        console.log(this.amenities_selected)
-        console.log(this.nameRoom)
-        console.log(this.numberOfPeoplePerRoom)
-        console.log(this.workspace)
       },
       submit: function() {
-
+        this.addNewSpace({
+          workspace: this.workspace,
+          photo: this.workspacePhotos,
+          amenities: this.amenities_selected,
+          nameRoom: this.nameRoom,
+          numberPeople: this.numberOfPeoplePerRoom
+        })
       }
     }
   }
