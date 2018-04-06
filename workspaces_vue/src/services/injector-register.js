@@ -1,7 +1,7 @@
 import injector from 'vue-inject';
 
-import UploadPhotoService from './uploadPhoto.service.js'
+import WorkspaceService from './workspace.service.js'
 
-injector.service('uploadPhotoService', function () { 
-  return UploadPhotoService 
+injector.service('workspaceService', function () { 
+  return WorkspaceService 
 });

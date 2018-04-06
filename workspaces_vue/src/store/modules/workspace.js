@@ -7,7 +7,7 @@ Vue.use(VueResource);
 
 const baseUrl = "http://localhost:3000/api/v1/workspaces"
 const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dophuong/upload"
-const COUNDINARY_UPLOAD_PRESET = "kbtjckge"
+const CLOUNDINARY_UPLOAD_PRESET = "kbtjckge"
 
 const state = {
   todos: [
@@ -65,7 +65,7 @@ const actions = {
     var formData = new FormData()
     for (var i = 0; i < listPhotos.length; i++) {
       formData.append('file', listPhotos[i])
-      formData.append('upload_preset', COUNDINARY_UPLOAD_PRESET)
+      formData.append('upload_preset', CLOUNDINARY_UPLOAD_PRESET)
       await Vue.http.post(CLOUDINARY_URL, formData)
       .then(function(res) {
         allPhoto.push(res.body.secure_url)
@@ -84,6 +84,12 @@ const actions = {
     .then((res) => {
 
     })
+  },
+  searchByLocation: function() {
+    console.log('location')
+  },
+  searchByName: function() {
+
   }
 }
 

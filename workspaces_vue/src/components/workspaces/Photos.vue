@@ -30,9 +30,9 @@
   import { mapActions } from 'vuex'
   import { mapState } from 'vuex'
   export default {
-    dependencies : ['uploadPhotoService'],
+    dependencies : ['workspaceService'],
     created() {
-      this.uploadPhotoService.uploadPhotos = this.upload;
+      this.workspaceService.uploadPhotos = this.upload
     },
     data() {
       return {
@@ -50,7 +50,6 @@
     },
     methods: {
       ...mapActions({
-        uploadAvatarCloudinary: 'workspace/uploadAvatar',
         uploadPhotosCloudinary: 'workspace/uploadPhotos'
       }),
       previewAvatar() {

@@ -2,7 +2,7 @@
   <div class="banner">
     <carousel :loop="true" :autoplay="true" :autoplayTimeout="3000" :autoplayHoverPause="true" :perPage="1" :paginationEnabled="false" >
       <slide>
-      <div class="slide slide1"></div>
+        <div class="slide slide1"></div>
       </slide>
       <slide>
         <div class="slide slide2"></div>
@@ -19,24 +19,55 @@
      </b-row>
      <b-row>
        <b-col md="4" offset-md="4" class="search-content">
-        <b-form-input type="text" placeholder="Please enter country or city you want to find..." class="search-input"></b-form-input>
-        <b-dropdown text="All spaces" variant="dropdown-button">
-          <b-dropdown-item-button>All spaces</b-dropdown-item-button>
-          <b-dropdown-item-button>Meeting spaces</b-dropdown-item-button>
-          <b-dropdown-item-button>Workspace</b-dropdown-item-button>
-        </b-dropdown>
-        <b-button variant="success search-button">Search</b-button>
-      </b-col>
-    </b-row>
-  </div>
-</div>
+         <input type="text" placeholder="Please enter the name you want to find..." class="search-input" v-if="selected=='name'">
+         <input ref="autocomplete" placeholder="Please enter country or city you want to find..." class="search-location" onfocus="value = ''" type="text" v-else/>
+         <b-form-select v-model="selected" :options="options"/>
+         <b-button variant="success search-button" @click="getAddressData">Search</b-button>
+       </b-col>
+     </b-row>
+   </div>
+   <search></search>
+ </div>
 </template>
 <script>
-  import { Carousel, Slide } from 'vue-carousel';
+  import { Carousel, Slide } from 'vue-carousel'
+  import Search from './workspaces/Search.vue'
   export default {
     components: {
       Carousel,
-      Slide
+      Slide,
+      'search' : Search
+    },
+    dependencies : ['workspaceService'],
+    mounted() {
+      this.autocomplete = new google.maps.places.Autocomplete(
+        (this.$refs.autocomplete),
+        {types: ['geocode']}
+        );
+    },
+    data() {
+      return {
+        address: '',
+        options: [
+        { value: 'location', text: 'Search by location' },
+        { value: 'name', text: 'Search by name'}
+        ],
+        selected: 'location'
+      }
+    },
+    methods: {
+      getAddressData: function () {
+        let place = this.autocomplete.getPlace()
+        let ac = place.address_components
+        let lat = place.geometry.location.lat()
+        let lon = place.geometry.location.lng()
+        let city = ac[0]["short_name"]
+        console.log(lat)
+        this.searchByLocation()
+      },
+      searchByLocation: function() {
+        this.workspaceService.searchByLocation()
+      }
     }
   }
 </script>
@@ -86,11 +117,6 @@
     display: inherit;
   }
 
-  .btn-dropdown-button,
-  .search-input {
-    border-radius: 0;
-  }
-
   .search-button {
     margin-left: 10px;
   }
@@ -99,5 +125,17 @@
   .btn-group,
   .btn {
     position: static !important;
+  }
+
+  .search-location,
+  .search-input {
+    display: block;
+    width: 80vw;
+    margin: 0 auto;
+    font-weight: 400;
+    outline: none;
+    line-height: 30px;
+    border-radius: 0.25rem;
+    padding-left: 10px;
   }
 </style>
