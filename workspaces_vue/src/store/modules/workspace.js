@@ -10,10 +10,40 @@ const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dophuong/upload"
 const COUNDINARY_UPLOAD_PRESET = "kbtjckge"
 
 const state = {
+  todos: [
+    {id: 1, value: 'Description'},
+    {id: 2, value: 'Contact'},
+    {id: 3, value: 'Location'},
+    {id: 4, value: 'Amenities'},
+    {id: 5, value: 'Room'},
+    {id: 6, value: 'Opening hours'},
+    {id: 7, value: 'Price'},
+    {id: 8, value: 'Photos'}
+  ],
+  priceTypes: [
+    { name : 'hour', price: 0 },
+    { name : 'day', price: 0 },
+    { name : 'week', price: 0 },
+    { name : 'month', price: 0 },
+    { name : 'year', price: 0 }
+  ],
+  unit: [
+    {text: 'VND', value: 'vnd'},
+    {text: 'USD', value: 'usd'}
+  ],
+  openingHours: [
+    { day: 'open_mon', open: '', close: '', text: 'Monday'},
+    { day: 'open_tue', open: '', close: '', text: 'Tuesday'},
+    { day: 'open_wed', open: '', close: '', text: 'Wednesday'},
+    { day: 'open_thurs', open: '', close: '', text: 'Thursday'},
+    { day: 'open_fri', open: '', close: '', text: 'Friday'},
+    { day: 'open_sat', open: '', close: '', text: 'Saturday'},
+    { day: 'open_sun', open: '', close: '', text: 'Sunday'},
+  ],
   list_top_reviewed: [],
   listPhotos: [],
   avatar: '',
-  accessToken: localStorage.getItem("token")
+  accessToken: localStorage.getItem("token"),
 }
 
 const mutations = {
@@ -41,7 +71,6 @@ const actions = {
         allPhoto.push(res.body.secure_url)
       })
       if (i === listPhotos.length - 1) {
-        console.log('ok')
         state.listPhotos = allPhoto
       }
     }
@@ -52,6 +81,9 @@ const actions = {
         'AccessToken' : state.accessToken
       }
     })
+    .then((res) => {
+
+    })
   }
 }
 
@@ -61,4 +93,3 @@ export default {
   mutations,
   actions
 }
-

@@ -24,13 +24,16 @@
         </div>
       </div>
     </div>
-    <button type="submit" @click="upload">OK</button>
   </div>
 </template>
 <script>
   import { mapActions } from 'vuex'
   import { mapState } from 'vuex'
   export default {
+    dependencies : ['uploadPhotoService'],
+    created() {
+      this.uploadPhotoService.uploadPhotos = this.upload;
+    },
     data() {
       return {
         avatarToUpload: [],
@@ -97,7 +100,6 @@
     },
     watch: {
       photosURL: function() {
-        console.log(this.photosURL)
         this.$emit('getPhotos', this.photosURL)
       }
     }
