@@ -12,7 +12,8 @@
             <span v-bind:class="[workspace.rating > 2 ? checkedStar : uncheckStar]" ></span>
             <span v-bind:class="[workspace.rating > 3 ? checkedStar : uncheckStar]" ></span>
             <span v-bind:class="[workspace.rating > 4 ? checkedStar : uncheckStar]" ></span>
-            <span>( {{workspace.reviewed}} Reviewed)</span>
+            <span>( {{workspace.comments.length}} Reviews)</span>
+            <h3 class="workspace-price">VND {{workspace.price_day}} /DAY</h3>
           </div>
         </li>
       </ul>
@@ -66,7 +67,7 @@
     float: left;
     width: 30%;
     margin: 10px;
-    height: 400px;
+    height: 350px;
     border: 1px solid #e6e6e6;
   }
 
@@ -77,6 +78,10 @@
 
   li {
     list-style-type: none;
+  }
+
+  li:hover {
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   }
 
   .content {

@@ -17,10 +17,11 @@
                   <h3>{{item.name}}</h3>
                   <p>{{item.city}}</p>
                   <span v-bind:class="[item.rating > 0 ? checkedStar : uncheckStar]"></span>
-                  <span v-bind:class="[item.rating > 1 ? checkedStar : uncheckStar]" ></span>
-                  <span v-bind:class="[item.rating > 2 ? checkedStar : uncheckStar]" ></span>
-                  <span v-bind:class="[item.rating > 3 ? checkedStar : uncheckStar]" ></span>
-                  <span v-bind:class="[item.rating > 4 ? checkedStar : uncheckStar]" ></span>
+                  <span v-bind:class="[item.rating > 1 ? checkedStar : uncheckStar]"></span>
+                  <span v-bind:class="[item.rating > 2 ? checkedStar : uncheckStar]"></span>
+                  <span v-bind:class="[item.rating > 3 ? checkedStar : uncheckStar]"></span>
+                  <span v-bind:class="[item.rating > 4 ? checkedStar : uncheckStar]"></span>
+                  <p>( {{item.comments.length}} Reviews)</p>
                 </div>
               </div>
             </b-col>

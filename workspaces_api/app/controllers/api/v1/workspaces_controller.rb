@@ -7,7 +7,7 @@ class Api::V1::WorkspacesController < ApplicationController
     return unless params[:key] == TOP_REVIEWED
     workspace_ids = Comment.select('workspace_id, COUNT(*) AS review_times').group('workspace_id').order('review_times desc').limit(3).map(&:workspace_id)
     workspaces = Workspace.where(id: workspace_ids)
-    render json: { workspaces: workspaces, status: :ok }
+    render json: workspaces, status: :ok
   end
 
   def create
@@ -28,7 +28,7 @@ class Api::V1::WorkspacesController < ApplicationController
     # ascii_str = params[:key].mb_chars.normalize(:kd).gsub(/[^\x00-\x7F]/n, "").downcase.to_s
     search_key = "%#{params[:key]}%"
     workspaces = Workspace.where("address LIKE '#{search_key}'")
-    render json: { workspaces: workspaces, status: :ok }
+    render json: workspaces, status: :ok
   end
 
   private

@@ -60,7 +60,7 @@ const actions = {
   getTopreviewed: function(context) {
     Vue.http.get(baseUrl + '?key=top_reviewed')
     .then((response) => {
-      context.commit('TOP_REVIEWED', response.body.workspaces)
+      context.commit('TOP_REVIEWED', response.body)
     })
   },
 
@@ -93,7 +93,7 @@ const actions = {
     Vue.http.post(baseUrl + '/search/Vietnam')
     // Vue.http.post(baseUrl + '/search/'+ searchKey)
     .then((res) => {
-      context.commit('LIST_WORKSPACE', res.body.workspaces)
+      context.commit('LIST_WORKSPACE', res.body)
     })
   },
   searchByName: function() {
