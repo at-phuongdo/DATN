@@ -11,44 +11,48 @@ const CLOUNDINARY_UPLOAD_PRESET = "kbtjckge"
 
 const state = {
   todos: [
-    {id: 1, value: 'Description'},
-    {id: 2, value: 'Contact'},
-    {id: 3, value: 'Location'},
-    {id: 4, value: 'Amenities'},
-    {id: 5, value: 'Room'},
-    {id: 6, value: 'Opening hours'},
-    {id: 7, value: 'Price'},
-    {id: 8, value: 'Photos'}
+  {id: 1, value: 'Description'},
+  {id: 2, value: 'Contact'},
+  {id: 3, value: 'Location'},
+  {id: 4, value: 'Amenities'},
+  {id: 5, value: 'Room'},
+  {id: 6, value: 'Opening hours'},
+  {id: 7, value: 'Price'},
+  {id: 8, value: 'Photos'}
   ],
   priceTypes: [
-    { name : 'hour', price: 0 },
-    { name : 'day', price: 0 },
-    { name : 'week', price: 0 },
-    { name : 'month', price: 0 },
-    { name : 'year', price: 0 }
+  { name : 'hour', price: 0 },
+  { name : 'day', price: 0 },
+  { name : 'week', price: 0 },
+  { name : 'month', price: 0 },
+  { name : 'year', price: 0 }
   ],
   unit: [
-    {text: 'VND', value: 'vnd'},
-    {text: 'USD', value: 'usd'}
+  {text: 'VND', value: 'vnd'},
+  {text: 'USD', value: 'usd'}
   ],
   openingHours: [
-    { day: 'open_mon', open: '', close: '', text: 'Monday'},
-    { day: 'open_tue', open: '', close: '', text: 'Tuesday'},
-    { day: 'open_wed', open: '', close: '', text: 'Wednesday'},
-    { day: 'open_thurs', open: '', close: '', text: 'Thursday'},
-    { day: 'open_fri', open: '', close: '', text: 'Friday'},
-    { day: 'open_sat', open: '', close: '', text: 'Saturday'},
-    { day: 'open_sun', open: '', close: '', text: 'Sunday'},
+  { day: 'open_mon', open: '', close: '', text: 'Monday'},
+  { day: 'open_tue', open: '', close: '', text: 'Tuesday'},
+  { day: 'open_wed', open: '', close: '', text: 'Wednesday'},
+  { day: 'open_thurs', open: '', close: '', text: 'Thursday'},
+  { day: 'open_fri', open: '', close: '', text: 'Friday'},
+  { day: 'open_sat', open: '', close: '', text: 'Saturday'},
+  { day: 'open_sun', open: '', close: '', text: 'Sunday'},
   ],
   list_top_reviewed: [],
   listPhotos: [],
   avatar: '',
   accessToken: localStorage.getItem("token"),
+  listWorkspaces : []
 }
 
 const mutations = {
   TOP_REVIEWED(state, workspaces) {
     state.list_top_reviewed = workspaces
+  },
+  LIST_WORKSPACE(state, workspaces) {
+    state.listWorkspaces = workspaces
   }
 }
 
@@ -85,8 +89,12 @@ const actions = {
 
     })
   },
-  searchByLocation: function() {
-    console.log('location')
+  searchByLocation: function(context, searchKey) {
+    Vue.http.post(baseUrl + '/search/Vietnam')
+    // Vue.http.post(baseUrl + '/search/'+ searchKey)
+    .then((res) => {
+      context.commit('LIST_WORKSPACE', res.body.workspaces)
+    })
   },
   searchByName: function() {
 

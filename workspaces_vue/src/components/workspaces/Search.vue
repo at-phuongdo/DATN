@@ -7,8 +7,7 @@
    </b-row>
    <b-row>
      <b-col md="4" offset-md="4" class="search-content">
-       <input type="text" placeholder="Please enter the name you want to find..." class="search-input" v-if="selected=='name'">
-       <input ref="autocomplete" placeholder="Please enter country or city you want to find..." class="search-location" type="text" v-else/>
+       <input ref="autocomplete" placeholder="Please enter country or city you want to find..." class="search-location" type="text"/>
        <b-form-select v-model="selected" :options="options"/>
        <b-button variant="success search-button" @click="getAddressData">Search</b-button>
      </b-col>
@@ -44,13 +43,14 @@
       }),
       getAddressData: function () {
         let place = this.autocomplete.getPlace()
-        let ac = place.address_components
-        let lat = place.geometry.location.lat()
-        let lon = place.geometry.location.lng()
-        console.log(ac)
-        let city = ac[0]["short_name"]
-        console.log(city)
-        this.searchByLocations()
+        if (place) {
+          let ac = place.address_components
+          let lat = place.geometry.location.lat()
+          let lon = place.geometry.location.lng()
+          let address = ac[0]["long_name"]
+          this.searchByLocations(address)
+          this.$router.push('/search/' + address)
+        }
       },
     }
   }
