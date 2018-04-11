@@ -12,7 +12,7 @@ Rails.application.routes.draw do
 
     resources :workspaces do
       collection do
-        post 'search/:key' => 'workspaces#search'
+        get 'search/:key' => 'workspaces#search'
       end
     end
 

@@ -7,10 +7,18 @@
    </b-row>
    <b-row>
      <b-col md="4" offset-md="4" class="search-content">
-      <input placeholder="Please enter the name you want to find..." class="search-input" type="text" v-show="selected=='name'"/>
       <input ref="autocomplete" placeholder="Please enter country or city you want to find..." class="search-location" type="text" v-show="selected=='location'"/>
+      <input placeholder="Please enter the name you want to find..." class="search-input" type="text" v-model="nameSearch" v-show="selected=='name'" v-on:keyup="searchName($event.target.value)"/>
       <b-form-select v-model="selected" :options="options"/>
-      <b-button variant="success search-button" @click="getAddressData">Search</b-button>
+      <b-button variant="success search-button" @click="getAddressData" v-if="selected=='location'">Search</b-button>
+      <b-button variant="success search-button" @click="searchName" v-else>Search</b-button>
+    </b-col>
+  </b-row>
+  <b-row>
+    <b-col md="4" offset-md="4">
+      <ul class="search-result">
+        <li v-for="workspace in listWorkspaceByName" :key="workspace.id" @click="workspaceDetail(workspace.id)"><span class="fa fa-map-marker"></span>  {{workspace.name}}</li>
+      </ul>
     </b-col>
   </b-row>
 </div>
@@ -32,28 +40,43 @@
         { value: 'location', text: 'Search by location' },
         { value: 'name', text: 'Search by name'}
         ],
-        selected: 'location'
+        selected: 'location',
+        nameSearch: '',
+        listWorkspaceByName: []
       }
     },
     computed: {
-
+      ...mapState({
+        listWorkspace:state => state.workspace.listWorkspaces
+      })
     },
     methods: {
       ...mapActions({
-        searchByLocations: 'workspace/searchByLocation'
+        searchByLocations: 'workspace/searchByLocation',
+        searchByName: 'workspace/searchByName'
       }),
-      getAddressData: function () {
+      getAddressData: function() {
         let place = this.autocomplete.getPlace()
         if (place) {
           let ac = place.address_components
           let lat = place.geometry.location.lat()
           let lon = place.geometry.location.lng()
           let address = ac[0]["long_name"]
-          console.log(ac)
           this.searchByLocations(address)
           this.$router.push('/search/' + address)
         }
       },
+      searchName: function(search) {
+        this.searchByName(search)
+      },
+      workspaceDetail: function(id) {
+        // redirect to details page
+      }
+    },
+    watch: {
+      listWorkspace: function() {
+        this.listWorkspaceByName = this.listWorkspace
+      }
     }
   }
 </script>
@@ -91,5 +114,21 @@
     line-height: 30px;
     border-radius: 0.25rem;
     padding-left: 10px;
+  }
+
+  .search-result {
+    width: 60%;
+    background-color: white;
+    margin-top: -20px;
+  }
+
+  ul.search-result li {
+    list-style-type: none;
+    margin-left: -40px;
+    padding-left: 10px;
+  }
+
+  .search-result li:hover {
+    background-color: #28a745;
   }
 </style>

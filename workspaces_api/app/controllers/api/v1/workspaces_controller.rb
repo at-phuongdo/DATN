@@ -25,9 +25,16 @@ class Api::V1::WorkspacesController < ApplicationController
   end
 
   def search
-    ascii_str = params[:key].mb_chars.normalize(:kd).gsub(/[^\x00-\x7F]/n, "").downcase.to_s.gsub(' ', '%')
-    search_key = "%#{ascii_str}%"
-    workspaces = Workspace.where("address LIKE '#{search_key}'")
+    type_search = params[:type]
+    if type_search == location
+      ascii_str = params[:key].mb_chars.normalize(:kd).gsub(/[^\x00-\x7F]/n, "").downcase.to_s.tr(' ', '%')
+      search_key = "%#{ascii_str}%"
+      workspaces = Workspace.where("address LIKE '#{search_key}'")
+    else
+      search_str = params[:key].downcase.tr(' ', '%')
+      search_key = "%#{search_str}%"
+      workspaces = Workspace.where("friendly_url LIKE '#{search_key}'").limit(5)
+    end
     render json: workspaces, status: :ok
   end
 

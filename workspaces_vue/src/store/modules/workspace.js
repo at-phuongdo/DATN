@@ -90,13 +90,17 @@ const actions = {
     })
   },
   searchByLocation: function(context, searchKey) {
-    Vue.http.post(baseUrl + '/search/'+ searchKey)
+    Vue.http.get(baseUrl + '/search/'+ searchKey + "?type=location")
     .then((res) => {
       context.commit('LIST_WORKSPACE', res.body)
     })
   },
-  searchByName: function() {
 
+  searchByName: function(context, searchKey) {
+    Vue.http.get(baseUrl + '/search/' + searchKey + "?type=name")
+    .then((res) => {
+      context.commit('LIST_WORKSPACE', res.body)
+    })
   }
 }
 

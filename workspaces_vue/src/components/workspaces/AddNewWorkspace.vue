@@ -52,7 +52,7 @@
                 <b-form-group id="group-contact-website" label="Website URL" label-for="workspace-website">
                   <b-form-input id="workspace-website" type="text" v-model="workspace.website" placeholder="Enter website">
                   </b-form-input>
-                </b-form-group>workspace
+                </b-form-group>
               </b-form>
             </div>
           </div>
