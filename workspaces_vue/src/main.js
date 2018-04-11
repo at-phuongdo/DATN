@@ -11,10 +11,19 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import swal from 'sweetalert'
 import GlobalConsts  from './constants/constant.js'
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css'
+import injector from 'vue-inject'
+import VuePaginate from 'vue-paginate'
 
+Vue.use(VuePaginate)
 Vue.use(Vuex)
 Vue.use(BootstrapVue)
 Vue.use(GlobalConsts)
+
+require('./services/injector-register.js');
+Vue.use(injector)
+Vue.use(ElementUI);
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

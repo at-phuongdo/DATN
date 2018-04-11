@@ -9,6 +9,14 @@ Rails.application.routes.draw do
 
     post 'login' => 'sessions#create'
     post 'login_facebook' => 'sessions#login_facebook'
+
+    resources :workspaces do
+      collection do
+        post 'search/:key' => 'workspaces#search'
+      end
+    end
+
     resources :reset_passwords, only: %i[create update]
+    resources :convenients, only: :index
   end
 end

@@ -2,17 +2,19 @@
   <div id="header">
    <div class="container">
     <b-navbar toggleable="md" type="dark">
-      <b-navbar-brand href="#">
-        <img src="http://www.myiconfinder.com/uploads/iconsets/256-256-8d0b15014c0fd4c1edaed92510d161db.png" alt="" height="80px">
-        <span>COWORKING SPACES</span>
-      </b-navbar-brand>
+    <router-link to="/">
+        <b-navbar-brand>
+          <img src="http://www.myiconfinder.com/uploads/iconsets/256-256-8d0b15014c0fd4c1edaed92510d161db.png" alt="" height="60px">
+          <span>COWORKING SPACES</span>
+        </b-navbar-brand>
+      </router-link>
       <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
       <b-collapse is-nav id="nav_collapse">
         <b-navbar-nav class="ml-auto" v-if="isLogin">
           <b-nav-item>
             <div  class="dropdown">
-            <img class="avatar" :src="currentUser.avatar" width="70px" v-if="currentUser.avatar">
-              <img class="avatar" src="https://research.kent.ac.uk/clho/wp-content/plugins/wp-person-cpt/images/featured-default.png" width="70px" v-else>
+              <img class="avatar" :src="currentUser.avatar" width="60px" v-if="currentUser.avatar">
+              <img class="avatar" src="https://research.kent.ac.uk/clho/wp-content/plugins/wp-person-cpt/images/featured-default.png" width="60px" v-else>
               <b-button class="profile-button">
                 Hi, {{currentUser.username}}
               </b-button>
@@ -21,7 +23,9 @@
                 <router-link v-on:click.native="logOut" to="/"> Log out</router-link>
               </div>
             </div>
-            <b-button class="add-button"><span class="fa fa-plus"></span>Add new space</b-button>
+            <router-link to="/new-workspace">
+              <b-button class="add-button"><span class="fa fa-plus"></span>Add new space</b-button>
+            </router-link>
           </b-nav-item>
         </b-navbar-nav>
         <b-navbar-nav class="ml-auto" v-else>
@@ -110,6 +114,12 @@
   #header {
     background-color: white;
     width: 100%;
+    z-index: 1;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12)!important;
+  }
+
+  .navbar {
+    padding: 0;
   }
 
   span {
