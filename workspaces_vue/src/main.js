@@ -14,8 +14,9 @@ import GlobalConsts  from './constants/constant.js'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css'
 import injector from 'vue-inject'
+import VuePaginate from 'vue-paginate'
 
-
+Vue.use(VuePaginate)
 Vue.use(Vuex)
 Vue.use(BootstrapVue)
 Vue.use(GlobalConsts)

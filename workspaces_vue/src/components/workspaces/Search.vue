@@ -7,12 +7,13 @@
    </b-row>
    <b-row>
      <b-col md="4" offset-md="4" class="search-content">
-       <input ref="autocomplete" placeholder="Please enter country or city you want to find..." class="search-location" type="text"/>
-       <b-form-select v-model="selected" :options="options"/>
-       <b-button variant="success search-button" @click="getAddressData">Search</b-button>
-     </b-col>
-   </b-row>
- </div>
+      <input placeholder="Please enter the name you want to find..." class="search-input" type="text" v-show="selected=='name'"/>
+      <input ref="autocomplete" placeholder="Please enter country or city you want to find..." class="search-location" type="text" v-show="selected=='location'"/>
+      <b-form-select v-model="selected" :options="options"/>
+      <b-button variant="success search-button" @click="getAddressData">Search</b-button>
+    </b-col>
+  </b-row>
+</div>
 </template>
 <script>
   import { mapActions } from 'vuex'
@@ -48,6 +49,7 @@
           let lat = place.geometry.location.lat()
           let lon = place.geometry.location.lng()
           let address = ac[0]["long_name"]
+          console.log(ac)
           this.searchByLocations(address)
           this.$router.push('/search/' + address)
         }

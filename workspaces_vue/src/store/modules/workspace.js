@@ -90,8 +90,7 @@ const actions = {
     })
   },
   searchByLocation: function(context, searchKey) {
-    Vue.http.post(baseUrl + '/search/Vietnam')
-    // Vue.http.post(baseUrl + '/search/'+ searchKey)
+    Vue.http.post(baseUrl + '/search/'+ searchKey)
     .then((res) => {
       context.commit('LIST_WORKSPACE', res.body)
     })
