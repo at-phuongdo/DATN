@@ -108,7 +108,6 @@
 
   .pagination li {
     color: red;
-    /*color: black;*/
     float: left;
     padding: 8px 16px;
     text-decoration: none;

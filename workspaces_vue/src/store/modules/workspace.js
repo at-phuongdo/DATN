@@ -44,7 +44,8 @@ const state = {
   listPhotos: [],
   avatar: '',
   accessToken: localStorage.getItem("token"),
-  listWorkspaces : []
+  listWorkspaces : [],
+  workspaceDetail: {}
 }
 
 const mutations = {
@@ -105,6 +106,13 @@ const actions = {
     } else {
       context.commit('LIST_WORKSPACE', [])
     }
+  },
+
+  getDetail: function(context, id) {
+    Vue.http.get(baseUrl + '/' + id)
+    .then((res) => {
+      state.workspaceDetail = res.body
+    })
   }
 }
 

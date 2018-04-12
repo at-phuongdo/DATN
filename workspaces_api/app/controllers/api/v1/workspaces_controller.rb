@@ -24,6 +24,11 @@ class Api::V1::WorkspacesController < ApplicationController
     end
   end
 
+  def show
+    workspace = Workspace.find_by(friendly_url: params[:id])
+    render json: workspace, full_info: true, status: :ok
+  end
+
   def search
     type_search = params[:type]
     if type_search == 'location'

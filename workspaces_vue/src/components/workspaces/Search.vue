@@ -21,10 +21,14 @@
    <b-row>
     <b-col md="4" offset-md="4">
       <ul class="search-result">
-        <li v-for="workspace in listWorkspaceByName" :key="workspace.id" @click="workspaceDetail(workspace.id)"><span class="fa fa-map-marker"></span>  {{workspace.name}}</li>
-      </ul>
-    </b-col>
-  </b-row>
+        <li v-for="workspace in listWorkspaceByName" :key="workspace.id">
+         <router-link :to="{ name: 'DetailPage', params: { city: workspace.city, name: workspace.friendly_url }}">
+           <span class="fa fa-map-marker"></span> {{workspace.name}} 
+         </router-link>
+       </li>
+     </ul>
+   </b-col>
+ </b-row>
 </div>
 </template>
 <script>
@@ -57,7 +61,8 @@
     methods: {
       ...mapActions({
         searchByLocations: 'workspace/searchByLocation',
-        searchByName: 'workspace/searchByName'
+        searchByName: 'workspace/searchByName',
+     
       }),
       getAddressData: function() {
         let place = this.autocomplete.getPlace()
@@ -74,7 +79,7 @@
         this.searchByName(search)
       },
       workspaceDetail: function(id) {
-        // redirect to details page
+        this.getDetail(id)
       }
     },
     watch: {
@@ -151,5 +156,13 @@
 
   .search-result li:hover {
     background-color: #28a745;
+  }
+
+  a {
+    color: #2c3e50;
+  }
+
+  a:hover {
+    text-decoration: none;
   }
 </style>
