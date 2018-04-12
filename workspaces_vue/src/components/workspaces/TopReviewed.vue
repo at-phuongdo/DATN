@@ -89,7 +89,7 @@
   }
 
   .workspace-contain {
-    height: 500px;
+    height: 350px;
     background-size: cover;
   }
 

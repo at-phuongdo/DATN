@@ -7,14 +7,18 @@
    </b-row>
    <b-row>
      <b-col md="4" offset-md="4" class="search-content">
-      <input ref="autocomplete" placeholder="Please enter country or city you want to find..." class="search-location" type="text" v-show="selected=='location'"/>
-      <input placeholder="Please enter the name you want to find..." class="search-input" type="text" v-model="nameSearch" v-show="selected=='name'" v-on:keyup="searchName($event.target.value)"/>
-      <b-form-select v-model="selected" :options="options"/>
-      <b-button variant="success search-button" @click="getAddressData" v-if="selected=='location'">Search</b-button>
-      <b-button variant="success search-button" @click="searchName" v-else>Search</b-button>
-    </b-col>
-  </b-row>
-  <b-row>
+       <div class="search-input">
+         <input ref="autocomplete" placeholder="Please enter country or city you want to find..." class="search-location" type="text" v-show="selected=='location'"/>
+         <input placeholder="Please enter the name you want to find..." class="search-name" type="text" v-model="nameSearch" v-show="selected=='name'" v-on:keyup="searchName($event.target.value)"/>
+       </div>
+       <div class="button-search">
+         <b-form-select v-model="selected" :options="options"/>
+         <b-button variant="success search-button" @click="getAddressData" v-if="selected=='location'">Search</b-button>
+         <b-button variant="success search-button" @click="searchName" v-else>Search</b-button>
+       </div>
+     </b-col>
+   </b-row>
+   <b-row>
     <b-col md="4" offset-md="4">
       <ul class="search-result">
         <li v-for="workspace in listWorkspaceByName" :key="workspace.id" @click="workspaceDetail(workspace.id)"><span class="fa fa-map-marker"></span>  {{workspace.name}}</li>
@@ -76,11 +80,14 @@
     watch: {
       listWorkspace: function() {
         this.listWorkspaceByName = this.listWorkspace
+      },
+      selected: function() {
+        this.listWorkspaceByName = []
       }
     }
   }
 </script>
-<style>
+<style scoped>
   .search {
     position: relative;
     top: -350px;
@@ -104,10 +111,14 @@
     margin-left: 10px;
   }
 
-  .search-location,
   .search-input {
+    width: 60%;
+  }
+
+  .search-location,
+  .search-name {
     display: block;
-    width: 80vw;
+    width: 100%;
     margin: 0 auto;
     font-weight: 400;
     outline: none;
@@ -116,10 +127,20 @@
     padding-left: 10px;
   }
 
+  .button-search {
+    display: inline;
+    width: 50%;
+  }
+
+  select {
+    width: 50%;
+  }
+
   .search-result {
     width: 60%;
     background-color: white;
     margin-top: -20px;
+    width: 55%;
   }
 
   ul.search-result li {

@@ -4,7 +4,7 @@
     <b-navbar toggleable="md" type="dark">
     <router-link to="/">
         <b-navbar-brand>
-          <img src="http://www.myiconfinder.com/uploads/iconsets/256-256-8d0b15014c0fd4c1edaed92510d161db.png" alt="" height="60px">
+          <img src="http://www.myiconfinder.com/uploads/iconsets/256-256-8d0b15014c0fd4c1edaed92510d161db.png" alt="" height="40px">
           <span>COWORKING SPACES</span>
         </b-navbar-brand>
       </router-link>
@@ -13,7 +13,7 @@
         <b-navbar-nav class="ml-auto" v-if="isLogin">
           <b-nav-item>
             <div  class="dropdown">
-              <img class="avatar" :src="currentUser.avatar" width="60px" v-if="currentUser.avatar">
+              <img class="avatar" :src="currentUser.avatar" width="40px" v-if="currentUser.avatar">
               <img class="avatar" src="https://research.kent.ac.uk/clho/wp-content/plugins/wp-person-cpt/images/featured-default.png" width="60px" v-else>
               <b-button class="profile-button">
                 Hi, {{currentUser.username}}

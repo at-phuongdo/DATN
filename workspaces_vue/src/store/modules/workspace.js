@@ -97,10 +97,14 @@ const actions = {
   },
 
   searchByName: function(context, searchKey) {
-    Vue.http.get(baseUrl + '/search/' + searchKey + "?type=name")
-    .then((res) => {
-      context.commit('LIST_WORKSPACE', res.body)
-    })
+    if (searchKey) {
+      Vue.http.get(baseUrl + '/search/' + searchKey + "?type=name")
+      .then((res) => {
+        context.commit('LIST_WORKSPACE', res.body)
+      })
+    } else {
+      context.commit('LIST_WORKSPACE', [])
+    }
   }
 }
 

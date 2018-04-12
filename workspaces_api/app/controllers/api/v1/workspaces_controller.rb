@@ -26,7 +26,7 @@ class Api::V1::WorkspacesController < ApplicationController
 
   def search
     type_search = params[:type]
-    if type_search == location
+    if type_search == 'location'
       ascii_str = params[:key].mb_chars.normalize(:kd).gsub(/[^\x00-\x7F]/n, "").downcase.to_s.tr(' ', '%')
       search_key = "%#{ascii_str}%"
       workspaces = Workspace.where("address LIKE '#{search_key}'")
