@@ -106,7 +106,7 @@
     margin: auto;
   }
 
-  .pagination li {
+  ul.pagination li {
     color: red;
     float: left;
     padding: 8px 16px;

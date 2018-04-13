@@ -6,6 +6,7 @@ class Workspace < ApplicationRecord
   has_many :workspace_types
   has_many :comments
   has_many :favorites
+  has_many :convenient, through: :workspace_convenients
 
   def update_info
     address = street + ',' + town + ',' + district + ',' + city + ',' + country

@@ -4,6 +4,7 @@ class WorkspaceSerializer < ActiveModel::Serializer
   has_many :workspace_convenients, if: :is_detail?
   has_many :workspace_images, if: :is_detail?
   has_many :workspace_types, if: :is_detail?
+  has_many :convenient, throught: :workspace_convenients, if: :is_detail?
 
   def attributes(*args)
     object.attributes.symbolize_keys

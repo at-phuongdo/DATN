@@ -1,4 +1,4 @@
 class ConvenientSerializer < ActiveModel::Serializer
-  attributes :id
+  attributes :id, :name
   has_many :workspace_convenients
 end

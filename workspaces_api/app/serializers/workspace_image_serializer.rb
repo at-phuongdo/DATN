@@ -1,4 +1,4 @@
 class WorkspaceImageSerializer < ActiveModel::Serializer
-  attributes :id
+  attributes :id, :images
   belongs_to :workspace
 end
