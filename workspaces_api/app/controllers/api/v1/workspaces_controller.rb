@@ -11,13 +11,14 @@ class Api::V1::WorkspacesController < ApplicationController
   end
 
   def create
+    binding.pry
     workspace = Workspace.new(workspace_params)
     workspace.user_id = @current_user.id
     if workspace.save
       workspace.update_info
       WorkspaceImage.create_workspace_photos(params[:photo], workspace.id)
       WorkspaceConvenient.create_workspace_convenient(params[:amenities], workspace.id)
-      WorkspaceType.create_workspace_type(params[:nameRoom], params[:numberPeople], workspace.id)
+      WorkspaceType.create_workspace_type(params[:nameRoom], params[:numberPeople], params[:price], workspace.id)
       render json: { workspaces: workspace, status: :ok }
     else
       render json: { status: :no_content }
@@ -46,7 +47,7 @@ class Api::V1::WorkspacesController < ApplicationController
   private
 
   def workspace_params
-    params.require(:workspace).permit(:name, :avatar, :lat, :lng, :country, :city, :district, :town, :street, :description, :email, :website, :phone, :facebook, :price_hour, :price_day, :price_week, :price_month, :price_year, :unit, :open_mon, :open_tue, :open_wed, :open_thurs, :open_fri, :open_sat, :open_sun)
+    params.require(:workspace).permit(:name, :avatar, :lat, :lng, :country, :city, :district, :town, :street, :description, :email, :website, :phone, :facebook, :open_mon, :open_tue, :open_wed, :open_thurs, :open_fri, :open_sat, :open_sun)
   end
 
   def current_user

@@ -105,6 +105,13 @@
                   {{ option }}
                 </option>
               </select>
+              <b-row v-if="privateNumber>0">
+                <b-col>Name</b-col>
+                <b-col>People</b-col>
+                <b-col>Price_week</b-col>
+                <b-col>Price_month</b-col>
+                <b-col>Price_year</b-col>
+              </b-row>
               <div v-for="room in privateNumber" :key="room">
                 <b-row>
                   <b-col>
@@ -113,6 +120,18 @@
                   </b-col>
                   <b-col>
                     <b-form-input type="number" v-model="numberOfPeoplePerRoom.privateRoom[room-1]" placeholder="Number of people">
+                    </b-form-input>
+                  </b-col>
+                  <b-col>
+                    <b-form-input type="number" v-model="priceWeek.privateRoom[room-1]" placeholder="Price week">
+                    </b-form-input>
+                  </b-col>
+                  <b-col>
+                    <b-form-input type="number" v-model="priceMonth.privateRoom[room-1]" placeholder="Price month">
+                    </b-form-input>
+                  </b-col>
+                  <b-col>
+                    <b-form-input type="number" v-model="priceYear.privateRoom[room-1]" placeholder="Price year">
                     </b-form-input>
                   </b-col>
                 </b-row>
@@ -128,6 +147,12 @@
                   {{ option }}
                 </option>
               </select>
+              <b-row v-if="meetingNumber>0">
+                <b-col>Name</b-col>
+                <b-col>People</b-col>
+                <b-col>Price_hour</b-col>
+                <b-col>Price_day</b-col>
+              </b-row>
               <div v-for="room in meetingNumber" :key="room">
                 <b-row>
                   <b-col>
@@ -138,27 +163,12 @@
                     <b-form-input type="number" v-model="numberOfPeoplePerRoom.meetingRoom[room-1]" placeholder="Number of people">
                     </b-form-input>
                   </b-col>
-                </b-row>
-              </div>
-            </div>
-          </div>
-          <div class="common-room">
-            <h4>Common area</h4>
-            <div class="form-content">
-              <select v-model="commonNumber">
-                <option value="">---</option>
-                <option v-for="option in 10" v-bind:value="option" :key="option">
-                  {{ option }}
-                </option>
-              </select>
-              <div v-for="room in commonNumber" :key="room">
-                <b-row>
                   <b-col>
-                    <b-form-input type="text" v-model="nameRoom.commonRoom[room-1]" placeholder="Enter name">
+                    <b-form-input type="number" v-model="priceHour.meetingRoom[room-1]" placeholder="Price hour">
                     </b-form-input>
                   </b-col>
                   <b-col>
-                    <b-form-input type="number" v-model="numberOfPeoplePerRoom.commonRoom[room-1]" placeholder="Number of people">
+                    <b-form-input type="number" v-model="priceDay.meetingRoom[room-1]" placeholder="Price_day">
                     </b-form-input>
                   </b-col>
                 </b-row>
@@ -172,6 +182,12 @@
                 <option value="">---</option>
                 <option v-for="option in 10" v-bind:value="option" :key="option">{{ option }}</option>
               </select>
+              <b-row v-if="openNumber>0">
+                <b-col>Name</b-col>
+                <b-col>People</b-col>
+                <b-col>Price_hour</b-col>
+                <b-col>Price_day</b-col>
+              </b-row>
               <div v-for="room in openNumber" :key="room">
                 <b-row>
                   <b-col>
@@ -180,6 +196,14 @@
                   </b-col>
                   <b-col>
                     <b-form-input type="number" v-model="numberOfPeoplePerRoom.openRoom[room-1]" placeholder="Number of people">
+                    </b-form-input>
+                  </b-col>
+                  <b-col>
+                    <b-form-input type="number" v-model="priceHour.openRoom[room-1]" placeholder="Price hour">
+                    </b-form-input>
+                  </b-col>
+                  <b-col>
+                    <b-form-input type="number" v-model="priceDay.openRoom[room-1]" placeholder="Price_day">
                     </b-form-input>
                   </b-col>
                 </b-row>
@@ -208,22 +232,8 @@
           </div>
         </div>
         <!-- /Opening hours -->
-        <!-- Prices -->
-        <div class="price" v-if="tab==7">
-          <div class="form-content">
-            <h3>Price</h3>
-            <b-container fluid>
-              <b-row class="my-1" v-for="type in priceTypes" :key="type.name">
-                <b-col sm="3"><label :for="`type-${type.name}`">1 {{ type.name }}</label></b-col>
-                <b-col sm="6"><b-form-input :id="`type-${type.name}`" type="number" v-model="type.price" :value="type.price"></b-form-input></b-col>
-                <b-col sm="3"><b-form-select v-model="unit_price" :options="unit" class="mb-3"></b-form-select></b-col>
-              </b-row>
-            </b-container>
-          </div>
-        </div>
-        <!-- /prices -->
         <!-- Photos -->
-        <workspace-photos v-if="tab==8" v-on:getPhotos="getPhotos"></workspace-photos>
+        <workspace-photos v-if="tab==7" v-on:getPhotos="getPhotos"></workspace-photos>
         <!-- /Photos -->
       </b-col>
     </b-row>
@@ -231,8 +241,8 @@
      <b-col cols="2" offset="10">
        <div class="btn-control">
         <b-button type="button" variant="primary previous-btn" @click="decreaseTab" v-if="tab>1">Previous</b-button>
-        <b-button type="button" variant="primary next-btn" @click="clickNextBtn" v-if="tab<8">Next</b-button>
-        <b-button type="button" variant="primary next-btn" @click="submit" v-if="tab==8">OK</b-button>
+        <b-button type="button" variant="primary next-btn" @click="clickNextBtn" v-if="tab<7">Next</b-button>
+        <b-button type="button" variant="primary next-btn" @click="submit" v-if="tab==7">OK</b-button>
       </div>
     </b-col>
   </b-row>
@@ -260,7 +270,7 @@
     },
     data() {
       return {
-        tab: 1,
+        tab: 5,
         config: {
           toolbar: [
           [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript' ]
@@ -273,19 +283,33 @@
         amenities_selected: [],
         privateNumber: '',
         meetingNumber: '',
-        commonNumber: '',
         openNumber: '',
         nameRoom: {
           privateRoom: [],
           meetingRoom: [],
-          commonRoom: [],
           openRoom: []
         },
         numberOfPeoplePerRoom: {
           privateRoom: [],
           meetingRoom: [],
-          commonRoom: [],
           openRoom: []
+        },
+        priceHour: {
+          meetingRoom: [],
+          openRoom: []
+        },
+        priceDay: {
+          meetingRoom: [],
+          openRoom: []
+        },
+        priceWeek: {
+          privateRoom: [],
+        },
+        priceMonth: {
+          privateRoom: [],
+        },
+        priceYear: {
+          privateRoom: [],
         },
         unit_price: 'vnd',
         workspace: {
@@ -409,7 +433,14 @@
           photo: this.workspacePhotos,
           amenities: this.amenities_selected,
           nameRoom: this.nameRoom,
-          numberPeople: this.numberOfPeoplePerRoom
+          numberPeople: this.numberOfPeoplePerRoom,
+          price: {
+            priceHour: this.priceHour,
+            priceDay: this.priceDay,
+            priceWeek: this.priceWeek,
+            priceMonth: this.priceMonth,
+            priceYear: this.priceYear,
+          }
         })
       }
     }
@@ -453,7 +484,7 @@
   }
 
   select {
-    width: 50%;
+    width: 10%;
   }
   .loading {
     width: 100%;

@@ -5,3 +5,11 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+20.times do |i|
+  WorkspaceType.create(workspace_id: i, type_id: rand(2..3), name: 'Office name', number_of_people: rand(10..20), price_hour: '10000', price_day: '100000')
+end
+
+20.times do |i|
+  WorkspaceType.create(workspace_id: i+20, type_id: 1, name: 'Office name', number_of_people: rand(10..20), price_week: '500000', price_month: '1500000', price_year: '10000000')
+end

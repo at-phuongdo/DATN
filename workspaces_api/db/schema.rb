@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180404080256) do
+ActiveRecord::Schema.define(version: 20180415143542) do
 
   create_table "comments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "title"
@@ -107,6 +107,12 @@ ActiveRecord::Schema.define(version: 20180404080256) do
     t.integer "number_of_people"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "price_hour"
+    t.string "price_day"
+    t.string "price_week"
+    t.string "price_month"
+    t.string "price_year"
+    t.string "unit"
     t.index ["type_id"], name: "index_workspace_types_on_type_id"
     t.index ["workspace_id"], name: "index_workspace_types_on_workspace_id"
   end
@@ -115,8 +121,8 @@ ActiveRecord::Schema.define(version: 20180404080256) do
     t.string "name"
     t.string "avatar"
     t.string "address"
-    t.float "lat", limit: 24
-    t.float "lng", limit: 24
+    t.decimal "lat", precision: 15, scale: 12
+    t.decimal "lng", precision: 15, scale: 12
     t.string "country"
     t.string "city"
     t.string "district"
@@ -125,18 +131,13 @@ ActiveRecord::Schema.define(version: 20180404080256) do
     t.text "description"
     t.string "email"
     t.string "website"
-    t.string "phone"
-    t.string "facebook"
+    t.string "phone", limit: 45
+    t.string "facebook", limit: 45
     t.integer "rating"
+    t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "friendly_url"
-    t.string "price_hour"
-    t.string "price_day"
-    t.string "price_week"
-    t.string "price_month"
-    t.string "price_year"
-    t.string "unit"
     t.string "open_mon"
     t.string "open_tue"
     t.string "open_wed"
@@ -144,8 +145,6 @@ ActiveRecord::Schema.define(version: 20180404080256) do
     t.string "open_fri"
     t.string "open_sat"
     t.string "open_sun"
-    t.bigint "user_id"
-    t.index ["user_id"], name: "index_workspaces_on_user_id"
   end
 
   add_foreign_key "comments", "users"
@@ -159,5 +158,4 @@ ActiveRecord::Schema.define(version: 20180404080256) do
   add_foreign_key "workspace_images", "workspaces"
   add_foreign_key "workspace_types", "types"
   add_foreign_key "workspace_types", "workspaces"
-  add_foreign_key "workspaces", "users"
 end

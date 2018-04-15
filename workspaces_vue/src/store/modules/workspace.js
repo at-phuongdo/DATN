@@ -17,15 +17,7 @@ const state = {
   {id: 4, value: 'Amenities'},
   {id: 5, value: 'Room'},
   {id: 6, value: 'Opening hours'},
-  {id: 7, value: 'Price'},
-  {id: 8, value: 'Photos'}
-  ],
-  priceTypes: [
-  { name : 'hour', price: 0 },
-  { name : 'day', price: 0 },
-  { name : 'week', price: 0 },
-  { name : 'month', price: 0 },
-  { name : 'year', price: 0 }
+  {id: 7, value: 'Photos'}
   ],
   unit: [
   {text: 'VND', value: 'vnd'},

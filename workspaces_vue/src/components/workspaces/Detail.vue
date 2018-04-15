@@ -19,28 +19,38 @@
       </div>
       <hr>
       <div class="room-type">
-        <h4><span class="fa fa-building"></span><strong> Office type</strong></h4>
+        <h4><span class="fa fa-building"></span><strong> Office type & Price</strong></h4>
         <table class="room-table">
           <tr>
             <th>Office type</th>
             <th>Name</th>
             <th>Number Of People</th>
+            <th>Price Hour</th>
+            <th>Price Day</th>
+            <th>Price Week</th>
+            <th>Price Month</th>
+            <th>Price Year</th>
+            <th>Availability</th>
           </tr>
           <tr v-for="row in workspaceDetail.workspace_types" :key="row.id">
-            <td>{{row.type_id}}</td>
+            <td v-if="row.type_id==1">Private Room</td>
+            <td v-if="row.type_id==2">Meeting Room</td>
+            <td v-if="row.type_id==3">Open Plan Room</td>
             <td>{{row.name}}</td>
             <td>{{row.number_of_people}}</td>
+            <td>{{row.price_hour}}</td>
+            <td>{{row.price_day}}</td>
+            <td>{{row.price_week}}</td>
+            <td>{{row.price_month}}</td>
+            <td>{{row.price_year}}</td>
+            <td><b-button variant="outline-success" >Enquire</b-button></td>
           </tr>
         </table>
       </div>
       <hr>
-      <div class="price">
-        <h4><span class="fa fa-usd"></span><strong> Price</strong></h4>
-      </div>
-      <hr>
       <div class="photos">
         <h4><span class="fa fa-camera"></span><strong> Photos</strong></h4>
-        <img v-for="workspace in workspaceDetail.workspace_images" :src="workspace.images" width="50%" :key="workspace.id">
+        <img class="workspace-photo" v-for="workspace in workspaceDetail.workspace_images" :src="workspace.images" :key="workspace.id">
       </div>
       <hr>
       <div class="location">
@@ -115,6 +125,7 @@
   .avatar{
     height: 500px;
     background-size: cover;
+    background-position: center;
   }
 
   .room-table {
@@ -126,6 +137,10 @@
     border: 1px solid #e5e5e5;
   }
 
+  .workspace-photo {
+    width: 33.33%;
+    padding: 10px;
+  }
   .google-map {
     width: 100%;
     height: 500px;
