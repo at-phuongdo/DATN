@@ -1,4 +1,4 @@
-<template>
+d<template>
   <div class="detail">
     <div class="avatar" :style="{ 'background-image': 'url(' + workspace.avatar + ')' }">
     </div>
@@ -59,6 +59,7 @@
       </div>
       <div class="review">
         <h4><span class="fa fa-comment"></span><strong> Review</strong></h4>
+        <workspace-comment></workspace-comment>
       </div>
     </div>
   </div>
@@ -66,8 +67,10 @@
 <script>
   import { mapActions } from 'vuex'
   import { mapState } from 'vuex'
+  import Comments from './Comments.vue'
   export default {
     components: {
+      'workspace-comment': Comments
     },
     data() {
       return {

@@ -8,11 +8,7 @@
             </div>
             <div class="content">
               <h5 class="workspace-name"><strong>{{workspace.name}}</strong></h5>
-              <span v-bind:class="[workspace.rating > 0 ? checkedStar : uncheckStar]"></span>
-              <span v-bind:class="[workspace.rating > 1 ? checkedStar : uncheckStar]" ></span>
-              <span v-bind:class="[workspace.rating > 2 ? checkedStar : uncheckStar]" ></span>
-              <span v-bind:class="[workspace.rating > 3 ? checkedStar : uncheckStar]" ></span>
-              <span v-bind:class="[workspace.rating > 4 ? checkedStar : uncheckStar]" ></span>
+              <span v-for="currentRating in rating" :key="currentRating" v-bind:class="[workspace.rating > currentRating ? checkedStar : uncheckStar]"></span>
               <span>( {{workspace.comments.length}} Reviews)</span>
               <h3 class="workspace-price">VND {{workspace.price_day}} /DAY</h3>
             </div>
