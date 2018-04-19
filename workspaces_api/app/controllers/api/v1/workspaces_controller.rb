@@ -11,7 +11,6 @@ class Api::V1::WorkspacesController < ApplicationController
   end
 
   def create
-    binding.pry
     workspace = Workspace.new(workspace_params)
     workspace.user_id = @current_user.id
     if workspace.save

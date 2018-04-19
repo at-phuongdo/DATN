@@ -4,14 +4,16 @@
       <ul v-if="list.length > 0">
         <paginate name="workspacePerPage" :list="list" :per="6">
           <li class="workspace-info clearfix" v-for="workspace in paginated('workspacePerPage')" :key="workspace.id">
-            <div class="search-wrapper" :style="{ 'background-image': 'url(' + workspace.avatar + ')' }">
-            </div>
-            <div class="content">
-              <h5 class="workspace-name"><strong>{{workspace.name}}</strong></h5>
-              <span v-for="currentRating in rating" :key="currentRating" v-bind:class="[workspace.rating > currentRating ? checkedStar : uncheckStar]"></span>
-              <span>( {{workspace.comments.length}} Reviews)</span>
-              <h3 class="workspace-price">VND {{workspace.price_day}} /DAY</h3>
-            </div>
+            <router-link :to="{ name: 'DetailPage', params: { city: workspace.city, name: workspace.friendly_url }}">
+              <div class="search-wrapper" :style="{ 'background-image': 'url(' + workspace.avatar + ')' }">
+              </div>
+              <div class="content">
+                <h5 class="workspace-name"><strong>{{workspace.name}}</strong></h5>
+                <span v-for="currentRating in rating" :key="currentRating" v-bind:class="[workspace.rating > currentRating ? checkedStar : uncheckStar]"></span>
+                <span>( {{workspace.comments.length}} Reviews)</span>
+                <h3 class="workspace-price">VND {{workspace.price_day}} /DAY</h3>
+              </div>
+            </router-link>
           </li>
         </paginate>
         <div class="paginate">
@@ -34,6 +36,7 @@
         uncheckStar: 'fa fa-star',
         checkedStar: 'fa fa-star checked',
         paginate: ['workspacePerPage'],
+        rating: 5
       }
     },
     computed: {
@@ -65,6 +68,14 @@
 
   .search-result {
     padding: 100px 0;
+  }
+
+  a {
+    color: #000000;
+  }
+
+  a:hover {
+    text-decoration: none;
   }
 
   .workspace-info {
@@ -100,23 +111,5 @@
     clear: both;
     display: table;
     margin: auto;
-  }
-
-  ul.pagination li {
-    color: red;
-    float: left;
-    padding: 8px 16px;
-    text-decoration: none;
-    transition: background-color .3s;
-    border: 1px solid #ddd;
-  }
-
-  .pagination li.active {
-    background-color: #4CAF50;
-    color: white;
-    border: 1px solid #4CAF50;
-  }
-  .pagination a:hover:not(.active) {
-    background-color: #ddd;
   }
 </style>

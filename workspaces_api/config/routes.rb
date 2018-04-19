@@ -18,6 +18,7 @@ Rails.application.routes.draw do
 
     resources :reset_passwords, only: %i[create update]
     resources :convenients, only: :index
-    resources :comments, only: :index
+    resources :comments, only: %i[index]
+    post 'comments/:name' => 'comments#create'
   end
 end

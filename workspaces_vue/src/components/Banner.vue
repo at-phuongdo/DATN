@@ -63,4 +63,9 @@
   .btn {
     position: static !important;
   }
+
+  .decorate-span {
+    font-family: 'Pacifico', cursive;
+    color: #28a745;
+  }
 </style>

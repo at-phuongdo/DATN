@@ -104,10 +104,7 @@
     text-shadow: 6px 6px 4px #000000;
     font-weight: bold;
   }
-  .decorate-span {
-    font-family: 'Pacifico', cursive;
-    color: #28a745;
-  }
+
   .search-content {
     display: inherit;
   }

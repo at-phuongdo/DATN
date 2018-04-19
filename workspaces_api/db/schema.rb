@@ -121,8 +121,8 @@ ActiveRecord::Schema.define(version: 20180415143542) do
     t.string "name"
     t.string "avatar"
     t.string "address"
-    t.decimal "lat", precision: 15, scale: 12
-    t.decimal "lng", precision: 15, scale: 12
+    t.float "lat", limit: 24
+    t.float "lng", limit: 24
     t.string "country"
     t.string "city"
     t.string "district"
@@ -131,8 +131,8 @@ ActiveRecord::Schema.define(version: 20180415143542) do
     t.text "description"
     t.string "email"
     t.string "website"
-    t.string "phone", limit: 45
-    t.string "facebook", limit: 45
+    t.string "phone"
+    t.string "facebook"
     t.integer "rating"
     t.bigint "user_id"
     t.datetime "created_at", null: false
@@ -145,6 +145,7 @@ ActiveRecord::Schema.define(version: 20180415143542) do
     t.string "open_fri"
     t.string "open_sat"
     t.string "open_sun"
+    t.index ["user_id"], name: "index_workspaces_on_user_id"
   end
 
   add_foreign_key "comments", "users"
@@ -158,4 +159,5 @@ ActiveRecord::Schema.define(version: 20180415143542) do
   add_foreign_key "workspace_images", "workspaces"
   add_foreign_key "workspace_types", "types"
   add_foreign_key "workspace_types", "workspaces"
+  add_foreign_key "workspaces", "users"
 end

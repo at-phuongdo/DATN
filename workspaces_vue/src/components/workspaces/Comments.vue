@@ -6,7 +6,7 @@
           <p>Display rating</p>
         </b-col>
         <b-col>
-          <b-button @click="openReviewModal">Your review</b-button>
+        <b-button class="btn-comment" variant="success" @click="openReviewModal">Your review</b-button>
         </b-col>
       </b-row>
     </div>
@@ -31,28 +31,35 @@
       <paginate-links for="commentPerPage" :limit="2" :show-step-links="true" class="pagination" align="center"></paginate-links>
     </div>
     <b-modal id="reviewModal" ref= "reviewModal" hide-footer hide-header>
-      <b-form>
-        <b-row>
-          <b-col md="2">
-            <span>Rating</span>
-          </b-col>
-          <b-col>
-            
-          </b-col>
-        </b-row>
-        <b-row>
-          <b-col md="2">
-            <span>Title</span>
-          </b-col>
-          <b-col><b-form-input></b-form-input></b-col>
-        </b-row>
-        <b-row >
-          <b-col md="2">
-            <span>Content</span>
-          </b-col>
-          <b-col><b-textarea></b-textarea></b-col>
-        </b-row>
-      </b-form>
+      <div class="text-center">
+        <b-form>
+          <h1><span class="decorate-span">What do you think about us?</span></h1>
+          <b-row>
+            <b-col md="2">
+              <span>Rating</span>
+            </b-col>
+            <b-col>
+              <span v-for="currentRating in ratings" :key="currentRating" :class="[valueRating >= currentRating ? checkedStar : uncheckStar ]" v-on:click="set(currentRating)"></span>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col md="2">
+              <span>Title</span>
+            </b-col>
+            <b-col><b-form-input v-model="title" required></b-form-input></b-col>
+          </b-row>
+          <b-row >
+            <b-col md="2">
+              <span>Content</span>
+            </b-col>
+            <b-col><div class="content" contenteditable="true" @input="targetHTML"></div></b-col>
+          </b-row>
+          <div class="button-control">
+            <b-button @click="saveComment" variant="primary" >Save</b-button>
+            <b-btn variant="danger" @click="hideModal" >Close</b-btn>
+          </div>
+        </b-form>
+      </div>
     </b-modal>
   </div>
 </template>
@@ -63,11 +70,15 @@
       return {
        currentPage: 1,
        perPage: 5,
-       rating: 5,
-       ratingValue: 0,
+       ratings: 5,
+       averageRating: null,
+       valueRating: 0,
        uncheckStar: 'fa fa-star',
        checkedStar: 'fa fa-star checked',
-       paginate: ['commentPerPage']
+       paginate: ['commentPerPage'],
+       title: '',
+       content: ''
+
      }
    },
    created() {
@@ -80,13 +91,32 @@
   },
   methods: {
     ...mapActions({
-      'getAllComments': 'comment/getAllComments'
+      'getAllComments': 'comment/getAllComments',
+      'addNewComment': 'comment/createComment'
     }),
     openReviewModal: function() {
       this.$root.$emit('bv::show::modal', 'reviewModal')
     },
-    setRating: function() {
-      a
+    set: function(value) {
+      return this.valueRating = value;
+    },
+    saveComment: function() {
+      var comment_params = {
+        workspace:  { name: this.$route.params.name},
+        comment: {
+          rating: this.valueRating,
+          title: this.title,
+          content: this.content
+        }
+      }
+      this.addNewComment(comment_params)
+      this.hideModal()
+    },
+    hideModal: function() {
+      this.$refs.reviewModal.hide()
+    },
+    targetHTML: function(e) {
+      this.content = e.target.innerHTML
     }
   }
 }
@@ -105,7 +135,31 @@
     border: 1px solid #28a745;
   }
 
+  .content {
+    border: 1px solid #ced4da;
+    text-align: left;
+  }
+
   .checked {
     color: orange;
+  }
+
+  .fa {
+    padding-top: 0;
+  }
+
+  .btn-comment {
+    float: right;
+  }
+
+  .button-control {
+    float: right;
+    padding-right: 15px;
+  }
+
+  .paginate {
+    clear: both;
+    display: table;
+    margin: auto;
   }
 </style>

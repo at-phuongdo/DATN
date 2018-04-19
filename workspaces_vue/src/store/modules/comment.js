@@ -8,18 +8,31 @@ Vue.use(VueResource);
 const baseUrl = "http://localhost:3000/api/v1/comments";
 
 const state = {
-  listComments: []
+  listComments: [],
+  accessToken: localStorage.getItem("token"),
 }
 
 const mutations = {
-
+  LIST_COMMENT(state,list) {
+    state.listComments = list
+  }
 }
 
 const actions = {
   getAllComments: function(context, workspaceName) {
     Vue.http.get(baseUrl + '?name=' + workspaceName)
     .then((res) => {
-      state.listComments = res.body
+      context.commit('LIST_COMMENT',res.body)
+    })
+  },
+  createComment: function(context, params) {
+    Vue.http.post(baseUrl + '/'+ params.workspace.name, params.comment, {
+      headers: {
+        'AccessToken' : state.accessToken
+      }
+    })
+    .then((res) => {
+      context.commit('LIST_COMMENT', res.body)
     })
   }
 }
