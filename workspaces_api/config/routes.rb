@@ -20,5 +20,6 @@ Rails.application.routes.draw do
     resources :convenients, only: :index
     resources :comments, only: %i[index]
     post 'comments/:name' => 'comments#create'
+    put 'comments/:name' => 'comments#update'
   end
 end

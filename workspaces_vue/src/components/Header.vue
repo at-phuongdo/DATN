@@ -2,7 +2,7 @@
   <div id="header">
    <div class="container">
     <b-navbar toggleable="md" type="dark">
-    <router-link to="/">
+      <router-link to="/">
         <b-navbar-brand>
           <img src="http://www.myiconfinder.com/uploads/iconsets/256-256-8d0b15014c0fd4c1edaed92510d161db.png" alt="" height="40px">
           <span>COWORKING SPACES</span>
@@ -10,7 +10,7 @@
       </router-link>
       <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
       <b-collapse is-nav id="nav_collapse">
-        <b-navbar-nav class="ml-auto" v-if="isLogin">
+        <b-navbar-nav class="ml-auto" v-if="currentUser">
           <b-nav-item>
             <div  class="dropdown">
               <img class="avatar" :src="currentUser.avatar" width="40px" v-if="currentUser.avatar">
@@ -52,6 +52,7 @@
   import ConfirmModal from './users/ConfirmModal.vue'
   import MailToReset from './users/MailToReset.vue'
   import ResetPassword from './users/ResetPassword.vue'
+  import { mapState, mapActions } from 'vuex'
 
   var $ = window.jQuery = require('jquery')
 
@@ -66,22 +67,24 @@
     },
     data() {
       return {
-        user: ''
+        user: '',
+        currentUser: null,
+        isLogin: false
       }
     },
     created() {
-      this.$store.dispatch("getCurrentUser", localStorage.getItem("token"))
+      this.getCurrentUser(localStorage.getItem("token"))
     },
     computed: {
-      isLogin() {
-        return this.$store.state.user.isLogin
-      },
-      currentUser() {
-        return this.$store.state.user.currentUser
-      }
-
+      ...mapState({
+        userLogin:state => state.user.currentUser,
+        loginStatus:state => state.user.isLogin
+      })
     },
     methods: {
+      ...mapActions({
+        'getCurrentUser': 'user/getCurrentUser'
+      }),
       signUp: function() {
         this.$root.$emit('bv::show::modal', 'signUpModal')
       },
@@ -95,6 +98,14 @@
       },
       getUser: function(user) {
         this.user = user
+      }
+    },
+    watch: {
+      userLogin() {
+        this.currentUser = this.userLogin
+      },
+      loginStatus() {
+        this.isLogin = this.loginStatus
       }
     }
   }
