@@ -11,7 +11,8 @@ const state = {
   currentUser: {},
   status: '',
   isLogin: false,
-  newUser: {}
+  newUser: {},
+  message: ''
 };
 
 const mutations = {
@@ -101,6 +102,7 @@ const actions = {
 }
 
 export default {
+  namespaced: true,
   state,
   mutations,
   actions

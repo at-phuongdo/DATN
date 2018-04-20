@@ -18,6 +18,7 @@
   </div>
 </template>
 <script>
+import { mapState, mapActions } from 'vuex'
   export default {
     props: ['user'],
     data() {
@@ -25,7 +26,15 @@
         code: ''
       }
     },
+    computed: {
+      ...mapState({
+        userStatus:state => state.user.status
+      })
+    },
     methods: {
+      ...mapActions({
+        'confirmEmail': 'user/confirmEmail'
+      }),
       hideModal: function() {
         this.$refs.confirmModal.hide()
       },
@@ -56,8 +65,8 @@
         });
       },
       confirm: async function() {
-        await this.$store.dispatch('confirmEmail',this.code)
-        var status = this.$store.state.user.status
+        await this.confirmEmail(this.code)
+        var status = this.userStatus
         if ( status === this.$getConst('STATUS_OK')){
           localStorage.setItem('token', this.user.confirm_token)
           this.hideModal()

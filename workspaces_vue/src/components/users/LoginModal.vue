@@ -39,6 +39,7 @@
  </div>
 </template>
 <script>
+  import { mapState, mapActions } from 'vuex'
   export default {
     data() {
       return {
@@ -51,7 +52,17 @@
     created() {
       window.checkLoginState = this.checkLoginState
     },
+    computed: {
+      ...mapState({
+        currentuser:state => state.user.currentUser,
+        userStatus:state => state.user.status
+      })
+    },
     methods: {
+      ...mapActions({
+        'loginFacebook': 'user/loginFacebook',
+        'logIn': 'user/logIn'
+      }),
       hideModal: function() {
         this.$refs.logInModal.hide()
       },
@@ -95,10 +106,10 @@
           email: this.email,
           password: this.password
         }
-        this.$store.dispatch('logIn', { "session": userLogin })
+        this.logIn({ "session": userLogin })
         setTimeout(() => {
-          var user = this.$store.state.user.currentUser
-          var status = this.$store.state.user.status
+          var user = this.currentuser
+          var status = this.status
           if(status === this.$getConst('STATUS_OK')){
             localStorage.setItem("token", user.confirm_token);
             this.$refs.logInModal.hide()
@@ -134,8 +145,8 @@
                 email: userInformation.email,
                 avatar: userInformation.picture.data.url
               }
-              await self.$store.dispatch('loginFacebook', {'session': session })
-              var user = self.$store.state.user.currentUser
+              await self.loginFacebook({'session': session })
+              var user = self.currentuser
               localStorage.setItem("token", user.confirm_token)
             });
         }, {scope: 'email'});

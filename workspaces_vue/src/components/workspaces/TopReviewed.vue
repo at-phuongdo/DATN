@@ -12,17 +12,16 @@
 
           <b-row>
             <b-col v-for="item in top_reviewed" :key="item.id" class="workspace">
-              <div class="workspace-contain" :style="{ backgroundImage: 'url(' + item.avatar + ')' }">
-                <div class="card-text">
-                  <h3>{{item.name}}</h3>
-                  <p>{{item.city}}</p>
-                  <span v-bind:class="[item.rating > 0 ? checkedStar : uncheckStar]"></span>
-                  <span v-bind:class="[item.rating > 1 ? checkedStar : uncheckStar]" ></span>
-                  <span v-bind:class="[item.rating > 2 ? checkedStar : uncheckStar]" ></span>
-                  <span v-bind:class="[item.rating > 3 ? checkedStar : uncheckStar]" ></span>
-                  <span v-bind:class="[item.rating > 4 ? checkedStar : uncheckStar]" ></span>
+              <router-link :to="{ name: 'DetailPage', params: { city: item.city, name: item.friendly_url }}">
+                <div class="workspace-contain" :style="{ backgroundImage: 'url(' + item.avatar + ')' }">
+                  <div class="card-text">
+                    <h3>{{item.name}}</h3>
+                    <p>{{item.city}}</p>
+                    <span v-for="currentRating in rating" :key="currentRating" v-bind:class="[item.rating > currentRating ? checkedStar : uncheckStar]"></span>
+                    <p>( {{item.comments.length}} Reviews)</p>
+                  </div>
                 </div>
-              </div>
+              </router-link>
             </b-col>
           </b-row>
         </div>
@@ -38,7 +37,7 @@
     data() {
       return {
         top_reviewed: [],
-        rating: '',
+        rating: 5,
         uncheckStar: 'fa fa-star',
         checkedStar: 'fa fa-star checked'
       }
@@ -88,17 +87,13 @@
   }
 
   .workspace-contain {
-    height: 500px;
+    height: 350px;
     background-size: cover;
   }
 
   img{
     min-width: 100%;
     object-fit: contain;
-  }
-
-  .workspace:hover img {
-    transform: scale(1.1);
   }
 
   .card-title,
@@ -112,4 +107,9 @@
   .checked {
     color: orange;
   }
+
+  a:hover {
+    text-decoration: none;
+  }
+
 </style>
