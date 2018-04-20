@@ -100,7 +100,6 @@
             <div class="form-content">
               <select v-model="privateNumber">
                 <option value="">---</option>
-                option
                 <option v-for="option in 10" v-bind:value="option" :key="option">
                   {{ option }}
                 </option>
@@ -348,22 +347,15 @@
     created() {
       this.getConvenient()
     },
-    watch: {
-      convenients: function() {
-        this.amenities = this.convenients
-      },
-      workspacePhotos: function() {
-        this.createWorkspace()
-        this.loading = false 
-      }
-    },
+
     computed: {
       ...mapState({
         todos:state => state.workspace.todos,
         convenients:state => state.convenient.listConvenient,
         priceTypes:state => state.workspace.priceTypes,
         unit: state => state.workspace.unit,
-        openingHours:state => state.workspace.openingHours
+        openingHours:state => state.workspace.openingHours,
+        workspaceDetail:state => state.workspace.workspaceDetail
       })
     },
     methods: {
@@ -443,7 +435,21 @@
           }
         })
       }
-    }
+    },
+    watch: {
+      convenients: function() {
+        this.amenities = this.convenients
+      },
+      workspacePhotos: function() {
+        this.createWorkspace()
+        this.loading = false
+      },
+      workspaceDetail() {
+        let city = this.workspaceDetail.city
+        let name = this.workspaceDetail.friendly_url
+        this.$router.push('/'+city + '/' + name)
+      }
+    },
   }
 </script>
 <style scoped>

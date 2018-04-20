@@ -79,7 +79,7 @@ const actions = {
       }
     })
     .then((res) => {
-
+      state.workspaceDetail = res.body.workspaces
     })
   },
   searchByLocation: function(context, searchKey) {
