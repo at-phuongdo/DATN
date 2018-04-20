@@ -26,11 +26,19 @@ const actions = {
     })
   },
   createComment: function(context, params) {
-    Vue.http.post(baseUrl + '/'+ params.workspace.name, params.comment, {
-      headers: {
-        'AccessToken' : state.accessToken
-      }
+    Vue.http.post(baseUrl + '/'+ params.workspace.name, params.comment)
+    .then((res) => {
+      context.commit('LIST_COMMENT', res.body)
     })
+  },
+  updateComment(context, params) {
+    Vue.http.put(baseUrl + '/'+ params.workspace.name, params.comment)
+    .then((res) => {
+      context.commit('LIST_COMMENT', res.body)
+    })
+  },
+  deleteComment(context, id) {
+    Vue.http.delete(baseUrl + '/' + id )
     .then((res) => {
       context.commit('LIST_COMMENT', res.body)
     })

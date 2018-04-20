@@ -3,15 +3,15 @@
     <div class="workspace-review">
       <b-row>
         <b-col md="8">
-          <p>Display rating</p>
+          <h1>{{allComments.length}} Reviews</h1>
         </b-col>
         <b-col>
           <b-button class="btn-comment" variant="success" @click="openReviewModal">Your review</b-button>
         </b-col>
       </b-row>
     </div>
-    <paginate name="commentPerPage" :list="allComments" :per="5">
-      <b-row v-for="comment in allComments" :key="comment.id">
+    <paginate name="commentPerPage" :list="allComments" :per="6">
+      <b-row v-for="comment in paginated('commentPerPage')" :key="comment.id">
         <b-col md="2">
           <div class="info">
             <img class="avatar" :src="comment.user.avatar" v-if="comment.user.avatar">
@@ -24,9 +24,9 @@
             <h4><strong>{{comment.title}}</strong></h4>
             <p  v-html="comment.content"></p>
           </div>
-          <div class="comment-ctrl" v-if="currentUserId==comment.user.id">
-            <span @click="openEditModal(comment)">Edit</span>
-            <span>Delete</span>
+          <div class="comment-ctrl" v-if="currentuser.id==comment.user_id">
+            <span @click="setCurrentComment(comment)">Edit</span>
+            <span @click="currentCommentId(comment.id)">Delete</span>
           </div>
         </b-col>
       </b-row>
@@ -65,44 +65,19 @@
         </b-form>
       </div>
     </b-modal>
-    <b-modal id="editModal" ref= "editModal" hide-footer hide-header>
-      <div class="text-center">
-        <b-form>
-          <h1><span class="decorate-span">What do you think about us?</span></h1>
-          <b-row>
-            <b-col md="2">
-              <span>Rating</span>
-            </b-col>
-            <b-col>
-              <span v-for="currentRating in ratings" :key="currentRating" :class="[valueRating >= currentRating ? checkedStar : uncheckStar ]" v-on:click="set(currentRating)"></span>
-            </b-col>
-          </b-row>
-          <b-row>
-            <b-col md="2">
-              <span>Title</span>
-            </b-col>
-            <b-col><b-form-input v-model="title" required></b-form-input></b-col>
-          </b-row>
-          <b-row >
-            <b-col md="2">
-              <span>Content</span>
-            </b-col>
-            <b-col><textarea class="content" v-model="content"></textarea></b-col>
-          </b-row>
-          <div class="button-control">
-            <b-button @click="editComment" variant="primary" >Save</b-button>
-            <b-btn variant="danger" @click="hideModal" >Close</b-btn>
-          </div>
-        </b-form>
-      </div>
-    </b-modal>
+    <edit-comment :comment="currentComment"></edit-comment>
   </div>
 </template>
 <script>
   import { mapState, mapActions } from 'vuex'
+  import EditComment from './EditComment.vue'
   export default {
+    components: {
+      'edit-comment': EditComment
+    },
     data() {
       return {
+       paginate: ['commentPerPage'],
        currentPage: 1,
        perPage: 5,
        ratings: 5,
@@ -110,10 +85,9 @@
        valueRating: 0,
        uncheckStar: 'fa fa-star',
        checkedStar: 'fa fa-star checked',
-       paginate: ['commentPerPage'],
        title: '',
        content: '',
-       currentUserId: null
+       currentComment: null
 
      }
    },
@@ -129,9 +103,10 @@
   },
   methods: {
     ...mapActions({
+      'getcurrentUser': 'user/getCurrentUser',
       'getAllComments': 'comment/getAllComments',
       'addNewComment': 'comment/createComment',
-      'getcurrentUser': 'user/getCurrentUser'
+      'deleteComment': 'comment/deleteComment'
     }),
     openReviewModal: function() {
       this.$root.$emit('bv::show::modal', 'reviewModal')
@@ -145,7 +120,8 @@
         comment: {
           rating: this.valueRating,
           title: this.title,
-          content: this.content
+          content: this.content,
+          user_id: this.currentuser.id
         }
       }
       this.addNewComment(comment_params)
@@ -154,30 +130,14 @@
     hideModal: function() {
       this.$refs.reviewModal.hide()
     },
-    openEditModal(comment) {
-      this.valueRating = comment.rating
-      this.title = comment.title
-      this.content = comment.content
+    setCurrentComment(comment) {
+      this.currentComment = comment
       this.$root.$emit('bv::show::modal', 'editModal')
     },
-    editComment() {
-     let edit_params = {
-      workspace:  { name: this.$route.params.name},
-      comment: {
-        rating: this.valueRating,
-        title: this.title,
-        content: this.content
-      }
+    currentCommentId(id) {
+      this.deleteComment(id)
     }
-    this.editComment(edit_params)
-    this.hideModal()
   }
-},
-watch: {
-  currentuser() {
-    this.currentUserId = this.currentuser.id
-  }
-}
 }
 </script>
 <style scoped>
@@ -194,6 +154,7 @@ watch: {
   }
 
   .content {
+    padding: 10px;
     border: 1px solid #ced4da;
     text-align: left;
     width: 100%;
@@ -217,7 +178,8 @@ watch: {
   }
 
   .comment-ctrl {
-
+    font-style: italic;
+    float: right;
   }
 
   .paginate {

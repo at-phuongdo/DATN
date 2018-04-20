@@ -11,7 +11,8 @@ const state = {
   currentUser: {},
   status: '',
   isLogin: false,
-  newUser: {}
+  newUser: {},
+  message: ''
 };
 
 const mutations = {

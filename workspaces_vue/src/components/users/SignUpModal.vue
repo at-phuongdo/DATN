@@ -51,6 +51,7 @@
 </template>
 <script>
   import {Circle4} from 'vue-loading-spinner'
+  import { mapState, mapActions } from 'vuex'
   export default {
     components: {
       Circle4
@@ -65,6 +66,11 @@
       }
     },
     computed: {
+      ...mapState({
+        newUser:state => state.user.newUser,
+        message:state => state.user.message,
+        status:state => state.user.status
+      }),
       onConfirm () {
         if(this.errors.items.length){
           return this.errors.items.find(f => {
@@ -74,6 +80,10 @@
       }
     },
     methods: {
+      ...mapActions({
+        'createUser': 'user/addUser',
+        'registerFacebook': 'user/registerEmailFacebook'
+      }),
       hideModal:function() {
         this.$refs.signUpModal.hide()
       },
@@ -112,19 +122,20 @@
         this.$validator.validateAll().then( async () => {
           if (this.errors.items.length === 0) {
             this.loading = true
-            await this.$store.dispatch('addUser', {'user':newUser})
+            await this.createUser({'user':newUser})
             this.loading = false
-            var status = this.$store.state.user.status
+            var status = this.status
             if (status !== this.$getConst('STATUS_OK')) {
               this.alertError();
             } else {
-              var user = this.$store.state.user.newUser
+              var user = this.newUser
               this.$emit('getUser', user)
               this.$refs.signUpModal.hide()
-              if (this.$store.state.user.message === '') {
+              debugger
+              if (this.message === '') {
                 this.confirmEmail()
               } else {
-                this.$store.dispatch('registerEmailFacebook', user)
+                this.registerFacebook(user)
                 this.alertExist()
               }
             }
