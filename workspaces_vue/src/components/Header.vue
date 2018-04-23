@@ -26,6 +26,11 @@
             <router-link to="/new-workspace">
               <b-button class="add-button"><span class="fa fa-plus"></span>Add new space</b-button>
             </router-link>
+            <router-link to="/orders">
+              <b-button variant="outline-primary" class="order-btn" @click="openCheckOrder">Order</b-button>
+              <span class="fa fa-comment"></span>
+              <span class="num">{{waitingOrder.length}}</span>
+            </router-link>
           </b-nav-item>
         </b-navbar-nav>
         <b-navbar-nav class="ml-auto" v-else>
@@ -63,7 +68,6 @@
       'confirm-modal' : ConfirmModal,
       'mail-modal' : MailToReset,
       'reset-password' : ResetPassword
-
     },
     data() {
       return {
@@ -78,12 +82,16 @@
     computed: {
       ...mapState({
         userLogin:state => state.user.currentUser,
-        loginStatus:state => state.user.isLogin
+        loginStatus:state => state.user.isLogin,
+        allOrder:state => state.order.allOrder,
+        waitingOrder:state => state.order.orderWaiting
       })
     },
     methods: {
       ...mapActions({
-        'getCurrentUser': 'user/getCurrentUser'
+        'getCurrentUser': 'user/getCurrentUser',
+        'getAllOrder': 'order/getAllOrder',
+        'getWaitingOrder': 'order/getWaitingOrder'
       }),
       signUp: function() {
         this.$root.$emit('bv::show::modal', 'signUpModal')
@@ -98,20 +106,26 @@
       },
       getUser: function(user) {
         this.user = user
+      },
+      openCheckOrder() {
+
       }
     },
     watch: {
       userLogin() {
         this.currentUser = this.userLogin
+        this.getWaitingOrder(this.currentUser.workspaces[0].id)
       },
       loginStatus() {
         this.isLogin = this.loginStatus
+      },
+      waitingOrder() {
+
       }
     }
   }
   $(function(){
     var headerTop = $('#header').offset().top;
-
     $(window).scroll(function(){
       if( $(window).scrollTop() >= headerTop ) {
         $('#header').css({position: 'fixed', top: '0px'});
@@ -197,5 +211,22 @@
 
   .avatar {
     border-radius: 50%;
+  }
+
+  .order-btn {
+    position: relative;
+  }
+  span.fa-comment {
+    position: absolute;
+    font-size: 2em;
+    top: -12px;
+    color: red;
+    right: -15px;
+  }
+  span.num {
+    position: absolute;
+    top: 1px;
+    color: #fff;
+    right: -3px;
   }
 </style>

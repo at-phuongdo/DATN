@@ -77,68 +77,67 @@
     },
     data() {
       return {
-       paginate: ['commentPerPage'],
-       currentPage: 1,
-       perPage: 5,
-       ratings: 5,
-       averageRating: null,
-       valueRating: 0,
-       uncheckStar: 'fa fa-star',
-       checkedStar: 'fa fa-star checked',
-       title: '',
-       content: '',
-       currentComment: null
-
-     }
-   },
-   created() {
-    this.getcurrentUser()
-    this.getAllComments(this.$route.params.name)
-  },
-  computed: {
-    ...mapState({
-      allComments:state => state.comment.listComments,
-      currentuser:state => state.user.currentUser,
-    })
-  },
-  methods: {
-    ...mapActions({
-      'getcurrentUser': 'user/getCurrentUser',
-      'getAllComments': 'comment/getAllComments',
-      'addNewComment': 'comment/createComment',
-      'deleteComment': 'comment/deleteComment'
-    }),
-    openReviewModal: function() {
-      this.$root.$emit('bv::show::modal', 'reviewModal')
-    },
-    set: function(value) {
-      return this.valueRating = value;
-    },
-    saveComment: function() {
-      let comment_params = {
-        workspace:  { name: this.$route.params.name},
-        comment: {
-          rating: this.valueRating,
-          title: this.title,
-          content: this.content,
-          user_id: this.currentuser.id
-        }
+        paginate: ['commentPerPage'],
+        currentPage: 1,
+        perPage: 5,
+        ratings: 5,
+        averageRating: null,
+        valueRating: 0,
+        uncheckStar: 'fa fa-star',
+        checkedStar: 'fa fa-star checked',
+        title: '',
+        content: '',
+        currentComment: null
       }
-      this.addNewComment(comment_params)
-      this.hideModal()
     },
-    hideModal: function() {
-      this.$refs.reviewModal.hide()
+    created() {
+      this.getcurrentUser()
+      this.getAllComments(this.$route.params.name)
     },
-    setCurrentComment(comment) {
-      this.currentComment = comment
-      this.$root.$emit('bv::show::modal', 'editModal')
+    computed: {
+      ...mapState({
+        allComments:state => state.comment.listComments,
+        currentuser:state => state.user.currentUser,
+      })
     },
-    currentCommentId(id) {
-      this.deleteComment(id)
+    methods: {
+      ...mapActions({
+        'getcurrentUser': 'user/getCurrentUser',
+        'getAllComments': 'comment/getAllComments',
+        'addNewComment': 'comment/createComment',
+        'deleteComment': 'comment/deleteComment'
+      }),
+      openReviewModal: function() {
+        this.$root.$emit('bv::show::modal', 'reviewModal')
+      },
+      set: function(value) {
+        return this.valueRating = value;
+      },
+      saveComment: function() {
+        let comment_params = {
+          workspace:  { name: this.$route.params.name},
+          comment: {
+            rating: this.valueRating,
+            title: this.title,
+            content: this.content,
+            user_id: this.currentuser.id
+          }
+        }
+        this.addNewComment(comment_params)
+        this.hideModal()
+      },
+      hideModal: function() {
+        this.$refs.reviewModal.hide()
+      },
+      setCurrentComment(comment) {
+        this.currentComment = comment
+        this.$root.$emit('bv::show::modal', 'editModal')
+      },
+      currentCommentId(id) {
+        this.deleteComment(id)
+      }
     }
   }
-}
 </script>
 <style scoped>
   .info {

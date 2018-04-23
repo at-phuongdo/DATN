@@ -41,7 +41,7 @@ const actions = {
     Vue.http.get(baseUrl+ 'users/' + auth_token)
     .then((response) => {
       state.status = response.body.status
-      commit("CURRENT_USER", response.body.user)
+      commit("CURRENT_USER", response.body)
     })
     .catch((error => {
       console.log(error.statusText)

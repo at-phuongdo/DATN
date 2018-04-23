@@ -1,13 +1,14 @@
 <template>
   <div>
     <b-modal id="orderModal" ref= "orderModal" hide-footer hide-header>
-      <div>
+      <div v-if="officeOrder.type">
         <b-form>
-          <h1><span class="decorate-span">Available reserve</span></h1>
-          <p>Name</p>
+          <h1><span class="decorate-span">Available reserve</span></h1> 
+          <h3>{{officeOrder.type.name}}</h3>
+          <p>Your name</p>
           <b-form-input v-model="name"></b-form-input>
-          <p>Number of people</p>
-          <select v-model="numberPeople">
+          <span>Number of people: </span>
+          <select v-model="quantity">
             <option v-for="option in numberPeople" v-bind:value="option" :key="option">
               {{ option }}
             </option>
@@ -19,7 +20,7 @@
               </el-time-select>
             </b-col>
             <b-col md="6">
-              <b-form-input type="date"></b-form-input>
+            <b-form-input type="date" v-model="startDate"></b-form-input>
             </b-col>
           </b-row>
           <p>End time</p>
@@ -29,12 +30,12 @@
               </el-time-select>
             </b-col>
             <b-col md="6">
-              <b-form-input type="date"></b-form-input>
+              <b-form-input type="date" v-model="endDate"></b-form-input>
             </b-col>
           </b-row>
           <div class="button-control">
-            <!-- <b-button @click="editComment" variant="primary" >Save</b-button> -->
-            <!-- <b-btn variant="danger" @click="hideModal" >Close</b-btn> -->
+            <b-button @click="orderWorkspace" variant="primary" >Save</b-button>
+            <b-btn variant="danger" @click="hideModal" >Close</b-btn>
           </div>
         </b-form>
       </div>
@@ -42,6 +43,7 @@
   </div>
 </template>
 <script>
+  import { mapState, mapActions } from 'vuex'
   export default {
     props: ['officeOrder'],
     data() {
@@ -49,7 +51,40 @@
         name: '',
         startTime: '',
         endTime: '',
-        numberPeople: null
+        numberPeople: null, 
+        quantity: 1,
+        startDate: '',
+        endDate: ''
+      }
+    },
+    created() {
+      this.getCurrentUser()
+    },
+    computed: {
+      ...mapState({
+        currentUser:state => state.user.currentUser
+      })
+    },
+    methods: {
+      ...mapActions({
+        'createOrder': 'order/newOrder',
+        'getCurrentUser': 'user/getCurrentUser'
+      }),
+      hideModal() {
+        this.$refs.orderModal.hide()
+      },
+      orderWorkspace() {
+        var orderParams = {
+          name: this.name,
+          time_start: this.startTime + ' ' + this.startDate,
+          time_end: this.endTime + ' ' + this.endDate,
+          quantity: this.quantity,
+          workspace_type_id: this.officeOrder.id,
+          workspace_id: this.officeOrder.workspace_id,
+          user_id: this.currentUser.id
+        };
+        this.createOrder(orderParams)
+        this.hideModal()
       }
     },
     watch: {

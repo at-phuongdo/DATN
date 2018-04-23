@@ -10,18 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180415143542) do
+ActiveRecord::Schema.define(version: 20180423091154) do
 
   create_table "comments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "title"
     t.text "content"
     t.integer "rating"
-    t.bigint "user_id"
-    t.bigint "workspace_id"
+    t.integer "user_id"
+    t.integer "workspace_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_comments_on_user_id"
-    t.index ["workspace_id"], name: "index_comments_on_workspace_id"
   end
 
   create_table "convenients", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -42,17 +40,19 @@ ActiveRecord::Schema.define(version: 20180415143542) do
   end
 
   create_table "orders", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "name"
     t.integer "status"
     t.datetime "time_start"
     t.datetime "time_end"
-    t.string "office_type"
     t.integer "quantity"
     t.bigint "user_id"
     t.bigint "workspace_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "workspace_type_id"
     t.index ["user_id"], name: "index_orders_on_user_id"
     t.index ["workspace_id"], name: "index_orders_on_workspace_id"
+    t.index ["workspace_type_id"], name: "index_orders_on_workspace_type_id"
   end
 
   create_table "types", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -121,8 +121,8 @@ ActiveRecord::Schema.define(version: 20180415143542) do
     t.string "name"
     t.string "avatar"
     t.string "address"
-    t.float "lat", limit: 24
-    t.float "lng", limit: 24
+    t.decimal "lat", precision: 15, scale: 12
+    t.decimal "lng", precision: 15, scale: 12
     t.string "country"
     t.string "city"
     t.string "district"
@@ -131,8 +131,8 @@ ActiveRecord::Schema.define(version: 20180415143542) do
     t.text "description"
     t.string "email"
     t.string "website"
-    t.string "phone"
-    t.string "facebook"
+    t.string "phone", limit: 45
+    t.string "facebook", limit: 45
     t.integer "rating"
     t.bigint "user_id"
     t.datetime "created_at", null: false
@@ -145,19 +145,16 @@ ActiveRecord::Schema.define(version: 20180415143542) do
     t.string "open_fri"
     t.string "open_sat"
     t.string "open_sun"
-    t.index ["user_id"], name: "index_workspaces_on_user_id"
   end
 
-  add_foreign_key "comments", "users"
-  add_foreign_key "comments", "workspaces"
   add_foreign_key "favorites", "users"
   add_foreign_key "favorites", "workspaces"
   add_foreign_key "orders", "users"
+  add_foreign_key "orders", "workspace_types"
   add_foreign_key "orders", "workspaces"
   add_foreign_key "workspace_convenients", "convenients"
   add_foreign_key "workspace_convenients", "workspaces"
   add_foreign_key "workspace_images", "workspaces"
   add_foreign_key "workspace_types", "types"
   add_foreign_key "workspace_types", "workspaces"
-  add_foreign_key "workspaces", "users"
 end

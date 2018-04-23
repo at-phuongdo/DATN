@@ -1,6 +1,7 @@
 class WorkspaceType < ApplicationRecord
   belongs_to :workspace
   belongs_to :type
+  has_many :orders
 
   def self.create_new_room(type_id, workspace_id, name, number_people, price_hour, price_day, price_week, price_month, price_year)
     name.each_with_index do |room, index|
