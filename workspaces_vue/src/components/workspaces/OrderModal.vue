@@ -8,7 +8,7 @@
           <b-form-input v-model="name"></b-form-input>
           <p>Number of people</p>
           <select v-model="numberPeople">
-            <option v-for="option in numberOfPeople" v-bind:value="option" :key="option">
+            <option v-for="option in numberPeople" v-bind:value="option" :key="option">
               {{ option }}
             </option>
           </select>
@@ -52,10 +52,9 @@
         numberPeople: null
       }
     },
-    computed: {
-      numberOfPeople() {
-        console.log(this.office)
-        return this.office
+    watch: {
+      officeOrder: function() {
+        this.numberPeople = this.officeOrder.number_of_people
       }
     }
   }

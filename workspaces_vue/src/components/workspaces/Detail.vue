@@ -1,4 +1,4 @@
-d<template>
+<template>
 <div class="detail">
   <div class="avatar" :style="{ 'background-image': 'url(' + workspace.avatar + ')' }">
   </div>
@@ -90,10 +90,10 @@ d<template>
     </div>
     <div class="review">
       <h4><span class="fa fa-comment"></span><strong> Review</strong></h4>
-      <workspace-comment :officeOrder = "office"></workspace-comment>
+      <workspace-comment></workspace-comment>
     </div>
   </div>
-  <order-modal></order-modal>
+  <order-modal :officeOrder = "currentOffice"></order-modal>
 </div>
 </template>
 <script>
@@ -110,7 +110,7 @@ d<template>
         workspaceDetail: {},
         mapName: this.name + "-map",
         markerCoordinates: {},
-        office: {}
+        currentOffice: {}
       }
     },
     created() {
@@ -153,7 +153,7 @@ d<template>
         && this.workspaceDetail.open_thurs == this.workspaceDetail.open_fri
       },
       openOrderModal(office) {
-        this.office = office
+        this.currentOffice = office[0]
         this.$root.$emit('bv::show::modal', 'orderModal')
       }
     },
