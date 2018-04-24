@@ -84,14 +84,12 @@
       ...mapState({
         userLogin:state => state.user.currentUser,
         loginStatus:state => state.user.isLogin,
-        allOrder:state => state.order.allOrder,
         waitingOrder:state => state.order.orderWaiting
       })
     },
     methods: {
       ...mapActions({
         'getCurrentUser': 'user/getCurrentUser',
-        'getAllOrder': 'order/getAllOrder',
         'getWaitingOrder': 'order/getWaitingOrder'
       }),
       signUp: function() {

@@ -17,6 +17,8 @@ const state = {
 const mutations = {
   GET_ALL_ORDER(state, orders) {
     state.allOrder = orders
+  },
+  GET_WAITING_ORDER(state, orders) {
     state.orderWaiting = orders.filter((order) =>  {
       return order.status === 'waiting'
     })
@@ -39,7 +41,7 @@ const actions = {
   getWaitingOrder: function(context, workspaceId) {
     Vue.http.get(baseUrl + workspaceId + '?status=waiting')
     .then((res) => {
-      state.orderWaiting = res.body
+      context.commit('GET_WAITING_ORDER', res.body)
     })
   },
   changeStatus(context, orderId) {

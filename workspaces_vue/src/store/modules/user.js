@@ -62,7 +62,7 @@ const actions = {
     Vue.http.post(baseUrl + 'login', userLogin)
     .then((response) => {
       state.status = response.body.status
-      context.commit("CURRENT_USER", response.body.user)
+      context.commit("CURRENT_USER", response.body)
     })
     .catch((error => {
       console.log(error.statusText)
@@ -92,7 +92,7 @@ const actions = {
     await Vue.http.post(baseUrl + 'login_facebook', newUser)
     .then((response) => {
       state.status = response.body.status
-      context.commit("CURRENT_USER", response.body.user)
+      context.commit("CURRENT_USER", response.body)
     })
   },
   registerEmailFacebook: async function(context, user) {

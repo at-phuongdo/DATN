@@ -70,7 +70,8 @@
       ...mapActions({
         'createOrder': 'order/newOrder',
         'getAllOrders': 'order/getAllOrder',
-        'getCurrentUser': 'user/getCurrentUser'
+        'getCurrentUser': 'user/getCurrentUser',
+        'getWaitingOrder': 'order/getWaitingOrder'
       }),
       hideModal() {
         this.$refs.orderModal.hide()
@@ -92,10 +93,6 @@
     watch: {
       officeOrder: function() {
         this.numberPeople = this.officeOrder.number_of_people
-      },
-      createdOrder() {
-        this.getAllOrders(this.officeOrder.id)
-        debugger
       }
     }
   }

@@ -8,7 +8,6 @@ class Api::V1::UsersController < ApplicationController
   def index; end
 
   def create
-    binding.pry
     user = User.find_by_email(params[:user][:email])
     if user && user.provider == PROVIDER_FACEBOOK
       user.update(password: params[:user][:password], provider: PROVIDER_BOTH)

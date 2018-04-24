@@ -14,9 +14,9 @@ class Api::V1::OrdersController < ApplicationController
 
   def order_of_workspace
     if params[:status] == WAITING_STATUS
-      orders = Order.where(workspace_id: params[:id], status: WAITING_STATUS)
+      orders = Order.where(workspace_id: params[:id], status: WAITING_STATUS).order(created_at: :desc)
     else
-      orders = Order.where(workspace_id: params[:id])
+      orders = Order.where(workspace_id: params[:id]).order(created_at: :desc)
     end
     render json: orders, status: :ok
   end
@@ -24,7 +24,7 @@ class Api::V1::OrdersController < ApplicationController
   def accept_order
     order = Order.find(params[:id])
     order.update(status: ACCEPT_STATUS)
-    all_orders = Order.where(workspace_id: params[:id])
+    all_orders = Order.where(workspace_id: order.workspace_id).order(created_at: :desc)
     render json: all_orders, status: :ok
   end
 

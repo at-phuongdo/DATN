@@ -9,9 +9,9 @@ class Api::V1::SessionsController < ApplicationController
     user = User.find_by_email(params[:session][:email])
     if user && user.authenticate(params[:session][:password])
       if user.confirm_at
-        render json: { user: user, status: :ok }
+        render json: user, status: :ok
       else
-        render json: { user: user, status: :no_content }
+        render json: user, status: :no_content
       end
     else
       render json: { status: :unauthorized }
@@ -27,7 +27,7 @@ class Api::V1::SessionsController < ApplicationController
       user.update(provider: PROVIDER_FACEBOOK, confirm_at: Time.now)
       user.update(confirm_token: SecureRandom.hex(8))
     end
-    render json: { user: user, status: :ok }
+    render json: user, status: :ok
   end
 
   private

@@ -15,7 +15,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="order in orderOfWorkspace" :key="order.id">
+        <tr v-for="order in allOrder" :key="order.id">
           <td>{{order.id}}</td>
           <td>{{order.name}}</td>
           <td>{{order.workspace_type.type.name}}</td>
@@ -36,22 +36,22 @@
     data() {
       return {
         orderOfWorkspace: [],
-        currentUser: {}
       }
     },
     created() {
-      this.getcurrentUser()
+      this.getCurrentUser(localStorage.getItem("token"))
     },
     computed: {
       ...mapState({
-       currentuser:state => state.user.currentUser,
-       allOrder:state => state.order.allOrder
+       allOrder:state => state.order.allOrder,
+       userLogin:state => state.user.currentUser
      })
     },
     methods: {
       ...mapActions({
-        'getcurrentUser': 'user/getCurrentUser',
+        'getCurrentUser': 'user/getCurrentUser',
         'getAllOrder': 'order/getAllOrder',
+        'getWaitingOrder': 'order/getWaitingOrder',
         'changeStatus': 'order/changeStatus'
       }),
       acceptOrder(orderId) {
@@ -59,12 +59,11 @@
       }
     },
     watch: {
-      currentuser() {
-        this.currentUser = this.currentuser
-        this.getAllOrder(this.currentUser.workspaces[0].id)
-      },
       allOrder() {
         this.orderOfWorkspace = this.allOrder
+      },
+      userLogin() {
+        this.getAllOrder(this.userLogin.workspaces[0].id)
       }
     }
   }
