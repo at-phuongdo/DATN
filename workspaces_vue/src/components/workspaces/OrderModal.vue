@@ -20,7 +20,7 @@
               </el-time-select>
             </b-col>
             <b-col md="6">
-            <b-form-input type="date" v-model="startDate"></b-form-input>
+              <b-form-input type="date" v-model="startDate"></b-form-input>
             </b-col>
           </b-row>
           <p>End time</p>
@@ -62,12 +62,14 @@
     },
     computed: {
       ...mapState({
-        currentUser:state => state.user.currentUser
+        currentUser:state => state.user.currentUser,
+        createdOrder:state => state.order.newOrder
       })
     },
     methods: {
       ...mapActions({
         'createOrder': 'order/newOrder',
+        'getAllOrders': 'order/getAllOrder',
         'getCurrentUser': 'user/getCurrentUser'
       }),
       hideModal() {
@@ -90,6 +92,10 @@
     watch: {
       officeOrder: function() {
         this.numberPeople = this.officeOrder.number_of_people
+      },
+      createdOrder() {
+        this.getAllOrders(this.officeOrder.id)
+        debugger
       }
     }
   }

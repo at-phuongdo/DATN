@@ -35,7 +35,8 @@
   export default {
     data() {
       return {
-        orderOfWorkspace: []
+        orderOfWorkspace: [],
+        currentUser: {}
       }
     },
     created() {
@@ -59,7 +60,8 @@
     },
     watch: {
       currentuser() {
-        this.getAllOrder(this.currentuser.workspaces[0].id)
+        this.currentUser = this.currentuser
+        this.getAllOrder(this.currentUser.workspaces[0].id)
       },
       allOrder() {
         this.orderOfWorkspace = this.allOrder

@@ -27,9 +27,9 @@
               <b-button class="add-button"><span class="fa fa-plus"></span>Add new space</b-button>
             </router-link>
             <router-link to="/orders">
-              <b-button variant="outline-primary" class="order-btn" @click="openCheckOrder">Order</b-button>
+              <b-button variant="outline-primary" class="order-btn">Order</b-button>
               <span class="fa fa-comment"></span>
-              <span class="num">{{waitingOrder.length}}</span>
+              <span class="num">{{countWaitingOrder}}</span>
             </router-link>
           </b-nav-item>
         </b-navbar-nav>
@@ -73,7 +73,8 @@
       return {
         user: '',
         currentUser: null,
-        isLogin: false
+        isLogin: false,
+        countWaitingOrder: 0
       }
     },
     created() {
@@ -106,21 +107,20 @@
       },
       getUser: function(user) {
         this.user = user
-      },
-      openCheckOrder() {
-
       }
     },
     watch: {
       userLogin() {
         this.currentUser = this.userLogin
-        this.getWaitingOrder(this.currentUser.workspaces[0].id)
+        if (this.currentUser.workspaces[0]) {
+          this.getWaitingOrder(this.currentUser.workspaces[0].id)
+        }
       },
       loginStatus() {
         this.isLogin = this.loginStatus
       },
       waitingOrder() {
-
+        this.countWaitingOrder = this.waitingOrder.length
       }
     }
   }

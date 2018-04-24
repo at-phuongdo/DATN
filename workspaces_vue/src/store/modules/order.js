@@ -10,24 +10,31 @@ const baseUrl = 'http://localhost:3000/api/v1/orders/'
 const state = {
   orderStatus: '',
   allOrder: [],
-  orderWaiting: []
+  orderWaiting: [],
+  newOrder: {}
 }
 
 const mutations = {
+  GET_ALL_ORDER(state, orders) {
+    state.allOrder = orders
+    state.orderWaiting = orders.filter((order) =>  {
+      return order.status === 'waiting'
+    })
+  }
 }
 
 const actions = {
   getAllOrder(context, workspaceId) {
     Vue.http.get(baseUrl + workspaceId)
     .then((res) => {
-      state.allOrder = res.body
+      context.commit('GET_ALL_ORDER', res.body)
     })
   },
   newOrder: function(context, orderParams) {
     Vue.http.post(baseUrl, orderParams)
     .then((res) => {
-      state.orderStatus = res.status
-    })
+     state.newOrder = res.body
+   })
   },
   getWaitingOrder: function(context, workspaceId) {
     Vue.http.get(baseUrl + workspaceId + '?status=waiting')
@@ -38,7 +45,7 @@ const actions = {
   changeStatus(context, orderId) {
     Vue.http.post(baseUrl + orderId)
     .then((res) => {
-      state.allOrder = res.body
+      context.commit('GET_ALL_ORDER', res.body)
     })
   }
 } 
