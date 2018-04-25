@@ -26,7 +26,7 @@
             <router-link to="/new-workspace">
               <b-button class="add-button"><span class="fa fa-plus"></span>Add new space</b-button>
             </router-link>
-            <router-link to="/orders">
+            <router-link to="/orders" v-if="currentUser.role=='partner'">
               <b-button variant="outline-primary" class="order-btn">Order</b-button>
               <span class="fa fa-comment"></span>
               <span class="num">{{countWaitingOrder}}</span>
@@ -110,6 +110,7 @@
     watch: {
       userLogin() {
         this.currentUser = this.userLogin
+        console.log(this.currentUser)
         if (this.currentUser.workspaces[0]) {
           this.getWaitingOrder(this.currentUser.workspaces[0].id)
         }

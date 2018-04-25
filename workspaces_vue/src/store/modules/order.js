@@ -47,6 +47,7 @@ const actions = {
   changeStatus(context, orderId) {
     Vue.http.post(baseUrl + orderId)
     .then((res) => {
+      console.log(res.body)
       context.commit('GET_ALL_ORDER', res.body)
     })
   }

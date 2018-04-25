@@ -1,8 +1,8 @@
 <template>
   <div class="container order">
     <h2 class="text-center">All order of your workspace</h2>
-    <table class="order-table">
-      <thead>
+    <paginate name="orderPerPage" :list="allOrder" :per="10">
+      <table class="order-table">
         <tr>
           <th>ID</th>
           <th>Name</th>
@@ -13,9 +13,7 @@
           <th>Status</th>
           <th>Action</th>
         </tr>
-      </thead>
-      <tbody>
-        <tr v-for="order in allOrder" :key="order.id">
+        <tr v-for="order in paginated('orderPerPage')" :key="order.id">
           <td>{{order.id}}</td>
           <td>{{order.name}}</td>
           <td>{{order.workspace_type.type.name}}</td>
@@ -26,8 +24,11 @@
           <td v-if="order.status=='waiting'"><button @click="acceptOrder(order.id)">Accept</button></td>
           <td v-else></td>
         </tr>
-      </tbody>
-    </table>
+      </table>
+    </paginate>
+    <div class="paginate">
+      <paginate-links for="orderPerPage" :limit="2" :show-step-links="true" class="pagination" align="center"></paginate-links>
+    </div>
   </div>
 </template>
 <script>
@@ -35,7 +36,8 @@
   export default {
     data() {
       return {
-        orderOfWorkspace: [],
+        paginate: ['orderPerPage'],
+        orderOfWorkspace: []
       }
     },
     created() {
@@ -61,6 +63,7 @@
     watch: {
       allOrder() {
         this.orderOfWorkspace = this.allOrder
+        this.getWaitingOrder(this.userLogin.workspaces[0].id)
       },
       userLogin() {
         this.getAllOrder(this.userLogin.workspaces[0].id)
@@ -79,5 +82,11 @@
 
   .order-table th, td{
     border: 1px solid #e5e5e5;
+  }
+
+  .paginate {
+    clear: both;
+    display: table;
+    margin: auto;
   }
 </style>

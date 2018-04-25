@@ -10,12 +10,13 @@ class Api::V1::UsersController < ApplicationController
   def create
     user = User.find_by_email(params[:user][:email])
     if user && user.provider == PROVIDER_FACEBOOK
-      user.update(password: params[:user][:password], provider: PROVIDER_BOTH)
+      user.update(password: params[:user][:password], provider: PROVIDER_BOTH, role: 0)
       render json: { user: user, status: :ok, message: 'Email account has been already registerd by Facebook' }
     else
       user = User.new(user_params)
       user.confirm_token = SecureRandom.hex(8)
       user.provider = PROVIDER_EMAIL
+      user.role = 0
       if user.save
         render json: { user: user, status: :ok }
         user.send_activation_email
