@@ -4,6 +4,7 @@ import Home from '@/pages/Home'
 import NewWorkspace from '@/pages/NewWorkspace'
 import SearchResult from '@/pages/SearchResult'
 import DetailPage from '@/pages/DetailPage'
+import CheckOrderPage from '@/pages/CheckOrder'
 
 Vue.use(Router)
 
@@ -29,6 +30,11 @@ export default new Router({
       path: '/:city/:name',
       name: 'DetailPage',
       component: DetailPage
+    },
+    {
+      path: '/orders',
+      name: 'CheckOrder',
+      component: CheckOrderPage
     }
   ]
 })

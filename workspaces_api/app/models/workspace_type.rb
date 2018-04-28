@@ -1,6 +1,7 @@
 class WorkspaceType < ApplicationRecord
   belongs_to :workspace
   belongs_to :type
+  has_many :orders
 
   def self.create_new_room(type_id, workspace_id, name, number_people, price_hour, price_day, price_week, price_month, price_year)
     name.each_with_index do |room, index|
@@ -9,9 +10,14 @@ class WorkspaceType < ApplicationRecord
   end
 
   def self.create_workspace_type(room_list, number_people_list, price, workspace_id)
-    binding.pry
     create_new_room(1, workspace_id, room_list[:privateRoom], number_people_list[:privateRoom],0,0,price[:priceWeek][:privateRoom], price[:priceMonth][:privateRoom], price[:priceYear][:privateRoom])
     create_new_room(2, workspace_id, room_list[:meetingRoom], number_people_list[:meetingRoom], price[:priceHour][:meetingRoom], price[:priceDay][:meetingRoom],0,0,0)
     create_new_room(3, workspace_id, room_list[:openRoom], number_people_list[:openRoom], price[:priceHour][:openRoom], price[:priceDay][:openRoom],0,0,0)
+  end
+
+  def self.update_available_table(id, quantity)
+    workspace_type = WorkspaceType.find(id)
+    new_available = workspace_type.available - quantity
+    workspace_type.update(available: new_available) if new_available
   end
 end

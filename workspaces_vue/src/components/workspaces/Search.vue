@@ -6,7 +6,7 @@
      </b-col>
    </b-row>
    <b-row>
-     <b-col md="4" offset-md="4" class="search-content">
+     <b-col md="8" offset-md="2" class="search-content">
        <div class="search-input">
          <input ref="autocomplete" placeholder="Please enter country or city you want to find..." class="search-location" type="text" v-show="selected=='location'"/>
          <input placeholder="Please enter the name you want to find..." class="search-name" type="text" v-model="nameSearch" v-show="selected=='name'" v-on:keyup="searchName($event.target.value)"/>

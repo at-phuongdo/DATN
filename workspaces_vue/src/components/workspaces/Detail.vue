@@ -1,14 +1,45 @@
-d<template>
+<template>
   <div class="detail">
     <div class="avatar" :style="{ 'background-image': 'url(' + workspace.avatar + ')' }">
     </div>
     <div class="container">
-      <div class="description">
+      <div class="overview">
         <h1><strong>{{workspaceDetail.name}}</strong></h1>
         <p><span class="fa fa-map-marker"></span>{{workspaceDetail.address}}</p>
-        <hr>
+      </div>
+      <hr>
+      <div class="description">
         <h4><span class="fa fa-bullseye"></span><strong> Overview</strong></h4>
-        <div v-html="workspaceDetail.description"></div>
+        <div class="opening-hour">
+          <h3><strong>Opening hours</strong></h3>
+          <hr>
+          <div class="mon-fri" v-if="monToFriSame()">
+            <p><strong>Mon-fri</strong></p>
+            <p>{{workspaceDetail.open_mon}}</p>
+          </div>
+          <div v-else>
+            <p><strong>Mon</strong></p>
+            <p>{{workspaceDetail.open_mon}}</p>
+            <p><strong>Tues</strong></p>
+            <p>{{workspaceDetail.open_tue}}</p>
+            <p><strong>Wed</strong></p>
+            <p>{{workspaceDetail.open_wed}}</p>
+            <p><strong>Thurs</strong></p>
+            <p>{{workspaceDetail.open_thurs}}</p>
+            <p><strong>Fri</strong></p>
+            <p>{{workspaceDetail.open_fri}}</p>
+          </div>
+          <div class="weekend">
+            <p><strong>Sat</strong></p>
+            <p v-if="workspaceDetail.open_sat != '-'">{{workspaceDetail.open_sat}}</p>
+            <p v-else>Closed</p>
+            <p><strong>Sun</strong></p>
+            <p v-if="workspaceDetail.open_sun != '-'">{{workspaceDetail.open_sun}}</p>
+            <p v-else>Closed</p>
+          </div>
+        </div>
+        <div class="description" v-html="workspaceDetail.description">
+        </div>
       </div>
       <hr>
       <div class="amenities">
@@ -33,9 +64,7 @@ d<template>
             <th>Availability</th>
           </tr>
           <tr v-for="row in workspaceDetail.workspace_types" :key="row.id">
-            <td v-if="row.type_id==1">Private Room</td>
-            <td v-if="row.type_id==2">Meeting Room</td>
-            <td v-if="row.type_id==3">Open Plan Room</td>
+            <td>{{row.type.name}}</td>
             <td>{{row.name}}</td>
             <td>{{row.number_of_people}}</td>
             <td>{{row.price_hour}}</td>
@@ -43,7 +72,8 @@ d<template>
             <td>{{row.price_week}}</td>
             <td>{{row.price_month}}</td>
             <td>{{row.price_year}}</td>
-            <td><b-button variant="outline-success" >Enquire</b-button></td>
+            <td v-if="row.available > 0"><b-button variant="outline-success" @click="openOrderModal(row)">Reserve</b-button></td>
+            <td v-else class="notice"><strong>Reserved</strong></td>
           </tr>
         </table>
       </div>
@@ -62,21 +92,24 @@ d<template>
         <workspace-comment></workspace-comment>
       </div>
     </div>
+    <order-modal :officeOrder = "currentOffice"></order-modal>
   </div>
 </template>
 <script>
-  import { mapActions } from 'vuex'
-  import { mapState } from 'vuex'
+  import { mapActions, mapState } from 'vuex'
   import Comments from './Comments.vue'
+  import OrderModal from './OrderModal.vue'
   export default {
     components: {
-      'workspace-comment': Comments
+      'workspace-comment': Comments,
+      'order-modal': OrderModal
     },
     data() {
       return {
         workspaceDetail: {},
         mapName: this.name + "-map",
-        markerCoordinates: {}
+        markerCoordinates: {},
+        currentOffice: {},
       }
     },
     created() {
@@ -111,6 +144,16 @@ d<template>
         google.maps.event.addListener(marker, 'dragend', function(ev){
           alert(marker.getPosition())
         });
+      },
+      monToFriSame() {
+        return this.workspaceDetail.open_mon == this.workspaceDetail.open_tue
+        && this.workspaceDetail.open_tue == this.workspaceDetail.open_wed
+        && this.workspaceDetail.open_wed == this.workspaceDetail.open_thurs
+        && this.workspaceDetail.open_thurs == this.workspaceDetail.open_fri
+      },
+      openOrderModal(office) {
+        this.currentOffice = office
+        this.$root.$emit('bv::show::modal', 'orderModal')
       }
     },
     watch: {
@@ -131,6 +174,13 @@ d<template>
     background-position: center;
   }
 
+  .opening-hour {
+    float: right;
+    border: 1px solid #28a745;
+    padding: 10px;
+    border-radius: 10px;
+  }
+
   .room-table {
     width: 100%;
     text-align: center;
@@ -149,5 +199,9 @@ d<template>
     height: 500px;
     margin: 0 auto;
     background: gray;
+  }
+
+  .notice {
+    color: red;
   }
 </style>

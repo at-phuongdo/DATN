@@ -26,6 +26,11 @@
             <router-link to="/new-workspace">
               <b-button class="add-button"><span class="fa fa-plus"></span>Add new space</b-button>
             </router-link>
+            <router-link to="/orders" v-if="currentUser.role=='partner'">
+              <b-button variant="outline-primary" class="order-btn">Order</b-button>
+              <span class="fa fa-comment"></span>
+              <span class="num">{{countWaitingOrder}}</span>
+            </router-link>
           </b-nav-item>
         </b-navbar-nav>
         <b-navbar-nav class="ml-auto" v-else>
@@ -63,13 +68,13 @@
       'confirm-modal' : ConfirmModal,
       'mail-modal' : MailToReset,
       'reset-password' : ResetPassword
-
     },
     data() {
       return {
         user: '',
         currentUser: null,
-        isLogin: false
+        isLogin: false,
+        countWaitingOrder: 0
       }
     },
     created() {
@@ -78,12 +83,14 @@
     computed: {
       ...mapState({
         userLogin:state => state.user.currentUser,
-        loginStatus:state => state.user.isLogin
+        loginStatus:state => state.user.isLogin,
+        waitingOrder:state => state.order.orderWaiting
       })
     },
     methods: {
       ...mapActions({
-        'getCurrentUser': 'user/getCurrentUser'
+        'getCurrentUser': 'user/getCurrentUser',
+        'getWaitingOrder': 'order/getWaitingOrder'
       }),
       signUp: function() {
         this.$root.$emit('bv::show::modal', 'signUpModal')
@@ -103,15 +110,20 @@
     watch: {
       userLogin() {
         this.currentUser = this.userLogin
+        if (this.currentUser.workspaces[0]) {
+          this.getWaitingOrder(this.currentUser.workspaces[0].id)
+        }
       },
       loginStatus() {
         this.isLogin = this.loginStatus
+      },
+      waitingOrder() {
+        this.countWaitingOrder = this.waitingOrder.length
       }
     }
   }
   $(function(){
     var headerTop = $('#header').offset().top;
-
     $(window).scroll(function(){
       if( $(window).scrollTop() >= headerTop ) {
         $('#header').css({position: 'fixed', top: '0px'});
@@ -197,5 +209,22 @@
 
   .avatar {
     border-radius: 50%;
+  }
+
+  .order-btn {
+    position: relative;
+  }
+  span.fa-comment {
+    position: absolute;
+    font-size: 2em;
+    top: -12px;
+    color: red;
+    right: -15px;
+  }
+  span.num {
+    position: absolute;
+    top: 1px;
+    color: #fff;
+    right: -3px;
   }
 </style>

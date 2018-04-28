@@ -4,6 +4,7 @@ class User < ApplicationRecord
   has_many :favorites
   has_many :comments
   has_secure_password validations: false
+  enum role: %w[user partner admin]
 
   validates :email, presence: true, uniqueness: true
 

@@ -21,5 +21,8 @@ Rails.application.routes.draw do
     resources :comments, only: %i[index destroy]
     post 'comments/:name' => 'comments#create'
     put 'comments/:name' => 'comments#update'
+    resources :orders, only: %i[create update]
+    get 'orders/:id' => 'orders#order_of_workspace'
+    post 'orders/:id' => 'orders#accept_order'
   end
 end

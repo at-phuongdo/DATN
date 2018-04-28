@@ -47,7 +47,7 @@ new Vue({
     if (d.getElementById(id)) return
       js = d.createElement(s)
       js.id = id
-      js.src = 'https://connect.facebook.net/en_US/sdk.js'
+      js.src ='https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.12&appId=2068048373431539&autoLogAppEvents=1';
       fjs.parentNode.insertBefore(js, fjs)
     }(document, 'script', 'facebook-jssdk'))
 },
