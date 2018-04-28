@@ -72,7 +72,8 @@
             <td>{{row.price_week}}</td>
             <td>{{row.price_month}}</td>
             <td>{{row.price_year}}</td>
-            <td><b-button variant="outline-success" @click="openOrderModal(workspaceDetail.workspace_types)" >Reserve</b-button></td>
+            <td v-if="row.available > 0"><b-button variant="outline-success" @click="openOrderModal(row)">Reserve</b-button></td>
+            <td v-else class="notice"><strong>Reserved</strong></td>
           </tr>
         </table>
       </div>
@@ -108,7 +109,7 @@
         workspaceDetail: {},
         mapName: this.name + "-map",
         markerCoordinates: {},
-        currentOffice: {}
+        currentOffice: {},
       }
     },
     created() {
@@ -151,7 +152,7 @@
         && this.workspaceDetail.open_thurs == this.workspaceDetail.open_fri
       },
       openOrderModal(office) {
-        this.currentOffice = office[0]
+        this.currentOffice = office
         this.$root.$emit('bv::show::modal', 'orderModal')
       }
     },
@@ -198,5 +199,9 @@
     height: 500px;
     margin: 0 auto;
     background: gray;
+  }
+
+  .notice {
+    color: red;
   }
 </style>

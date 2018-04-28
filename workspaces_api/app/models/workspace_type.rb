@@ -14,4 +14,10 @@ class WorkspaceType < ApplicationRecord
     create_new_room(2, workspace_id, room_list[:meetingRoom], number_people_list[:meetingRoom], price[:priceHour][:meetingRoom], price[:priceDay][:meetingRoom],0,0,0)
     create_new_room(3, workspace_id, room_list[:openRoom], number_people_list[:openRoom], price[:priceHour][:openRoom], price[:priceDay][:openRoom],0,0,0)
   end
+
+  def self.update_available_table(id, quantity)
+    workspace_type = WorkspaceType.find(id)
+    new_available = workspace_type.available - quantity
+    workspace_type.update(available: new_available) if new_available
+  end
 end

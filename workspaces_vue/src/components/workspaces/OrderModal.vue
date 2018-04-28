@@ -7,12 +7,14 @@
           <h3>{{officeOrder.type.name}}</h3>
           <p>Your name</p>
           <b-form-input v-model="name"></b-form-input>
-          <span>Number of people: </span>
-          <select v-model="quantity">
-            <option v-for="option in numberPeople" v-bind:value="option" :key="option">
-              {{ option }}
-            </option>
-          </select>
+          <div v-if="officeOrder.type.id == 3">
+            <span>Number of people: </span>
+            <select v-model="quantity">
+              <option v-for="option in numberOfPeople" v-bind:value="option" :key="option">
+                {{ option }}
+              </option>
+            </select>
+          </div>
           <p>Start time</p>
           <b-row>
             <b-col md="6">
@@ -54,17 +56,19 @@
         numberPeople: null, 
         quantity: 1,
         startDate: '',
-        endDate: ''
+        endDate: '',
+        numberPeopleOrdered: 0
       }
-    },
-    created() {
-      this.getCurrentUser()
     },
     computed: {
       ...mapState({
         currentUser:state => state.user.currentUser,
-        createdOrder:state => state.order.newOrder
-      })
+        createdOrder:state => state.order.newOrder,
+        allOrders:state => state.order.allOrder
+      }),
+      numberOfPeople() {
+        return this.officeOrder.available
+      }
     },
     methods: {
       ...mapActions({
@@ -97,6 +101,8 @@
     }
   }
 </script>
-<style>
-
+<style scoped>
+  .button-control {
+    text-align: center;
+  }
 </style>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180423091154) do
+ActiveRecord::Schema.define(version: 20180427152930) do
 
   create_table "comments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "title"
@@ -113,6 +113,7 @@ ActiveRecord::Schema.define(version: 20180423091154) do
     t.string "price_month"
     t.string "price_year"
     t.string "unit"
+    t.integer "available"
     t.index ["type_id"], name: "index_workspace_types_on_type_id"
     t.index ["workspace_id"], name: "index_workspace_types_on_workspace_id"
   end

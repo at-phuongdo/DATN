@@ -22,8 +22,11 @@ class Api::V1::OrdersController < ApplicationController
   end
 
   def accept_order
+    binding.pry
     order = Order.find(params[:id])
     order.update(status: ACCEPT_STATUS)
+    workspace_id = order.workspace_id
+    WorkspaceType.update_available_table(order.workspace_type_id, order.quantity)
     all_orders = Order.where(workspace_id: order.workspace_id).order(status: :asc, created_at: :desc)
     render json: all_orders, status: :ok
   end

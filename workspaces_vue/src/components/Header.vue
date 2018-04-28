@@ -110,7 +110,6 @@
     watch: {
       userLogin() {
         this.currentUser = this.userLogin
-        console.log(this.currentUser)
         if (this.currentUser.workspaces[0]) {
           this.getWaitingOrder(this.currentUser.workspaces[0].id)
         }
