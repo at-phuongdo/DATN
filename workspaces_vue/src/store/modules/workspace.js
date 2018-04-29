@@ -72,6 +72,15 @@ const actions = {
       }
     }
   },
+  uploadAvatar(conext, avatar) {
+    var formData = new FormData()
+    formData.append('file', avatar)
+    formData.append('upload_preset', CLOUNDINARY_UPLOAD_PRESET)
+    Vue.http.post(CLOUDINARY_URL, formData)
+    .then(function(res) {
+      state.avatar = res.body.secure_url
+    })
+  },
   addNew: function(context, data) {
     Vue.http.post(baseUrl, data, {
       headers: {

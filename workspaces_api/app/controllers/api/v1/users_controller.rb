@@ -32,6 +32,12 @@ class Api::V1::UsersController < ApplicationController
     render json: user, status: :ok if user
   end
 
+  def update
+    user = User.find_by(confirm_token: params[:id])
+    user.update(user_params)
+    render json: user, status: :ok
+  end
+
   def confirm_email
     @user = User.find_by(confirm_token: params[:id])
     if @user
@@ -49,6 +55,6 @@ class Api::V1::UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:username, :email, :password)
+    params.require(:user).permit(:username, :avatar, :email, :password, :first_name, :last_name, :phone, :birthday, :gender)
   end
 end

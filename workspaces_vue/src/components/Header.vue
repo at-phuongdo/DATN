@@ -49,6 +49,7 @@
   <confirm-modal :user="user" ></confirm-modal>
   <mail-modal></mail-modal>
   <reset-password></reset-password>
+  <edit-profile :currentUser="currentUser"></edit-profile>
 </div>
 </template>
 <script>
@@ -57,6 +58,7 @@
   import ConfirmModal from './users/ConfirmModal.vue'
   import MailToReset from './users/MailToReset.vue'
   import ResetPassword from './users/ResetPassword.vue'
+  import EditProfile from './users/EditProfileModal.vue'
   import { mapState, mapActions } from 'vuex'
 
   var $ = window.jQuery = require('jquery')
@@ -64,10 +66,11 @@
   export default {
     components: {
       'signup-modal': SignUpModal,
-      'login-modal' : LoginModal,
-      'confirm-modal' : ConfirmModal,
-      'mail-modal' : MailToReset,
-      'reset-password' : ResetPassword
+      'login-modal': LoginModal,
+      'confirm-modal': ConfirmModal,
+      'mail-modal': MailToReset,
+      'reset-password': ResetPassword,
+      'edit-profile': EditProfile
     },
     data() {
       return {
@@ -105,6 +108,9 @@
       },
       getUser: function(user) {
         this.user = user
+      },
+      editProfile() {
+        this.$root.$emit('bv::show::modal', 'editProfileModal')
       }
     },
     watch: {
