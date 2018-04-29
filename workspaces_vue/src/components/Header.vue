@@ -115,9 +115,11 @@
     },
     watch: {
       userLogin() {
-        this.currentUser = this.userLogin
-        if (this.currentUser.workspaces[0]) {
-          this.getWaitingOrder(this.currentUser.workspaces[0].id)
+        if (!!this.userLogin.confirm_at) {
+          this.currentUser = this.userLogin
+          if (this.currentUser.workspaces[0]) {
+            this.getWaitingOrder(this.currentUser.workspaces[0].id)
+          }
         }
       },
       loginStatus() {

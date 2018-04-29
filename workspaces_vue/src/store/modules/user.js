@@ -54,7 +54,9 @@ const actions = {
     .then((response) => {
       state.newUser = response.body.user
       state.status = response.body.status
-      state.message = response.body.message
+      if (response.body.message) {
+        state.message = response.body.message
+      }
     })
     .catch((error => {
       state.status = error.statusText

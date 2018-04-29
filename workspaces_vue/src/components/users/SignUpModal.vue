@@ -131,7 +131,6 @@
               var user = this.newUser
               this.$emit('getUser', user)
               this.$refs.signUpModal.hide()
-              debugger
               if (this.message === '') {
                 this.confirmEmail()
               } else {
