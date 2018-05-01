@@ -72,8 +72,7 @@
             <td>{{row.price_week}}</td>
             <td>{{row.price_month}}</td>
             <td>{{row.price_year}}</td>
-            <td v-if="row.available > 0"><b-button variant="outline-success" @click="openOrderModal(row)">Reserve</b-button></td>
-            <td v-else class="notice"><strong>Reserved</strong></td>
+            <td><b-button variant="outline-success" @click="openOrderModal(row)">Reserve</b-button></td>
           </tr>
         </table>
       </div>
