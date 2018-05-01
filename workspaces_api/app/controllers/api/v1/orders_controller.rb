@@ -22,7 +22,6 @@ class Api::V1::OrdersController < ApplicationController
   end
 
   def accept_order
-    binding.pry
     order = Order.find(params[:id])
     order.update(status: ACCEPT_STATUS)
     workspace_id = order.workspace_id

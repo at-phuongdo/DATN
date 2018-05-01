@@ -114,6 +114,16 @@ const actions = {
     .then((res) => {
       state.workspaceDetail = res.body
     })
+  },
+  update(context, data) {
+    Vue.http.put(baseUrl + '/' + data.workspace.id , data, {
+      headers: {
+        'AccessToken' : state.accessToken
+      }
+    })
+    .then((res) => {
+      state.workspaceDetail = res.body
+    })
   }
 }
 

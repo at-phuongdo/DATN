@@ -37,6 +37,7 @@
 </div>
 </template>
 <script>
+  import { mapActions } from 'vuex'
   export default {
     data() {
       return {
@@ -55,6 +56,9 @@
       }
     },
     methods: {
+      ...mapActions({
+        'reset' : 'user/resetPassword'
+      }),
       hideModal: function() {
         this.$refs.resetPassword.hide()
       },
@@ -91,7 +95,7 @@
         }
         this.$validator.validateAll().then( async () => {
           if(this.errors.items.length === 0) {
-            await this.$store.dispatch('resetPassword', paramsReset)
+            await this.reset(paramsReset)
             if (this.$store.state.user.status === this.$getConst('STATUS_OK')) {
               localStorage.setItem('token', this.$store.state.user.currentUser.confirm_token)
               this.alertSuccess()

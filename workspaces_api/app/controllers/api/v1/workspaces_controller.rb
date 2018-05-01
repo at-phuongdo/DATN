@@ -29,6 +29,12 @@ class Api::V1::WorkspacesController < ApplicationController
     render json: workspace, full_info: true, status: :ok
   end
 
+  def update
+    workspace = Workspace.find(params[:id])
+    workspace.update(workspace_params)
+    render json: workspace, full_info: true, status: :ok
+  end
+
   def search
     type_search = params[:type]
     if type_search == 'location'

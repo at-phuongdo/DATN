@@ -168,6 +168,7 @@
           this.loading = true
           this.uploadAvatar(this.image)
         } else {
+          this.newAvatar = this.currentUser.avatar
           this.updateNewProfile()
         }
       },

@@ -269,7 +269,7 @@
     },
     data() {
       return {
-        tab: 5,
+        tab: 1,
         config: {
           toolbar: [
           [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript' ]

@@ -26,6 +26,7 @@
 </template>
 <script>
   import {Circle4} from 'vue-loading-spinner'
+  import { mapActions } from 'vuex'
   export default {
     components: {
       Circle4
@@ -37,6 +38,9 @@
       }
     },
     methods: {
+      ...mapActions({
+        'sendMail': 'user/sendEmailToReset'
+      }),
       alert(options) {
         swal(options)
       },
@@ -51,7 +55,7 @@
       },
       sendmail: async function() {
         this.loading = true
-        await this.$store.dispatch('sendEmailToReset', {'email': this.email})
+        await this.sendMail({'email': this.email})
         this.loading = false
         if (this.$store.state.user.status === this.$getConst('STATUS_OK')) {
           this.resetPassword()

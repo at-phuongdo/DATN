@@ -20,6 +20,7 @@
               </b-button>
               <div class="dropdown-content" style="left:0;">
                 <router-link v-on:click.native="editProfile" to="/"> Edit profile</router-link>
+                <router-link to="/my-workspace" v-if="currentUser.role=='partner'"> My workspace</router-link>
                 <router-link v-on:click.native="logOut" to="/"> Log out</router-link>
               </div>
             </div>
