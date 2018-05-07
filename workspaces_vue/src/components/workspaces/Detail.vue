@@ -8,7 +8,7 @@
         <p><span class="fa fa-map-marker"></span>{{workspaceDetail.address}}</p>
       </div>
       <hr>
-      <div class="description">
+      <div class="description clear-fix">
         <h4><span class="fa fa-bullseye"></span><strong> Overview</strong></h4>
         <div class="opening-hour">
           <h3><strong>Opening hours</strong></h3>
@@ -164,6 +164,11 @@
   }
 </script>
 <style scoped>
+.clear-fix:after {
+    content: "";
+    display: table;
+    clear: both;
+  } 
   .detail {
     padding: 50px 0;
   }

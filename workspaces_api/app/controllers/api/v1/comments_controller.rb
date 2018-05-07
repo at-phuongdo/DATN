@@ -10,10 +10,16 @@ class Api::V1::CommentsController < ApplicationController
   def create
     comment = Comment.new(comment_params)
     comment.workspace_id = @workspace.id
-    if comment.save!
-      index
+    if comment.save
+      comments = Comment.where(workspace_id: @workspace.id).order(updated_at: :desc)
+      rating = @workspace.rating
+      new_rating = (rating*(comments.length-1)+params[:rating])/comments.length
+      new_rating = "%.0f" % new_rating
+      @workspace.update(rating: new_rating.to_i)
+      render json: comments, status: :ok
     else
-      render json: comment.errors, status: :unprocessable_entity
+      comments = Comment.where(workspace_id: @workspace.id).order(updated_at: :desc)
+      render json: comments, adapter: :json, each_serializer: CommentSerializer, meta: { status: :ok, message: 'Had been commented' }
     end
   end
 
