@@ -11,7 +11,16 @@ const state = {
   orderStatus: '',
   allOrder: [],
   orderWaiting: [],
-  newOrder: {}
+  newOrder: {},
+  rangeTime: []
+}
+
+const getters = {
+  getOrderByOfficeId(state) {
+    return(officeId) => state.allOrder.filter(order =>{
+      return order.workspace_type_id === officeId
+    })
+  }
 }
 
 const mutations = {
@@ -56,6 +65,7 @@ const actions = {
 export default {
   namespaced: true,
   state,
+  getters,
   mutations,
   actions
 }

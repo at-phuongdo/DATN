@@ -6,13 +6,10 @@
           <h1><span class="decorate-span">Available reserve</span></h1> 
           <h3>{{officeOrder.type.name}}</h3>
           <b-row>
-            <b-col md="4">
-              <p>Your name</p>
-            </b-col>
-            <b-col>
-              <b-form-input v-model="name"></b-form-input>
-            </b-col>
+            <p>Your name</p>
+            <b-form-input v-model="name"></b-form-input>
           </b-row>
+          <!-- Open planroom -->
           <div v-if="officeOrder.type.id == 3">
             <b-row>
               <b-col md="4">
@@ -53,35 +50,34 @@
               </b-col>
             </b-row>
           </div>
+          <!-- Else -->
           <div v-else>
             <b-row>
-              <b-col md="4">
-                <span>From</span>
-              </b-col>
-              <b-col>
-                <b-form-input type="date" v-model="startDate"></b-form-input>
-              </b-col>
-            </b-row>
-            <b-row>
-              <b-col md="4">
-                <span>To</span>
-              </b-col>
-              <b-col>
-                <b-form-input type="date" v-model="endDate" :min="startDate"></b-form-input>
-              </b-col>
-            </b-row>
-          </div>
-          <div class="button-control">
-            <b-button @click="orderWorkspace" variant="primary" >Reserve</b-button>
-            <b-btn variant="danger" @click="hideModal" >Close</b-btn>
-          </div>
-        </b-form>
-      </div>
-    </b-modal>
-  </div>
+              <p>Date</p>
+              <el-date-picker
+              v-model="valueDateTimeOrder"
+              type="daterange"
+              align="right"
+              unlink-panels
+              range-separator="To"
+              start-placeholder="Start date"
+              end-placeholder="End date"
+              :picker-options="pickerOptions2">
+            </el-date-picker>
+          </b-row>
+        </div>
+        <div class="button-control">
+          <b-button @click="orderWorkspace" variant="primary" >Reserve</b-button>
+          <b-btn variant="danger" @click="hideModal" >Close</b-btn>
+        </div>
+      </b-form>
+    </div>
+  </b-modal>
+</div>
 </template>
 <script>
-  import { mapState, mapActions } from 'vuex'
+  import { mapState, mapActions, mapGetters } from 'vuex'
+  import moment from 'moment'
   export default {
     props: ['officeOrder'],
     data() {
@@ -93,7 +89,15 @@
         quantity: 1,
         startDate: '',
         endDate: '',
-        numberPeopleOrdered: 0
+        numberPeopleOrdered: 0,
+        valueDateTimeOrder: '',
+        pickerOptions2: {
+          disabledDate(time) {
+            return time.getTime() > Date.now();
+          },
+        },
+        range: [],
+        orderById: []
       }
     },
     computed: {
@@ -102,6 +106,9 @@
         createdOrder:state => state.order.newOrder,
         allOrders:state => state.order.allOrder
       }),
+      ...mapGetters("order", [
+        "getOrderByOfficeId"
+        ]),
       numberOfPeople() {
         return this.officeOrder.available
       }
@@ -166,6 +173,30 @@
     watch: {
       officeOrder: function() {
         this.numberPeople = this.officeOrder.number_of_people
+        this.getAllOrders(this.officeOrder.workspace_id)
+      },
+      allOrders() {
+        this.orderById = this.getOrderByOfficeId(this.officeOrder.id)
+        this.orderById.forEach((order) => {
+          let start =  moment(String(order.time_start).format('YYYY/MM/DD'))
+          console.log(start)
+          let end = order.time_end
+          var newDate = start
+          while (newDate <= end){
+            this.range.push(moment(String(newDate)).format('YYYY/MM/DD'));
+            newDate.setDate(newDate.getDate()+1);
+          }
+          console.log(this.range)
+        });
+      },
+      valueDateTimeOrder() {
+        this.startDate = moment(String(this.valueDateTimeOrder[0])).format('YYYY/MM/DD')
+        this.endDate = moment(String(this.valueDateTimeOrder[1])).format('YYYY/MM/DD')
+        var newDate = this.valueDateTimeOrder[0]
+        while (newDate <= this.valueDateTimeOrder[1]){
+          this.range.push(moment(String(newDate)).format('YYYY/MM/DD'));
+          newDate.setDate(newDate.getDate()+1);
+        }
       }
     }
   }
@@ -174,7 +205,7 @@
   .button-control {
     text-align: center;
   }
-  .el-date-editor.el-input {
+  .el-date-editor {
     width: 100%;
   }
 </style>
