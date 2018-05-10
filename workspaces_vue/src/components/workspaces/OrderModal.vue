@@ -62,7 +62,7 @@
               range-separator="To"
               start-placeholder="Start date"
               end-placeholder="End date"
-              :picker-options="pickerOptions2">
+              :picker-options = "pickerOptions">
             </el-date-picker>
           </b-row>
         </div>
@@ -91,13 +91,13 @@
         endDate: '',
         numberPeopleOrdered: 0,
         valueDateTimeOrder: '',
-        pickerOptions2: {
-          disabledDate(time) {
-            return time.getTime() > Date.now();
-          },
-        },
         range: [],
-        orderById: []
+        orderById: [],
+        pickerOptions: {
+          disabledDate(time) {
+            return time.getTime() == "2018-05-09";
+          },
+        }
       }
     },
     computed: {
@@ -177,25 +177,13 @@
       },
       allOrders() {
         this.orderById = this.getOrderByOfficeId(this.officeOrder.id)
-        this.orderById.forEach((order) => {
-          let start =  moment(String(order.time_start).format('YYYY/MM/DD'))
-          console.log(start)
-          let end = order.time_end
-          var newDate = start
+        for (var i = 0; i < this.orderById.length; i++) {
+          let newDate = new Date(this.orderById[i].time_start)
+          let end = new Date(this.orderById[i].time_end)
           while (newDate <= end){
-            this.range.push(moment(String(newDate)).format('YYYY/MM/DD'));
-            newDate.setDate(newDate.getDate()+1);
+            this.range.push(moment(String(newDate)).format('YYYY/MM/DD'))
+            newDate.setDate(newDate.getDate()+1)
           }
-          console.log(this.range)
-        });
-      },
-      valueDateTimeOrder() {
-        this.startDate = moment(String(this.valueDateTimeOrder[0])).format('YYYY/MM/DD')
-        this.endDate = moment(String(this.valueDateTimeOrder[1])).format('YYYY/MM/DD')
-        var newDate = this.valueDateTimeOrder[0]
-        while (newDate <= this.valueDateTimeOrder[1]){
-          this.range.push(moment(String(newDate)).format('YYYY/MM/DD'));
-          newDate.setDate(newDate.getDate()+1);
         }
       }
     }
