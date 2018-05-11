@@ -63,26 +63,36 @@
           zoom: 12,
           center: new google.maps.LatLng(16.056115,108.190248)
         }
+
         const map = new google.maps.Map(element, options)
         this.markerCoordinates.forEach((coord) => {
+          const title = coord.title
+          var infowindow = new google.maps.InfoWindow({
+            content: title
+          });
           const position = new google.maps.LatLng(coord.latitude, coord.longitude)
           const marker = new google.maps.Marker({ 
+            title: title,
             position,
             map : map
           });
-          google.maps.event.addListener(marker, 'dragend', function(ev){
-            alert(marker.getPosition())
+          google.maps.event.addListener(marker, 'mouseover', function(ev){
+            infowindow.open(map, marker);
+          });
+          google.maps.event.addListener(marker, 'mouseout', function () {
+            infowindow.close();
           });
         });
       },
       getAllMarkerCoordinates(listResult) {
         listResult.forEach((workspace) => {
           this.markerCoordinates.push({
+            title: workspace.name,
             latitude: workspace.lat,
             longitude: workspace.lng 
           })
         })
-      }
+      },
     },
     created: function() {
       this.searchWorkspace(this.$route.params.key)

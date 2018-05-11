@@ -62,7 +62,7 @@
               range-separator="To"
               start-placeholder="Start date"
               end-placeholder="End date"
-              :picker-options = "pickerOptions">
+              :picker-options="pickerOptions">
             </el-date-picker>
           </b-row>
         </div>
@@ -93,12 +93,9 @@
         valueDateTimeOrder: '',
         range: [],
         orderById: [],
-        pickerOptions: {
-          disabledDate(time) {
-            return time.getTime() == "2018-05-09";
-          },
-        }
+        pickerOptions:{}
       }
+
     },
     computed: {
       ...mapState({
@@ -159,8 +156,8 @@
 
         var orderParams = {
           name: this.name,
-          time_start: this.startTime + ' ' + this.startDate,
-          time_end: this.endTime + ' ' + this.endDate,
+          time_start: moment(String(this.valueDateTimeOrder[0])).format('YYYY/MM/DD'),
+          time_end: moment(String(this.valueDateTimeOrder[1])).format('YYYY/MM/DD'),
           quantity: this.quantity,
           workspace_type_id: this.officeOrder.id,
           workspace_id: this.officeOrder.workspace_id,
@@ -183,6 +180,15 @@
           while (newDate <= end){
             this.range.push(moment(String(newDate)).format('YYYY/MM/DD'))
             newDate.setDate(newDate.getDate()+1)
+          }
+        }
+        var self = this;
+        this.pickerOptions = {
+          disabledDate(time) {
+            for (var i = 0; i < this.range.length; i++) {
+              let date = new Date(this.range[i])
+              return time.getTime() === date;
+            }
           }
         }
       }
