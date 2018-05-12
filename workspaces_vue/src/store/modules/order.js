@@ -45,6 +45,7 @@ const actions = {
     Vue.http.post(baseUrl, orderParams)
     .then((res) => {
      state.newOrder = res.body
+     state.orderStatus = res.status
    })
   },
   getWaitingOrder: function(context, workspaceId) {
@@ -56,7 +57,12 @@ const actions = {
   changeStatus(context, orderId) {
     Vue.http.post(baseUrl + orderId)
     .then((res) => {
-      console.log(res.body)
+      context.commit('GET_ALL_ORDER', res.body)
+    })
+  },
+  declineOrder(context, orderId) {
+    Vue.http.post(baseUrl + '/clear/' + orderId)
+    .then((res) => {
       context.commit('GET_ALL_ORDER', res.body)
     })
   }

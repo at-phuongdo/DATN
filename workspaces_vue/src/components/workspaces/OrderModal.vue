@@ -10,11 +10,9 @@
             <b-form-input v-model="name"></b-form-input>
           </b-row>
           <!-- Open planroom -->
-          <div v-if="officeOrder.type.id == 3">
-            <b-row>
-              <b-col md="4">
-                <span>Number of people </span>
-              </b-col>
+          <!-- <div v-if="officeOrder.type.id == 3"> -->
+            <b-row v-if="officeOrder.type.id == 3">
+              <span>Number of people </span>
               <b-col>
                 <select v-model="quantity">
                   <option v-for="option in numberOfPeople" v-bind:value="option" :key="option">
@@ -23,38 +21,13 @@
                 </select>
               </b-col>
             </b-row>
-            <b-row>
-              <b-col md="4">
-                <span>Date</span>
-              </b-col>
-              <b-col>
-                <b-form-input type="date" v-model="startDate"></b-form-input>
-              </b-col>
-            </b-row>
-            <b-row>
-              <b-col md="4">
-                <span>From</span>
-              </b-col>
-              <b-col>
-                <el-time-select v-model="startTime" :picker-options="{ start: '00:00', step: '00:15', end: '23:30'}" placeholder="From">
-                </el-time-select>
-              </b-col>
-            </b-row>
-            <b-row>
-              <b-col md="4">
-                <span>To</span>
-              </b-col>
-              <b-col>
-                <el-time-select v-model="endTime" :picker-options="{ start: '00:00', step: '00:15', end: '23:30'}" placeholder="To">
-                </el-time-select>
-              </b-col>
-            </b-row>
-          </div>
+          <!-- </div> -->
           <!-- Else -->
-          <div v-else>
+          <div>
             <b-row>
               <p>Date</p>
               <el-date-picker
+              ref="picker"
               v-model="valueDateTimeOrder"
               type="daterange"
               align="right"
@@ -81,6 +54,7 @@
   export default {
     props: ['officeOrder'],
     data() {
+      var self = this
       return {
         name: '',
         startTime: '',
@@ -93,7 +67,14 @@
         valueDateTimeOrder: '',
         range: [],
         orderById: [],
-        pickerOptions:{}
+        disabledDates: [],
+        pickerOptions: {
+          disabledDate(time) {
+            let format_time = moment(time).format('YYYY-MM-DD');
+            return self.disabledDates.indexOf(format_time)>-1 || time < Date.now() 
+          }
+        },
+        OK_STATUS: 200
       }
 
     },
@@ -101,7 +82,8 @@
       ...mapState({
         currentUser:state => state.user.currentUser,
         createdOrder:state => state.order.newOrder,
-        allOrders:state => state.order.allOrder
+        allOrders:state => state.order.allOrder,
+        orderStatus:state => state.order.orderStatus
       }),
       ...mapGetters("order", [
         "getOrderByOfficeId"
@@ -126,7 +108,7 @@
       alertSuccess({
         title = "Success!", 
         text = "Thanks for reserve our workspace. Please check mail to check we accept your order", 
-        timer = 2000, 
+        timer = 5000, 
         showConfirmationButton = false
       } = {}) {
         this.alert({
@@ -147,17 +129,10 @@
         });
       },
       orderWorkspace() {
-        if (this.officeOrder.type.id == 3) {
-          this.endDate = this.startDate
-        } else {
-          this.startTime = ''
-          this.endTime = ''
-        }
-
         var orderParams = {
           name: this.name,
-          time_start: moment(String(this.valueDateTimeOrder[0])).format('YYYY/MM/DD'),
-          time_end: moment(String(this.valueDateTimeOrder[1])).format('YYYY/MM/DD'),
+          time_start: moment(String(this.valueDateTimeOrder[0])).format('YYYY-MM-DD'),
+          time_end: moment(String(this.valueDateTimeOrder[1])).format('YYYY-MM-DD'),
           quantity: this.quantity,
           workspace_type_id: this.officeOrder.id,
           workspace_id: this.officeOrder.workspace_id,
@@ -177,19 +152,18 @@
         for (var i = 0; i < this.orderById.length; i++) {
           let newDate = new Date(this.orderById[i].time_start)
           let end = new Date(this.orderById[i].time_end)
-          while (newDate <= end){
-            this.range.push(moment(String(newDate)).format('YYYY/MM/DD'))
+          while (newDate <= end && newDate.getDate() < Date.now()){
+            this.range.push(moment(String(newDate)).format('YYYY-MM-DD'))
             newDate.setDate(newDate.getDate()+1)
           }
         }
-        var self = this;
-        this.pickerOptions = {
-          disabledDate(time) {
-            for (var i = 0; i < this.range.length; i++) {
-              let date = new Date(this.range[i])
-              return time.getTime() === date;
-            }
-          }
+        this.disabledDates = this.range
+        this.$refs.picker.unmountPicker();
+        this.$refs.picker.mountPicker();
+      },
+      orderStatus() {
+        if (this.orderStatus === this.OK_STATUS) {
+          this.alertSuccess()
         }
       }
     }

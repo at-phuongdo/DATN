@@ -7,12 +7,12 @@
             <li class="workspace-info clearfix" v-for="workspace in paginated('workspacePerPage')" :key="workspace.id">
               <router-link :to="{ name: 'DetailPage', params: { city: workspace.city, name: workspace.friendly_url }}">
                 <div class="search-wrapper" :style="{ 'background-image': 'url(' + workspace.avatar + ')' }">
+                  <h3 class="workspace-price">VND {{workspace.price_day}} /DAY</h3>
                 </div>
                 <div class="content">
                   <h5 class="workspace-name"><strong>{{workspace.name}}</strong></h5>
                   <span v-for="currentRating in rating" :key="currentRating" v-bind:class="[workspace.rating > currentRating ? checkedStar : uncheckStar]"></span>
                   <span>( {{workspace.comments.length}} Reviews)</span>
-                  <h3 class="workspace-price">VND {{workspace.price_day}} /DAY</h3>
                 </div>
               </router-link>
             </li>
@@ -136,6 +136,13 @@
   .search-wrapper {
     height: 200px;
     background-size: cover;
+    position: relative;
+  }
+
+  .workspace-price {
+    position: absolute;
+    bottom: 0;
+    color: white;
   }
 
   li {
@@ -165,5 +172,6 @@
     height: 100%;
     margin: 0 auto;
     background: gray;
+    margin-top: 10px;
   }
 </style>

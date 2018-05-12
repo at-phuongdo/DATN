@@ -21,7 +21,10 @@
           <td>{{order.time_start}}</td>
           <td>{{order.time_end}}</td>
           <td><strong>{{order.status}}</strong></td>
-          <td v-if="order.status=='waiting'"><button @click="acceptOrder(order.id)">Accept</button></td>
+          <td v-if="order.status=='waiting'">
+            <button @click="acceptOrder(order.id)">Accept</button>
+            <button @click="declineOrder(order.id)">Decline</button>
+          </td>
           <td v-else></td>
         </tr>
       </table>
@@ -54,10 +57,14 @@
         'getCurrentUser': 'user/getCurrentUser',
         'getAllOrder': 'order/getAllOrder',
         'getWaitingOrder': 'order/getWaitingOrder',
-        'changeStatus': 'order/changeStatus'
+        'changeStatus': 'order/changeStatus',
+        'decline': 'order/declineOrder'
       }),
       acceptOrder(orderId) {
         this.changeStatus(orderId)
+      },
+      declineOrder(orderId) {
+        this.decline(orderId)
       }
     },
     watch: {
