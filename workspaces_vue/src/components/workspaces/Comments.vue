@@ -14,7 +14,7 @@
       <b-row v-for="comment in paginated('commentPerPage')" :key="comment.id">
         <b-col md="2">
           <div class="info">
-            <img class="avatar" :src="comment.user.avatar" v-if="comment.user.avatar">
+            <img class="avatar" :src="comment.user.avatar" style="width: 50px;" v-if="comment.user.avatar">
             <img class="avatar" src="https://research.kent.ac.uk/clho/wp-content/plugins/wp-person-cpt/images/featured-default.png" width="40px" v-else>
             <p>{{comment.user.username}}</p>
           </div>
@@ -97,6 +97,7 @@
     computed: {
       ...mapState({
         allComments:state => state.comment.listComments,
+        messageComment:state => state.comment.message,
         currentuser:state => state.user.currentUser,
       })
     },
@@ -129,12 +130,29 @@
       hideModal: function() {
         this.$refs.reviewModal.hide()
       },
+      alert(options) {
+        swal(options)
+      },
+      alertError({
+        title = "Error!", text = "Oops...You had reviewed!"
+      } = {}) {
+        this.alert({
+          title: title,
+          text: text,
+          icon: 'error'
+        });
+      },
       setCurrentComment(comment) {
         this.currentComment = comment
         this.$root.$emit('bv::show::modal', 'editModal')
       },
       currentCommentId(id) {
         this.deleteComment(id)
+      }
+    },
+    watch: {
+      messageComment() {
+        this.alertError()
       }
     }
   }

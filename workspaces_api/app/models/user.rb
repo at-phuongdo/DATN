@@ -5,6 +5,7 @@ class User < ApplicationRecord
   has_many :comments
   has_secure_password validations: false
   enum role: %w[user partner admin]
+  enum gender: %w[male female]
 
   validates :email, presence: true, uniqueness: true
 

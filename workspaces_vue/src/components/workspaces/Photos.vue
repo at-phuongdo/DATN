@@ -12,7 +12,7 @@
       </div>
     </div>
     <div class="workspace-photos">
-      <h4>Insert your workspace's photos(5 photos)</h4>
+      <h4>Insert your workspace's photos</h4>
       <label class="input-image">
         <input type="file" ref="photoRefs" @change="previewPhotos" multiple style="display: none" accept=".jpg, .jpeg, .png">
         Select photos

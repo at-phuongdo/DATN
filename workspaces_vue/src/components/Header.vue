@@ -20,6 +20,7 @@
               </b-button>
               <div class="dropdown-content" style="left:0;">
                 <router-link v-on:click.native="editProfile" to="/"> Edit profile</router-link>
+                <router-link to="/my-workspace" v-if="currentUser.role=='partner'"> My workspace</router-link>
                 <router-link v-on:click.native="logOut" to="/"> Log out</router-link>
               </div>
             </div>
@@ -49,6 +50,7 @@
   <confirm-modal :user="user" ></confirm-modal>
   <mail-modal></mail-modal>
   <reset-password></reset-password>
+  <edit-profile :currentUser="currentUser"></edit-profile>
 </div>
 </template>
 <script>
@@ -57,6 +59,7 @@
   import ConfirmModal from './users/ConfirmModal.vue'
   import MailToReset from './users/MailToReset.vue'
   import ResetPassword from './users/ResetPassword.vue'
+  import EditProfile from './users/EditProfileModal.vue'
   import { mapState, mapActions } from 'vuex'
 
   var $ = window.jQuery = require('jquery')
@@ -64,10 +67,11 @@
   export default {
     components: {
       'signup-modal': SignUpModal,
-      'login-modal' : LoginModal,
-      'confirm-modal' : ConfirmModal,
-      'mail-modal' : MailToReset,
-      'reset-password' : ResetPassword
+      'login-modal': LoginModal,
+      'confirm-modal': ConfirmModal,
+      'mail-modal': MailToReset,
+      'reset-password': ResetPassword,
+      'edit-profile': EditProfile
     },
     data() {
       return {
@@ -105,13 +109,18 @@
       },
       getUser: function(user) {
         this.user = user
+      },
+      editProfile() {
+        this.$root.$emit('bv::show::modal', 'editProfileModal')
       }
     },
     watch: {
       userLogin() {
-        this.currentUser = this.userLogin
-        if (this.currentUser.workspaces[0]) {
-          this.getWaitingOrder(this.currentUser.workspaces[0].id)
+        if (!!this.userLogin.confirm_at) {
+          this.currentUser = this.userLogin
+          if (this.currentUser.workspaces[0]) {
+            this.getWaitingOrder(this.currentUser.workspaces[0].id)
+          }
         }
       },
       loginStatus() {

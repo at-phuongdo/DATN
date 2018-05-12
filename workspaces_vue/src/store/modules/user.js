@@ -12,7 +12,9 @@ const state = {
   status: '',
   isLogin: false,
   newUser: {},
-  message: ''
+  message: '',
+  accessToken: localStorage.getItem("token"),
+  updateStatus: ''
 };
 
 const mutations = {
@@ -52,7 +54,9 @@ const actions = {
     .then((response) => {
       state.newUser = response.body.user
       state.status = response.body.status
-      state.message = response.body.message
+      if (response.body.message) {
+        state.message = response.body.message
+      }
     })
     .catch((error => {
       state.status = error.statusText
@@ -98,6 +102,13 @@ const actions = {
   registerEmailFacebook: async function(context, user) {
     state.status = "ok"
     context.commit("CURRENT_USER", user)
+  },
+  updateProfile(context, paramsUpdate) {
+    Vue.http.put(baseUrl + '/users/' + state.accessToken, paramsUpdate)
+    .then((res) => {
+      context.commit("CURRENT_USER", res.body)
+      state.updateStatus = res.status
+    })
   }
 }
 

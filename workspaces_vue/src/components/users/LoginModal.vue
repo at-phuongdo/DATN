@@ -109,17 +109,17 @@
         this.logIn({ "session": userLogin })
         setTimeout(() => {
           var user = this.currentuser
-          var status = this.status
-          if(status === this.$getConst('STATUS_OK')){
-            localStorage.setItem("token", user.confirm_token);
-            this.$refs.logInModal.hide()
-            this.alertSuccess()
-          }
-          else if (status === 'no_content') {
-            this.$emit('getUser', user)
-            this.confirm()
-          }
-          else{
+          var status = !!user.confirm_at
+          if (!!user) {
+            if (status === true) {
+              localStorage.setItem("token", user.confirm_token);
+              this.$refs.logInModal.hide()
+              this.alertSuccess()
+            } else {
+              this.$emit('getUser', user)
+              this.confirm()
+            }
+          } else{
             this.alertError()
           }
         }, 500)

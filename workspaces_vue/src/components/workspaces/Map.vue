@@ -41,23 +41,35 @@
           longitude: 108.190248
         }],
         address: {
-          street : this.addressWorkspace.street,
-          town : this.addressWorkspace.town,
-          district : this.addressWorkspace.district,
-          city : this.addressWorkspace.city,
-          country : this.addressWorkspace.country,
+          street : '',
+          town : '',
+          district : '',
+          city : '',
+          country : '',
           stringAddress: '',
-          lat: this.addressWorkspace.lat,
-          lng: this.addressWorkspace.lng
+          lat: '',
+          lng: ''
         }
       }
     },
-
+    watch: {
+      addressWorkspace() {
+        this.address.street = this.addressWorkspace.street,
+        this.address.town = this.addressWorkspace.town,
+        this.address.district = this.addressWorkspace.district,
+        this.address.city = this.addressWorkspace.city,
+        this.address.country = this.addressWorkspace.country,
+        this.address.stringAddress= this.addressWorkspace.address,
+        this.address.lat= this.addressWorkspace.lat,
+        this.address.lng= this.addressWorkspace.lng
+      }
+    },
+    created() {
+    },
     mounted: function () {
       const element = document.getElementById(this.mapName)
       const options = {
         zoom: 6,
-        // center: new google.maps.LatLng(16.056115,108.190248)
         center: new google.maps.LatLng(this.address.lat, this.address.lng)
       }
       const map = new google.maps.Map(element, options)

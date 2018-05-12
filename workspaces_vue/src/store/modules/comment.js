@@ -10,6 +10,7 @@ const baseUrl = "http://localhost:3000/api/v1/comments";
 const state = {
   listComments: [],
   accessToken: localStorage.getItem("token"),
+  message: ''
 }
 
 const mutations = {
@@ -29,7 +30,13 @@ const actions = {
     Vue.http.post(baseUrl + '/'+ params.workspace.name, params.comment)
     .then((res) => {
       context.commit('LIST_COMMENT', res.body)
+      if (res.body.meta.message) {
+        state.message = res.body.meta.message
+      }
     })
+    .catch((error => {
+      console.log(error.statusText)
+    }))
   },
   updateComment(context, params) {
     Vue.http.put(baseUrl + '/'+ params.workspace.name, params.comment)
