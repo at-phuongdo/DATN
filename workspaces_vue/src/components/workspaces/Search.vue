@@ -1,7 +1,7 @@
 <template>
   <div class="search">
    <b-row>
-     <b-col md="4" offset-md="4">
+     <b-col md="6" offset-md="3">
        <h1 class="search-title"><span class="decorate-span">Let's</span> find a workspace</h1>
      </b-col>
    </b-row>

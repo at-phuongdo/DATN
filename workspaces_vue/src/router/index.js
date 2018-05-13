@@ -6,6 +6,11 @@ import MyWorkspace from '@/pages/MyWorkspace'
 import SearchResult from '@/pages/SearchResult'
 import DetailPage from '@/pages/DetailPage'
 import CheckOrderPage from '@/pages/CheckOrder'
+import AdminLogin from '@/pages/admin/Login'
+import Dashboard from '@/pages/admin/Dashboard'
+import AdminUser from '@/pages/admin/AdminUser'
+import AdminWorkspace from '@/pages/admin/Workspace'
+import AdminConvenient from '@/pages/admin/Convenient'
 
 Vue.use(Router)
 
@@ -41,6 +46,31 @@ export default new Router({
       path: '/orders',
       name: 'CheckOrder',
       component: CheckOrderPage
+    },
+    {
+      path: '/admin',
+      name: 'AdminLogin',
+      component: AdminLogin
+    },
+    {
+      path: '/admin-dashboard',
+      name: 'Dashboard',
+      component: Dashboard
+    },
+    {
+      path: '/admin-user',
+      name: 'AdminUser',
+      component: AdminUser
+    },
+    {
+      path: '/admin-workspace',
+      name: 'AdminWorkspace',
+      component: AdminWorkspace
+    },
+    {
+      path: '/admin-convenient',
+      name: 'AdminConvenient',
+      component: AdminConvenient
     }
   ]
 })

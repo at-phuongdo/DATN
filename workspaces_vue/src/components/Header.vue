@@ -1,5 +1,5 @@
 <template>
-  <div id="header">
+  <div id="header" ref="header">
    <div class="container">
     <b-navbar toggleable="md" type="dark">
       <router-link to="/">
@@ -81,6 +81,18 @@
         countWaitingOrder: 0
       }
     },
+    mounted() {
+      $(function(){
+        var headerTop = $('#header').offset().top;
+        $(window).scroll(function(){
+          if( $(window).scrollTop() >= headerTop ) {
+            $('#header').css({position: 'fixed', top: '0px'});
+          } else {
+            $('#header').css({position: 'static', top: '0px'});
+          }
+        });
+      });
+    },
     created() {
       this.getCurrentUser(localStorage.getItem("token"))
     },
@@ -131,16 +143,16 @@
       }
     }
   }
-  $(function(){
-    var headerTop = $('#header').offset().top;
-    $(window).scroll(function(){
-      if( $(window).scrollTop() >= headerTop ) {
-        $('#header').css({position: 'fixed', top: '0px'});
-      } else {
-        $('#header').css({position: 'static', top: '0px'});
-      }
-    });
-  });
+  // $(function(){
+  //   var headerTop = $('#header').offset().top;
+  //   $(window).scroll(function(){
+  //     if( $(window).scrollTop() >= headerTop ) {
+  //       $('#header').css({position: 'fixed', top: '0px'});
+  //     } else {
+  //       $('#header').css({position: 'static', top: '0px'});
+  //     }
+  //   });
+  // });
 </script>
 <style scoped>
   #header {
