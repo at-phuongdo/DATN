@@ -11,6 +11,7 @@ import Dashboard from '@/pages/admin/Dashboard'
 import AdminUser from '@/pages/admin/AdminUser'
 import AdminWorkspace from '@/pages/admin/Workspace'
 import AdminConvenient from '@/pages/admin/Convenient'
+import AdminBanner from '@/pages/admin/Banner'
 
 Vue.use(Router)
 
@@ -71,6 +72,11 @@ export default new Router({
       path: '/admin-convenient',
       name: 'AdminConvenient',
       component: AdminConvenient
+    },
+    {
+      path: '/admin-banner',
+      name: 'AdminBanner',
+      component: AdminBanner
     }
   ]
 })

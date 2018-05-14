@@ -10,7 +10,10 @@ const baseUrl = "http://localhost:3000/admin/"
 const state = {
   loginStatus: '',
   user: {},
-  list: []
+  list: [],
+  createStatus: '',
+  editStatus: '',
+  deleteStatus: ''
 }
 
 const mutations = {
@@ -33,6 +36,24 @@ const actions = {
     Vue.http.get(baseUrl + 'users')
     .then((res) => {
       context.commit('listUser', res.body)
+    })
+  },
+  newAccount(context, userParams) {
+    Vue.http.post(baseUrl + 'users', userParams)
+    .then((res) => {
+      state.createStatus = res.status
+    })
+  },
+  editAccount(context, userParams) {
+    Vue.http.put(baseUrl + 'users/' + userParams.user.id, userParams)
+    .then((res) => {
+      state.editStatus = res.status
+    })
+  },
+  deleteAccount(context, id) {
+    Vue.http.delete(baseUrl + 'users/' + id)
+    .then((res) => {
+      state.deleteStatus = res.status
     })
   }
 }

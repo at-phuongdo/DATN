@@ -5,10 +5,13 @@ import VueResource from 'vue-resource'
 Vue.use(Vuex);
 Vue.use(VueResource);
 
-const baseUrl = "http://localhost:3000/admin/"
+const baseUrl = "http://localhost:3000/admin/convenients/"
 
 const state = {
-  list: []
+  list: [],
+  createStatus: '',
+  editStatus: '',
+  deleteStatus: ''
 }
 
 const mutations = {
@@ -19,9 +22,27 @@ const mutations = {
 
 const actions = {
   getAllConvenients(context) {
-    Vue.http.get(baseUrl + 'convenients')
+    Vue.http.get(baseUrl)
     .then((res) => {
       context.commit('listConvenients', res.body)
+    })
+  },
+  newConvenient(context, params) {
+    Vue.http.post(baseUrl, params)
+    .then((res) => {
+      state.createStatus = res.status
+    })
+  },
+  deleteConvenient(context, id) {
+    Vue.http.delete(baseUrl + id)
+    .then((res) => {
+      state.deleteStatus = res.status
+    })
+  },
+  editConvenient(context, convenient) {
+    Vue.http.put(baseUrl + convenient.convenient.id, convenient)
+    .then((res) => {
+      state.editStatus = res.status
     })
   }
 }

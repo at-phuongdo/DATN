@@ -6,8 +6,8 @@
       <router-link to="/admin-user"><li><span class="fa fa-user"></span> User</li></router-link>
       <router-link to="/admin-workspace"><li><span class="fa fa-home"></span> Workspace</li></router-link>
       <router-link to="/admin-convenient"><li><span class="fa fa-file"></span> Convenient</li></router-link>
-      <router-link to="/admin-user"><li><span class="fa fa-photo"></span> Banner</li></router-link>
-    
+      <router-link to="/admin-banner"><li><span class="fa fa-photo"></span> Banner</li></router-link>
+      
     </ul>
   </div>
 </template>
@@ -57,6 +57,7 @@
 
   ul {
     padding-left: 0;
+    padding-right: 0;
   }
 
   li {
