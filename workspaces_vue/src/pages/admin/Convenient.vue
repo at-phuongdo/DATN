@@ -1,5 +1,6 @@
 <template>
   <div class="convenient-page" v-if="isLogin">
+  <header-admin></header-admin>
     <convenient></convenient>
     <left-side-bar></left-side-bar>
   </div>
@@ -7,10 +8,13 @@
 <script>
   import LeftSideBar from '../../components/admin/LeftSideBar.vue'
   import Convenient from '../../components/admin/convenient/ListConvenient.vue'
+  import HeaderAdmin from '../../components/admin/Header.vue'
+
   export default {
     components: {
       LeftSideBar,
-      Convenient
+      Convenient,
+      HeaderAdmin
     },
     computed: {
       isLogin() {
@@ -20,7 +24,7 @@
   }
 </script>
 <style>
-  .workspace-page {
+  .convenient-page {
     width: 100%;
     display: inline-block;
   }

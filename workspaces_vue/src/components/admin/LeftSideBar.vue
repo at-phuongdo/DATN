@@ -1,6 +1,6 @@
 <template>
   <div class="left-sidebar" :style="styleHeight">
-    <h5 class="text-center name">Coworking Spaces</h5>
+    <router-link to="/admin-dashboard"><h5 class="text-center name">Coworking Spaces</h5></router-link>
     <hr>
     <ul>
       <router-link to="/admin-user"><li><span class="fa fa-user"></span> User</li></router-link>

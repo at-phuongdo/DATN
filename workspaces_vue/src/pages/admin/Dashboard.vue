@@ -1,13 +1,16 @@
 <template>
-  <div>
+  <div class="dashboard-page" v-if="isLogin">
+    <header-admin></header-admin>
     <left-side-bar v-if="isLogin"></left-side-bar>
   </div>
 </template>
 <script>
   import LeftSideBar from '../../components/admin/LeftSideBar.vue'
+  import HeaderAdmin from '../../components/admin/Header.vue'
   export default {
     components: {
-      LeftSideBar
+      LeftSideBar,
+      HeaderAdmin
     },
     computed: {
       isLogin() {
@@ -16,3 +19,9 @@
     }
   }
 </script>
+<style>
+  .dashboard-page {
+    width: 100%;
+    display: inline-block;
+  }
+</style>

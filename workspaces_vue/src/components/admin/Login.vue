@@ -52,7 +52,7 @@
     watch: {
       admin() {
         localStorage.setItem('admin_token', this.admin.confirm_token)
-        this.$router.push('/admin/dashboard')
+        this.$router.push('/admin-dashboard')
       }
     }
   }

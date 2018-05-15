@@ -1,5 +1,6 @@
 <template>
   <div class="workspace-page" v-if="isLogin">
+  <header-admin></header-admin>
     <workspace></workspace>
     <left-side-bar></left-side-bar>
   </div>
@@ -7,10 +8,13 @@
 <script>
   import LeftSideBar from '../../components/admin/LeftSideBar.vue'
   import Workspace from '../../components/admin/workspace/ListWorkspace.vue'
+  import HeaderAdmin from '../../components/admin/Header.vue'
+
   export default {
     components: {
       LeftSideBar,
-      Workspace
+      Workspace,
+      HeaderAdmin
     },
     computed: {
       isLogin() {

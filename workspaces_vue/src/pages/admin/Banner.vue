@@ -1,5 +1,6 @@
 <template>
   <div class="banner-page" v-if="isLogin">
+    <header-admin></header-admin>
     <banner></banner>
     <left-side-bar></left-side-bar>
   </div>
@@ -7,9 +8,11 @@
 <script>
   import LeftSideBar from '../../components/admin/LeftSideBar.vue'
   import Banner from '../../components/admin/banner/Banner.vue'
+  import HeaderAdmin from '../../components/admin/Header.vue'
   export default {
     components: {
       LeftSideBar,
+      HeaderAdmin,
       Banner
     },
     computed: {
@@ -20,7 +23,7 @@
   }
 </script>
 <style>
-  .workspace-page {
+  .banner-page {
     width: 100%;
     display: inline-block;
   }
