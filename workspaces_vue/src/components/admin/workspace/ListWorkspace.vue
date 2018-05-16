@@ -21,8 +21,8 @@ temp<template>
           <td>{{workspace.phone}}</td>
           <td>{{workspace.website}}</td>
           <td>
-            <b-btn>Detail</b-btn>
-            <b-btn>Edit</b-btn>
+            <b-btn @click="openDetailModal(workspace)">Detail</b-btn>
+            <b-btn @click="openEditModal(workspace)">Edit</b-btn>
             <b-btn>Delete</b-btn>
           </td>
         </tr>
@@ -32,15 +32,23 @@ temp<template>
   <div class="paginate">
     <paginate-links for="workspacePerPage" :limit="2" :show-step-links="true" class="pagination" align="center"></paginate-links>
   </div>
+  <detail-workspace :workspace="workspaceSelected"></detail-workspace>
 </div>
 </template>
 <script>
   import { mapState, mapActions } from 'vuex'
+  import DetailWorkspace from './DetailModal.vue'
+  import EditWorkspace from './EditWorkspace.vue'
   export default {
+    components: {
+      DetailWorkspace,
+      EditWorkspace
+    },
     data() {
       return {
         listAllWorkspace: [],
         paginate: ['workspacePerPage'],
+        workspaceSelected: {}
       }
     },
     created() {
@@ -55,6 +63,14 @@ temp<template>
       ...mapActions({
         'getAllWorkspace': 'adminWorkspace/getAllWorkspace'
       }),
+      openDetailModal(workspace) {
+        this.workspaceSelected = workspace
+        this.$root.$emit('bv::show::modal', 'detailModal')
+      },
+      openEditModal(workspace) {
+        this.workspaceSelected = workspace
+        this.$router.push('/admin-editworkspace/' + workspace.id)
+      }
     },
     watch: {
       allWorkspace() {

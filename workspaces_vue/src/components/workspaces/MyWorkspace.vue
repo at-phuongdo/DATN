@@ -84,23 +84,18 @@
       </b-collapse>
       <!-- /Amenities -->
       <b-row class="submit-btn">
-        <b-button type="button" variant="primary next-btn" @click="submit">Save</b-button>
+        <b-button type="button" variant="primary" @click="submit">Save</b-button>
       </b-row>
     </div>
   </div>
-  <div class="loading style-2" v-if="loading"><div class="loading-wheel"></div></div>
 </div>
 </template>
 <script>
-  import {Circle4} from 'vue-loading-spinner'
   import MapComponent from './Map.vue'
   import Photos from './Photos.vue'
   import Ckeditor from 'vue-ckeditor2'
   import { mapActions, mapState } from 'vuex'
   export default {
-    components: {
-      Circle4
-    },
     dependencies : ['workspaceService'],
     components: {
       'google-map' : MapComponent,
@@ -164,7 +159,8 @@
       ...mapState({
         userLogin:state => state.user.currentUser,
         convenients:state => state.convenient.listConvenient,
-        workspaceInfo:state => state.workspace.workspaceDetail
+        workspaceInfo:state => state.workspace.workspaceDetail,
+        updateStatus:state => state.workspace.updateStatus
       })
     },
     methods: {
@@ -174,6 +170,32 @@
         getConvenient: 'convenient/getAllConvenient',
         updateWorkspace: 'workspace/update'
       }),
+      alert(options) {
+        swal(options)
+      },
+      alertSuccess({
+        title = "Success!", 
+        text = "Update success!", 
+        timer = 5000, 
+        showConfirmationButton = false
+      } = {}) {
+        this.alert({
+          title: title,
+          text: text,
+          timer: timer,
+          button: showConfirmationButton,
+          icon: 'success'
+        });
+      },
+      alertError({
+        title = "Error!", text = "Oops...Email or password invalid"
+      } = {}) {
+        this.alert({
+          title: title,
+          text: text,
+          icon: 'error'
+        });
+      },
       getAddress: function(address) {
         this.workspace.country = address.country
         this.workspace.city = address.city
@@ -222,8 +244,13 @@
           return item.id
         })
       },
-      convenients: function() {
+      convenients() {
         this.amenities = this.convenients
+      },
+      updateStatus() {
+        if(this.updateStatus == '200') {
+          this.alertSuccess()
+        }
       }
     }
   }

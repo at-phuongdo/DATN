@@ -10,6 +10,7 @@ import AdminLogin from '@/pages/admin/Login'
 import Dashboard from '@/pages/admin/Dashboard'
 import AdminUser from '@/pages/admin/AdminUser'
 import AdminWorkspace from '@/pages/admin/Workspace'
+import AdminEditWorkspace from '@/pages/admin/EditWorkspace'
 import AdminConvenient from '@/pages/admin/Convenient'
 import AdminBanner from '@/pages/admin/Banner'
 
@@ -38,11 +39,7 @@ export default new Router({
       name: 'SearchResult',
       component: SearchResult
     },
-    {
-      path: '/:city/:name',
-      name: 'DetailPage',
-      component: DetailPage
-    },
+    
     {
       path: '/orders',
       name: 'CheckOrder',
@@ -69,6 +66,11 @@ export default new Router({
       component: AdminWorkspace
     },
     {
+      path: '/admin-editworkspace/:id',
+      name: 'AdminEditWorkspace',
+      component: AdminEditWorkspace
+    },
+    {
       path: '/admin-convenient',
       name: 'AdminConvenient',
       component: AdminConvenient
@@ -77,6 +79,11 @@ export default new Router({
       path: '/admin-banner',
       name: 'AdminBanner',
       component: AdminBanner
-    }
+    },
+    {
+      path: '/:city/:name',
+      name: 'DetailPage',
+      component: DetailPage
+    },
   ]
 })

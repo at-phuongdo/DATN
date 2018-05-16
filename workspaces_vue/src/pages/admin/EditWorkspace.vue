@@ -1,19 +1,19 @@
 <template>
   <div class="workspace-page" v-if="isLogin">
     <header-admin></header-admin>
-    <workspace></workspace>
+    <edit-workspace></edit-workspace>
     <left-side-bar></left-side-bar>
   </div>
 </template>
 <script>
   import LeftSideBar from '../../components/admin/LeftSideBar.vue'
-  import Workspace from '../../components/admin/workspace/ListWorkspace.vue'
+  import EditWorkspace from '../../components/admin/workspace/EditWorkspace.vue'
   import HeaderAdmin from '../../components/admin/Header.vue'
 
   export default {
     components: {
       LeftSideBar,
-      Workspace,
+      EditWorkspace,
       HeaderAdmin
     },
     computed: {

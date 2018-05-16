@@ -37,7 +37,8 @@ const state = {
   avatar: '',
   accessToken: localStorage.getItem("token"),
   listWorkspaces : [],
-  workspaceDetail: {}
+  workspaceDetail: {},
+  updateStatus: ''
 }
 
 const mutations = {
@@ -123,6 +124,7 @@ const actions = {
     })
     .then((res) => {
       state.workspaceDetail = res.body
+      state.updateStatus = res.status
     })
   }
 }

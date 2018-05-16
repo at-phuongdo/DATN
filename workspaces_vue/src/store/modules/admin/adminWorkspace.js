@@ -5,10 +5,11 @@ import VueResource from 'vue-resource'
 Vue.use(Vuex);
 Vue.use(VueResource);
 
-const baseUrl = "http://localhost:3000/admin/"
+const baseUrl = "http://localhost:3000/admin/workspaces/"
 
 const state = {
-  list: []
+  list: [],
+  workspaceInfo: {}
 }
 
 const mutations = {
@@ -19,9 +20,15 @@ const mutations = {
 
 const actions = {
   getAllWorkspace(context) {
-    Vue.http.get(baseUrl + 'workspaces')
+    Vue.http.get(baseUrl)
     .then((res) => {
       context.commit('listWorkspace', res.body)
+    })
+  },
+  getDetail(context, id) {
+    Vue.http.get(baseUrl + id)
+    .then((res) => {
+      state.workspaceInfo = res.body
     })
   }
 }
