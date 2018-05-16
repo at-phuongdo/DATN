@@ -172,6 +172,11 @@
   .detail {
     padding: 50px 0;
   }
+
+  .favorite {
+    float: right;
+  }
+
   .avatar{
     height: 500px;
     background-size: cover;

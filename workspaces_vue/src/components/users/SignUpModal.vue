@@ -27,7 +27,7 @@
           <b-row>
            <b-col sm="1"><span class="fa fa-lock"></span></b-col>
            <b-col sm="11">
-             <b-form-input v-validate="'required|min:6|confirmed'" type="password" class="form-control" id="password" name="password" placeholder="New Password" v-model="password">
+             <b-form-input v-validate="'required|min:6|confirmed'" type="password" class="form-control" name="password" placeholder="New Password" v-model="password">
              </b-form-input>
              <span class="is-danger" v-if="errors.has('password') && onConfirm">{{errors.first('password')}}</span>
            </b-col>
@@ -35,7 +35,7 @@
          <b-row>
           <b-col sm="1"><span class="fa fa-lock"></span></b-col>
           <b-col sm="11">
-            <b-form-input v-validate="'required'" type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Verify password" v-model="password_confirmation">
+            <b-form-input v-validate="'required'" type="password" class="form-control" name="password_confirmation" placeholder="Verify password" v-model="password_confirmation">
             </b-form-input>
             <span class="is-danger" v-if="!onConfirm  && password_confirmation">{{errors.first('password')}}</span>
           </b-col>

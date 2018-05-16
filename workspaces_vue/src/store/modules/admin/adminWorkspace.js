@@ -9,7 +9,8 @@ const baseUrl = "http://localhost:3000/admin/workspaces/"
 
 const state = {
   list: [],
-  workspaceInfo: {}
+  workspaceInfo: {},
+  deleteStatus: ''
 }
 
 const mutations = {
@@ -29,6 +30,12 @@ const actions = {
     Vue.http.get(baseUrl + id)
     .then((res) => {
       state.workspaceInfo = res.body
+    })
+  },
+  deleteWorkspace(context, id) {
+    Vue.http.delete(baseUrl + id)
+    .then((res) => {
+      state.deleteStatus = res.body.status
     })
   }
 }

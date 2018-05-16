@@ -23,7 +23,7 @@ temp<template>
           <td>
             <b-btn @click="openDetailModal(workspace)">Detail</b-btn>
             <b-btn @click="openEditModal(workspace)">Edit</b-btn>
-            <b-btn>Delete</b-btn>
+            <b-btn @click="openDeleteModal(workspace)">Delete</b-btn>
           </td>
         </tr>
       </tbody>
@@ -33,16 +33,19 @@ temp<template>
     <paginate-links for="workspacePerPage" :limit="2" :show-step-links="true" class="pagination" align="center"></paginate-links>
   </div>
   <detail-workspace :workspace="workspaceSelected"></detail-workspace>
+  <delete-workspace :workspace="workspaceSelected"></delete-workspace>
 </div>
 </template>
 <script>
   import { mapState, mapActions } from 'vuex'
   import DetailWorkspace from './DetailModal.vue'
   import EditWorkspace from './EditWorkspace.vue'
+  import DeleteWorkspace from './DeleteWorkspace.vue'
   export default {
     components: {
       DetailWorkspace,
-      EditWorkspace
+      EditWorkspace,
+      DeleteWorkspace
     },
     data() {
       return {
@@ -70,6 +73,10 @@ temp<template>
       openEditModal(workspace) {
         this.workspaceSelected = workspace
         this.$router.push('/admin-editworkspace/' + workspace.id)
+      },
+      openDeleteModal(workspace) {
+        this.workspaceSelected = workspace
+        this.$root.$emit('bv::show::modal', 'deleteModal')
       }
     },
     watch: {

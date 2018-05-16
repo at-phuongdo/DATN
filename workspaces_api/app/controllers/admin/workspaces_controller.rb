@@ -8,4 +8,10 @@ class Admin::WorkspacesController < ApplicationController
     workspace = Workspace.find(params[:id])
     render json: workspace, full_info: true, status: :ok
   end
+
+  def destroy
+    workspace = Workspace.find(params[:id])
+    workspace.destroy
+    render json: { status: :ok }
+  end
 end
