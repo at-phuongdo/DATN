@@ -69,7 +69,7 @@
         if (place) {
           let ac = place.address_components
           let lat = place.geometry.location.lat()
-          let lon = place.geometry.location.lng()
+          let lng = place.geometry.location.lng()
           let address = ac[0]["long_name"]
           this.searchByLocations(address)
           this.$router.push('/search/' + address)
