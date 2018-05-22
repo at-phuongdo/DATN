@@ -1,13 +1,13 @@
 <template>
   <div class="search-result clearfix">
-    <b-row>
+    <b-row v-show="list.length > 0">
       <b-col md="7">
-        <ul v-if="list.length > 0">
+        <ul >
           <paginate name="workspacePerPage" :list="list" :per="6">
             <li class="workspace-info clearfix" v-for="workspace in paginated('workspacePerPage')" :key="workspace.id">
               <router-link :to="{ name: 'DetailPage', params: { city: workspace.city, name: workspace.friendly_url }}">
                 <div class="search-wrapper" :style="{ 'background-image': 'url(' + workspace.avatar + ')' }">
-                  <h3 class="workspace-price">VND {{workspace.price_day}} /DAY</h3>
+                  <!-- <h3 class="workspace-price">VND {{workspace.price_day}} /DAY</h3> -->
                 </div>
                 <div class="content">
                   <h5 class="workspace-name"><strong>{{workspace.name}}</strong></h5>
@@ -21,15 +21,15 @@
             <paginate-links for="workspacePerPage" :limit="2" :show-step-links="true" class="pagination" align="center"></paginate-links>
           </div>
         </ul>
-        <div v-else>
-          <h1 class="text-center">Opps, Sorry we cannot found</h1>
-        </div>
       </b-col>
       <b-col>
        <div class="google-map" id="map-result"></div>
      </b-col>
    </b-row>
- </div>
+   <div v-show="list.length == 0">
+    <h1 class="text-center">Opps, Sorry we cannot found</h1>
+  </div>
+</div>
 </template>
 <script>
   import { mapActions } from 'vuex'
@@ -99,9 +99,11 @@
     },
     watch: {
       listResult: function() {
-        this.list = this.listResult
-        this.getAllMarkerCoordinates(this.listResult)
-        this.generateMap()
+        if (this.listResult.length > 0) {
+          this.list = this.listResult
+          this.getAllMarkerCoordinates(this.listResult)
+          this.generateMap()
+        }
       }
     }
   }

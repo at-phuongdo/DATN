@@ -27,9 +27,7 @@ const actions = {
     Vue.http.post(baseUrl + 'login', paramsLogin)
     .then((res) => {
       state.user = res.body
-      if(res.body.status) {
-        state.loginStatus = res.body.status
-      }
+      state.loginStatus = res.body.status
     })
   },
   getAllAccount(context) {

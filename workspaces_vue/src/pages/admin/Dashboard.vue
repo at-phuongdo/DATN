@@ -2,15 +2,18 @@
   <div class="dashboard-page" v-if="isLogin">
     <header-admin></header-admin>
     <left-side-bar v-if="isLogin"></left-side-bar>
+    <dashboard></dashboard>
   </div>
 </template>
 <script>
   import LeftSideBar from '../../components/admin/LeftSideBar.vue'
   import HeaderAdmin from '../../components/admin/Header.vue'
+  import Dashboard from '../../components/admin/Dashboard.vue'
   export default {
     components: {
       LeftSideBar,
-      HeaderAdmin
+      HeaderAdmin,
+      Dashboard
     },
     computed: {
       isLogin() {

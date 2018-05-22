@@ -13,7 +13,7 @@ class Admin::UsersController < ApplicationController
   def login
     user = User.find_by_email(params[:user][:email])
     if user && user.role == 'admin' && user.authenticate(params[:user][:password])
-      render json: user, status: :ok
+      render json: { user: user, status: :ok }
     else
       render json: { status: :unauthorized }
     end

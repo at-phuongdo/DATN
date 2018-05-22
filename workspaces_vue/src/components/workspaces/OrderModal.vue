@@ -7,20 +7,21 @@
           <h3>{{officeOrder.type.name}}</h3>
           <b-row>
             <p>Your name</p>
-            <b-form-input v-model="name"></b-form-input>
+            <b-form-input v-validate="'required'" v-model="name" name="username"></b-form-input>
+            <span v-show="errors.has('username')" class="is-danger">{{ errors.first('username') }}</span>
           </b-row>
           <!-- Open planroom -->
           <!-- <div v-if="officeOrder.type.id == 3"> -->
-            <b-row v-if="officeOrder.type.id == 3">
-              <span>Number of people </span>
-              <b-col>
-                <select v-model="quantity">
-                  <option v-for="option in numberOfPeople" v-bind:value="option" :key="option">
-                    {{ option }}
-                  </option>
-                </select>
-              </b-col>
-            </b-row>
+          <b-row v-if="officeOrder.type.id == 3">
+            <span>Number of people </span>
+            <b-col>
+              <select v-model="quantity">
+                <option v-for="option in officeOrder.number_of_people" v-bind:value="option" :key="option">
+                  {{ option }}
+                </option>
+              </select>
+            </b-col>
+          </b-row>
           <!-- </div> -->
           <!-- Else -->
           <div>
@@ -87,10 +88,7 @@
       }),
       ...mapGetters("order", [
         "getOrderByOfficeId"
-        ]),
-      numberOfPeople() {
-        return this.officeOrder.available
-      }
+        ])
     },
     methods: {
       ...mapActions({
@@ -128,18 +126,31 @@
           icon: 'error'
         });
       },
+      alertConfirm({
+        title = "Error!", text = "Invalid name or time. Please try again!!"
+      } = {}) {
+        this.alert({
+          title: title,
+          text: text,
+          icon: 'error'
+        });
+      },
       orderWorkspace() {
-        var orderParams = {
-          name: this.name,
-          time_start: moment(String(this.valueDateTimeOrder[0])).format('YYYY-MM-DD'),
-          time_end: moment(String(this.valueDateTimeOrder[1])).format('YYYY-MM-DD'),
-          quantity: this.quantity,
-          workspace_type_id: this.officeOrder.id,
-          workspace_id: this.officeOrder.workspace_id,
-          user_id: this.currentUser.id
-        };
-        this.createOrder(orderParams)
-        this.hideModal()
+        if (this.name && this.valueDateTimeOrder[0] && this.valueDateTimeOrder[1]) {
+          var orderParams = {
+            name: this.name,
+            time_start: moment(String(this.valueDateTimeOrder[0])).format('YYYY-MM-DD'),
+            time_end: moment(String(this.valueDateTimeOrder[1])).format('YYYY-MM-DD'),
+            quantity: this.quantity,
+            workspace_type_id: this.officeOrder.id,
+            workspace_id: this.officeOrder.workspace_id,
+            user_id: this.currentUser.id
+          };
+          this.createOrder(orderParams)
+          this.hideModal()
+        } else {
+          this.alertConfirm()
+        }
       }
     },
     watch: {

@@ -2,6 +2,7 @@ temp<template>
 <div class="workspace-content">
   <h2 class="text-center">All workspace</h2>
   <paginate name="workspacePerPage" :list="listAllWorkspace" :per="10">
+    <br>
     <table class="workspace-table">
       <thead>
         <th>ID</th>

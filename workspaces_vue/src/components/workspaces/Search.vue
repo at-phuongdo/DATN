@@ -19,7 +19,7 @@
      </b-col>
    </b-row>
    <b-row>
-    <b-col md="4" offset-md="4">
+    <b-col md="8" offset-md="2">
       <ul class="search-result">
         <li v-for="workspace in listWorkspaceByName" :key="workspace.id">
          <router-link :to="{ name: 'DetailPage', params: { city: workspace.city, name: workspace.friendly_url }}">

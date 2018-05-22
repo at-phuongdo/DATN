@@ -18,6 +18,7 @@
     <b-row>
       <b-col>
         <b-btn variant="outline-success" class="login-btn" @click="loginAdmin">Login</b-btn>
+        <b-btn variant="outline-primary" class="login-btn" @click="reset">Reset</b-btn>
       </b-col>
     </b-row>
   </div>
@@ -41,18 +42,38 @@
       ...mapActions({
         'login': 'account/login'
       }),
-
+      reset () {
+        this.email = ''
+        this.password = ''
+      },
       loginAdmin() {
         this.login({'user': {
           'email': this.email,
           'password': this.password 
         }})
+      },
+      alert(options) {
+        swal(options)
+      },
+      alertConfirm({
+        title = "Error!", text = "Email or password is wrong. Please try again!!"
+      } = {}) {
+        this.alert({
+          title: title,
+          text: text,
+          icon: 'error'
+        });
       }
     },
     watch: {
       admin() {
-        localStorage.setItem('admin_token', this.admin.confirm_token)
-        this.$router.push('/admin-dashboard')
+        if (this.status === 'ok') {
+          localStorage.setItem('admin_token', this.admin.confirm_token)
+          this.$router.push('/admin-dashboard')
+        } else {
+          this.alertConfirm()
+          this.reset()
+        }
       }
     }
   }
@@ -82,5 +103,6 @@
 
   .login-btn {
     float: right;
+    margin-left: 5px;
   }
 </style>

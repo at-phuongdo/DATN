@@ -14,7 +14,7 @@
           <b-nav-item>
             <div  class="dropdown">
               <img class="avatar" :src="currentUser.avatar" width="40px" v-if="currentUser.avatar">
-              <img class="avatar" src="https://research.kent.ac.uk/clho/wp-content/plugins/wp-person-cpt/images/featured-default.png" width="60px" v-else>
+              <img class="avatar" src="https://research.kent.ac.uk/clho/wp-content/plugins/wp-person-cpt/images/featured-default.png" width="40px" v-else>
               <b-button class="profile-button">
                 Hi, {{currentUser.username}}
               </b-button>
