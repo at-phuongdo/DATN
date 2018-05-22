@@ -3,6 +3,7 @@ temp<template>
   <h2 class="text-center">All workspace</h2>
   <paginate name="workspacePerPage" :list="listAllWorkspace" :per="10">
     <br>
+    <b-btn variant="primary" @click="openNewModal">New Workspace</b-btn>
     <table class="workspace-table">
       <thead>
         <th>ID</th>
@@ -71,6 +72,9 @@ temp<template>
         this.workspaceSelected = workspace
         this.$root.$emit('bv::show::modal', 'detailModal')
       },
+      openNewModal() {
+
+      },
       openEditModal(workspace) {
         this.workspaceSelected = workspace
         this.$router.push('/admin-editworkspace/' + workspace.id)
@@ -100,6 +104,7 @@ temp<template>
     display: block;
     overflow-x: auto;
     white-space: nowrap;
+    margin-top: 20px;
   }
 
   .workspace-table th, td{

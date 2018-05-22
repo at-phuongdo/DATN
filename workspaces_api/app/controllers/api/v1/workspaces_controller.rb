@@ -46,7 +46,7 @@ class Api::V1::WorkspacesController < ApplicationController
       search_key = "%#{search_str}%"
       workspaces = Workspace.where("friendly_url LIKE '#{search_key}'").limit(5)
     end
-    render json: workspaces, status: :ok
+    render json: workspaces, full_info: true, status: :ok
   end
 
   private
