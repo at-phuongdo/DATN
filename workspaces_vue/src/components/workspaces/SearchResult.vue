@@ -1,6 +1,6 @@
 <template>
   <div class="search-result clearfix">
-    <b-row v-show="list.length > 0">
+    <b-row>
       <b-col md="7">
         <div class="filter">
           <div class="filter-type">
@@ -12,7 +12,7 @@
           </div>
           <div class="filter-price">
             <h4>How much? </h4>
-            <vue-slider ref="slider" v-model="value" :min="100000" :max="100000000" :interval="100000" :piecewise="true"></vue-slider>
+            <vue-slider ref="slider" v-model="value" :min="50000" :max="500000" :interval="10000" :piecewise="true" v-if="isPriceDay"></vue-slider>
             <p>{{value}}</p>
           </div>
         </div>
@@ -68,9 +68,10 @@
         { text: 'Open Planing Room', value: '3' }
         ],
         typeSearch: 'all',
-        value: [100000,100000000],
+        value: [100000,200000],
         latCenter: '',
-        lngCenter: ''
+        lngCenter: '',
+        validWorkspace: false
       }
     },
     computed: {
@@ -79,8 +80,14 @@
       }),
       total() {
         return this.value.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+      },
+      isPriceDay() {
+        return this.typeSearch === '1'
+      },
+      isPriceMonth() {
+        return this.typeSearch === '2' || this.typeSearch === '3'
       }
-    },  
+    },
     methods: {
       ...mapActions({
         searchWorkspace: 'workspace/searchByLocation'
@@ -125,14 +132,27 @@
       filter(typeSearch, price) {
         if(typeSearch !== 'all') {
           this.list = this.listResult.filter((workspace) => {
-            let all_types = []
             workspace.workspace_types.forEach((type) => {
-              return ((typeSearch === parseInt(type.type_id)) && isValidPrice())
+              let validPrice = this.isValidPrice(typeSearch, type.price_day, type.price_month)
+              console.log(validPrice)
+              this.validWorkspace = (typeSearch === parseInt(type.type_id)) && validPrice
+              console.log(this.validWorkspace)
+              console.log("____")
+              if(this.validWorkspace == true) { 
+                return
+              }
             })
-            return all_types.includes(parseInt(type))
+            return this.validWorkspace
           })
         } else {
           this.list = this.listResult
+        }
+      },
+      isValidPrice(typeSearch, priceDay, priceMonth) {
+        if (typeSearch === '1') {
+          return priceMonth >= this.value[0] && priceMonth <= this.value[1]
+        } else {
+          return priceDay >= this.value[0] && priceDay <= this.value[1]
         }
       }
     },
