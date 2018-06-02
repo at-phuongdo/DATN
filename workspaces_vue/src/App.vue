@@ -59,4 +59,7 @@
     .pagination a:hover:not(.active) {
       background-color: #ddd;
     }
+    .vue-slider-component .vue-slider {
+      z-index: 0 !important;
+    }
   </style>

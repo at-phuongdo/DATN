@@ -36,16 +36,19 @@ class Api::V1::WorkspacesController < ApplicationController
   end
 
   def search
-    type_search = params[:type]
-    if type_search == 'location'
-      ascii_str = params[:key].mb_chars.normalize(:kd).gsub(/[^\x00-\x7F]/n, "").downcase.to_s.tr(' ', '%')
-      search_key = "%#{ascii_str}%"
-      workspaces = Workspace.where("address LIKE '#{search_key}'")
-    else
-      search_str = params[:key].downcase.tr(' ', '%')
-      search_key = "%#{search_str}%"
-      workspaces = Workspace.where("friendly_url LIKE '#{search_key}'").limit(5)
+    ascii_str = params[:city].mb_chars.normalize(:kd).gsub(/[^\x00-\x7F]/n, "").downcase.to_s.tr(' ', '%')
+    search_key = "%#{ascii_str}%"
+    workspaces = Workspace.where("address LIKE '#{search_key}'")
+    if params[:district] != "undefined"
+      workspaces = workspaces.select { |workspace| workspace.address.downcase.include? params[:district].downcase}
     end
+    render json: workspaces, full_info: true, status: :ok
+  end
+
+  def search_by_name
+    search_str = params[:name].downcase.tr(' ', '%')
+    search_key = "%#{search_str}%"
+    workspaces = Workspace.where("friendly_url LIKE '#{search_key}'").limit(5)
     render json: workspaces, full_info: true, status: :ok
   end
 

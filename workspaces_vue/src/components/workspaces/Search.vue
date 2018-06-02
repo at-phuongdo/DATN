@@ -70,9 +70,14 @@
           let ac = place.address_components
           let lat = place.geometry.location.lat()
           let lng = place.geometry.location.lng()
-          let address = ac[0]["long_name"]
-          this.searchByLocations(address)
-          this.$router.push('/search/' + address)
+          let len = ac.length
+          let city = ac[len -2]["long_name"]
+          let district = ''
+          if (len > 2) {
+            district = ac[len - 3]["long_name"]
+          }
+          // this.searchByLocations(city)
+          this.$router.push('/search/' + city + '/' + district)
         }
       },
       searchName: function(search) {

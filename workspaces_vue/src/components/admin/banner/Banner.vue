@@ -1,6 +1,6 @@
 <template>
   <div class="banner-content">
-    <div>
+    <div v-if="slideUrl.length > 0">
       <h2>Current banners</h2>
       <p>Slide 1</p>
       <img :src="slideUrl[0].url">
@@ -43,6 +43,10 @@
   .banner-content {
     width: 85%;
     float: right;
-    padding-top: 20px;
+    padding: 20px;
+  }
+
+  img {
+    max-width: 100%;
   }
 </style>

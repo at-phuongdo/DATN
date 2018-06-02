@@ -19,71 +19,75 @@ Vue.use(Router)
 export default new Router({
   mode: 'history',
   routes: [
-    {
-      path: '/',
-      name: 'Home',
-      component: Home
-    },
-    {
-      path: '/new-workspace',
-      name: 'NewWorkspace',
-      component: NewWorkspace
-    },
-    {
-      path: '/my-workspace',
-      name: 'MyWorkspace',
-      component: MyWorkspace
-    },
-    {
-      path: '/search/:key',
-      name: 'SearchResult',
-      component: SearchResult
-    },
-    
-    {
-      path: '/orders',
-      name: 'CheckOrder',
-      component: CheckOrderPage
-    },
-    {
-      path: '/admin',
-      name: 'AdminLogin',
-      component: AdminLogin
-    },
-    {
-      path: '/admin-dashboard',
-      name: 'Dashboard',
-      component: Dashboard
-    },
-    {
-      path: '/admin-user',
-      name: 'AdminUser',
-      component: AdminUser
-    },
-    {
-      path: '/admin-workspace',
-      name: 'AdminWorkspace',
-      component: AdminWorkspace
-    },
-    {
-      path: '/admin-editworkspace/:id',
-      name: 'AdminEditWorkspace',
-      component: AdminEditWorkspace
-    },
-    {
-      path: '/admin-convenient',
-      name: 'AdminConvenient',
-      component: AdminConvenient
-    },
-    {
-      path: '/admin-banner',
-      name: 'AdminBanner',
-      component: AdminBanner
-    },
-    {
-      path: '/:city/:name',
-      name: 'DetailPage',
-      component: DetailPage
-    },
+  {
+    path: '/',
+    name: 'Home',
+    component: Home
+  },
+  {
+    path: '/new-workspace',
+    name: 'NewWorkspace',
+    component: NewWorkspace
+  },
+  {
+    path: '/my-workspace',
+    name: 'MyWorkspace',
+    component: MyWorkspace
+  },
+  {
+    path: '/search/:city/',
+    name: 'SearchCity',
+    component: SearchResult
+  },
+  {
+    path: '/search/:city/:district',
+    name: 'SearchDistrict',
+    component: SearchResult
+  },
+  {
+    path: '/orders',
+    name: 'CheckOrder',
+    component: CheckOrderPage
+  },
+  {
+    path: '/admin',
+    name: 'AdminLogin',
+    component: AdminLogin
+  },
+  {
+    path: '/admin-dashboard',
+    name: 'Dashboard',
+    component: Dashboard
+  },
+  {
+    path: '/admin-user',
+    name: 'AdminUser',
+    component: AdminUser
+  },
+  {
+    path: '/admin-workspace',
+    name: 'AdminWorkspace',
+    component: AdminWorkspace
+  },
+  {
+    path: '/admin-editworkspace/:id',
+    name: 'AdminEditWorkspace',
+    component: AdminEditWorkspace
+  },
+  {
+    path: '/admin-convenient',
+    name: 'AdminConvenient',
+    component: AdminConvenient
+  },
+  {
+    path: '/admin-banner',
+    name: 'AdminBanner',
+    component: AdminBanner
+  },
+  {
+    path: '/:city/:name',
+    name: 'DetailPage',
+    component: DetailPage
+  },
   ]
 })

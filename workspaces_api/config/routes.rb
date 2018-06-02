@@ -14,7 +14,8 @@ Rails.application.routes.draw do
 
     resources :workspaces do
       collection do
-        get 'search/:key' => 'workspaces#search'
+        get 'search/:city/:district' => 'workspaces#search'
+        get 'search/:name' => 'workspaces#search_by_name'
       end
     end
 

@@ -93,7 +93,7 @@ const actions = {
     })
   },
   searchByLocation: function(context, searchKey) {
-    Vue.http.get(baseUrl + '/search/'+ searchKey + "?type=location")
+    Vue.http.get(baseUrl + '/search/'+ searchKey.city + '/' + searchKey.district + "?type=location")
     .then((res) => {
       context.commit('LIST_WORKSPACE', res.body)
     })
@@ -101,7 +101,7 @@ const actions = {
 
   searchByName: function(context, searchKey) {
     if (searchKey) {
-      Vue.http.get(baseUrl + '/search/' + searchKey + "?type=name")
+      Vue.http.get(baseUrl + '/search/' + searchKey)
       .then((res) => {
         context.commit('LIST_WORKSPACE', res.body)
       })
