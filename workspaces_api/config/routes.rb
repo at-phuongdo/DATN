@@ -10,9 +10,12 @@ Rails.application.routes.draw do
     post 'login' => 'sessions#create'
     post 'login_facebook' => 'sessions#login_facebook'
 
+    get 'banners' => 'banners#index'
+
     resources :workspaces do
       collection do
-        get 'search/:key' => 'workspaces#search'
+        get 'search/:city/:district' => 'workspaces#search'
+        get 'search/:name' => 'workspaces#search_by_name'
       end
     end
 
@@ -25,5 +28,13 @@ Rails.application.routes.draw do
     get 'orders/:id' => 'orders#order_of_workspace'
     post 'orders/:id' => 'orders#accept_order'
     post '/orders/clear/:id' => 'orders#clear_order'
+  end
+
+  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  api_version(module: 'ADMIN', path: { value: '/admin' }) do
+    resources :users
+    post 'login' => 'users#login'
+    resources :workspaces
+    resources :convenients
   end
 end

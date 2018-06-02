@@ -13,7 +13,7 @@ class Api::V1::CommentsController < ApplicationController
     if comment.save
       comments = Comment.where(workspace_id: @workspace.id).order(updated_at: :desc)
       rating = @workspace.rating
-      new_rating = (rating*(comments.length-1)+params[:rating])/comments.length
+      new_rating = (rating * (comments.length - 1) + params[:rating]) / comments.length
       new_rating = "%.0f" % new_rating
       @workspace.update(rating: new_rating.to_i)
       render json: comments, status: :ok

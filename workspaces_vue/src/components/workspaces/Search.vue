@@ -1,7 +1,7 @@
 <template>
   <div class="search">
    <b-row>
-     <b-col md="4" offset-md="4">
+     <b-col md="6" offset-md="3">
        <h1 class="search-title"><span class="decorate-span">Let's</span> find a workspace</h1>
      </b-col>
    </b-row>
@@ -19,7 +19,7 @@
      </b-col>
    </b-row>
    <b-row>
-    <b-col md="4" offset-md="4">
+    <b-col md="8" offset-md="2">
       <ul class="search-result">
         <li v-for="workspace in listWorkspaceByName" :key="workspace.id">
          <router-link :to="{ name: 'DetailPage', params: { city: workspace.city, name: workspace.friendly_url }}">
@@ -69,10 +69,15 @@
         if (place) {
           let ac = place.address_components
           let lat = place.geometry.location.lat()
-          let lon = place.geometry.location.lng()
-          let address = ac[0]["long_name"]
-          this.searchByLocations(address)
-          this.$router.push('/search/' + address)
+          let lng = place.geometry.location.lng()
+          let len = ac.length
+          let city = ac[len -2]["long_name"]
+          let district = ''
+          if (len > 2) {
+            district = ac[len - 3]["long_name"]
+          }
+          // this.searchByLocations(city)
+          this.$router.push('/search/' + city + '/' + district)
         }
       },
       searchName: function(search) {

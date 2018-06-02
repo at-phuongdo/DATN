@@ -7,7 +7,7 @@ class Api::V1::SessionsController < ApplicationController
 
   def create
     user = User.find_by_email(params[:session][:email])
-    if user && user.authenticate(params[:session][:password])
+    if user && user.role != 'admin' && user.authenticate(params[:session][:password])
       render json: user, status: :ok
     else
       render json: { status: :unauthorized }

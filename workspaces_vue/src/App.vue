@@ -1,9 +1,9 @@
   <!-- // <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
   <template>
     <div id="app">
-      <header-app></header-app>
+      <header-app v-if="!isAdmin"></header-app>
       <router-view/>
-      <footer-app></footer-app>
+      <footer-app v-if="!isAdmin"></footer-app>
     </div>
   </template>
 
@@ -11,6 +11,14 @@
     import Header from './components/Header.vue'
     import Footer from './components/Footer.vue'
     export default {
+      data() {
+        return {}
+      },
+      computed: {
+        isAdmin() {
+          return this.$route.path.indexOf('admin') > -1
+        }
+      },
       components: {
         'header-app' : Header,
         'footer-app' : Footer
@@ -50,5 +58,8 @@
     }
     .pagination a:hover:not(.active) {
       background-color: #ddd;
+    }
+    .vue-slider-component .vue-slider {
+      z-index: 0 !important;
     }
   </style>

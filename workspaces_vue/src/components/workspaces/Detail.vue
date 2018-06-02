@@ -117,7 +117,10 @@
     computed: {
       ...mapState({
         workspace:state => state.workspace.workspaceDetail
-      })
+      }),
+      isLogin() {
+        return localStorage.getItem("token")
+      }
     },
     methods: {
       ...mapActions({
@@ -151,8 +154,12 @@
         && this.workspaceDetail.open_thurs == this.workspaceDetail.open_fri
       },
       openOrderModal(office) {
-        this.currentOffice = office
-        this.$root.$emit('bv::show::modal', 'orderModal')
+        if (this.isLogin) {
+          this.currentOffice = office
+          this.$root.$emit('bv::show::modal', 'orderModal')
+        } else {
+          this.$root.$emit('bv::show::modal', 'logInModal')
+        }
       }
     },
     watch: {
@@ -164,7 +171,7 @@
   }
 </script>
 <style scoped>
-.clear-fix:after {
+  .clear-fix:after {
     content: "";
     display: table;
     clear: both;
@@ -172,6 +179,11 @@
   .detail {
     padding: 50px 0;
   }
+
+  .favorite {
+    float: right;
+  }
+
   .avatar{
     height: 500px;
     background-size: cover;

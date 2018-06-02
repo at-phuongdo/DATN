@@ -1,13 +1,46 @@
 <template>
   <div class="search-result clearfix">
     <b-row>
-      <b-col md="7">
-        <ul v-if="list.length > 0">
-          <paginate name="workspacePerPage" :list="list" :per="6">
+      <div class="filter">
+        <div class="filter-type">
+          <b-row>
+            <b-col md="2">
+              <h4>Looking for? </h4>
+            </b-col>
+            <b-col md="10">
+              <b-form-group>
+                <b-form-radio-group :options="typeSearchOptions" v-model="typeSearch">
+                </b-form-radio-group>
+              </b-form-group>
+            </b-col>
+          </b-row>
+        </div>
+        <div class="filter-price" v-if="typeSearch!=='all'">
+          <b-row>
+            <b-col md="2">
+              <h4>How much? </h4>
+            </b-col>
+            <b-col md="10" v-if="typeSearch==='1'">
+              <vue-slider ref="slider" v-model="value" :min="0" :max="5000000" :interval="500000" :piecewise="true"></vue-slider>
+              <span>From <strong>{{priceMin}} VND</strong> to <strong>{{priceMax}} VND per month</strong></span>
+            </b-col>
+            <b-col md="10" v-else>
+              <vue-slider ref="slider" v-model="value" :min="0" :max="500000" :interval="100000" :piecewise="true"></vue-slider>
+              <span>From <strong>{{priceMin}} VND</strong> to <strong>{{priceMax}} VND per day</strong></span>
+            </b-col>
+          </b-row>
+        </div>
+      </div>
+    </b-row>
+    <b-row>
+      <b-col md="7" v-if="listWorkspaceToDisplay.length > 0">
+        <ul>
+          <paginate name="workspacePerPage" :list="listWorkspaceToDisplay" :per="6">
             <li class="workspace-info clearfix" v-for="workspace in paginated('workspacePerPage')" :key="workspace.id">
               <router-link :to="{ name: 'DetailPage', params: { city: workspace.city, name: workspace.friendly_url }}">
                 <div class="search-wrapper" :style="{ 'background-image': 'url(' + workspace.avatar + ')' }">
-                  <h3 class="workspace-price">VND {{workspace.price_day}} /DAY</h3>
+                  <h4 class="workspace-price" v-if="havePrivateRoom(workspace)">{{priceMonth}} VND /Month</h4>
+                  <h4 class="workspace-price" v-else>{{priceDay}} VND /Day</h4>
                 </div>
                 <div class="content">
                   <h5 class="workspace-name"><strong>{{workspace.name}}</strong></h5>
@@ -21,20 +54,26 @@
             <paginate-links for="workspacePerPage" :limit="2" :show-step-links="true" class="pagination" align="center"></paginate-links>
           </div>
         </ul>
-        <div v-else>
-          <h1 class="text-center">Opps, Sorry we cannot found</h1>
-        </div>
       </b-col>
-      <b-col>
+      <b-col v-show="listWorkspaceToDisplay.length > 0">
        <div class="google-map" id="map-result"></div>
      </b-col>
-   </b-row>
- </div>
+     <b-col md="7" offset="3">
+       <div v-show="listWorkspaceToDisplay.length == 0">
+        <h1 class="text-center">Opps, sorry. We don't have this type</h1>
+      </div>
+    </b-col>
+  </b-row>
+</div>
 </template>
 <script>
   import { mapActions } from 'vuex'
   import { mapState } from 'vuex'
+  import vueSlider from 'vue-slider-component'
   export default {
+    components: {
+      vueSlider
+    },
     data() {
       return {
         list: [],
@@ -42,26 +81,53 @@
         checkedStar: 'fa fa-star checked',
         paginate: ['workspacePerPage'],
         rating: 5,
-        markerCoordinates: [{
-          latitude: 16.056115,
-          longitude: 108.190248
-        }],
+        markerCoordinates: [],
+        typeSearchOptions: [
+        { text: 'All', value: 'all' },
+        { text: 'Private Room', value: '1' },
+        { text: 'Meeting Room', value: '2' },
+        { text: 'Open Planing Room', value: '3' }
+        ],
+        typeSearch: 'all',
+        value: [0,500000],
+        latCenter: '',
+        lngCenter: '',
+        priceMonth: '',
+        priceDay: ''
       }
     },
     computed: {
       ...mapState({
         listResult:state => state.workspace.listWorkspaces
-      })
+      }),
+      total() {
+        return this.value.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+      },
+      isPriceDay() {
+        return this.typeSearch === '1'
+      },
+      isPriceMonth() {
+        return this.typeSearch === '2' || this.typeSearch === '3'
+      },
+      listWorkspaceToDisplay() {
+        return this.list
+      },
+      priceMin() {
+        return this.formatPrice(this.value[0])
+      },
+      priceMax() {
+        return this.formatPrice(this.value[1])
+      }
     },
     methods: {
       ...mapActions({
         searchWorkspace: 'workspace/searchByLocation'
       }),
-      generateMap: function() {
+      generateMap() {
         const element = document.getElementById('map-result')
         const options = {
           zoom: 12,
-          center: new google.maps.LatLng(16.056115,108.190248)
+          center: new google.maps.LatLng(this.latCenter, this.lngCenter)
         }
 
         const map = new google.maps.Map(element, options)
@@ -85,6 +151,7 @@
         });
       },
       getAllMarkerCoordinates(listResult) {
+        this.markerCoordinates = []
         listResult.forEach((workspace) => {
           this.markerCoordinates.push({
             title: workspace.name,
@@ -93,15 +160,71 @@
           })
         })
       },
+      filter(typeSearch, price) {
+        if(typeSearch !== 'all') {
+          this.list = this.listResult.filter((workspace) => {
+            let validWorkspace = false
+            workspace.workspace_types.forEach((type) => {
+              let validPrice = this.isValidPrice(typeSearch, type.price_day, type.price_month)
+              validWorkspace = (parseInt(typeSearch) === type.type_id) && validPrice
+              if(validWorkspace == true) {
+                return
+              }
+            })
+            return validWorkspace
+          })
+        } else {
+          this.list = this.listResult
+        }
+      },
+      havePrivateRoom(workspace) {
+        let roomType = []
+        workspace.workspace_types.forEach((type) => {
+          roomType.push(type.type_id)
+          this.priceMonth = this.formatPrice(type.price_month)
+          this.priceDay = this.formatPrice(type.price_day)
+        })
+        return roomType.includes(1) ? true :false
+      },
+      isValidPrice(typeSearch, priceDay, priceMonth) {
+        if (typeSearch === '1') {
+          return parseInt(priceMonth) >= this.value[0] && parseInt(priceMonth) <= this.value[1]
+        } else {
+          return parseInt(priceDay) >= this.value[0] && parseInt(priceDay) <= this.value[1]
+        }
+      },
+      formatPrice(price) {
+        return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+      }
     },
-    created: function() {
-      this.searchWorkspace(this.$route.params.key)
+    created() {
+      this.searchWorkspace(
+      { 
+        city: this.$route.params.city, 
+        district:this.$route.params.district
+      }
+      )
     },
     watch: {
-      listResult: function() {
+      listResult() {
         this.list = this.listResult
-        this.getAllMarkerCoordinates(this.listResult)
-        this.generateMap()
+        if (this.list.length > 0) {
+          this.latCenter = this.listResult[0].lat
+          this.lngCenter = this.listResult[0].lng
+          this.getAllMarkerCoordinates(this.listResult)
+          this.generateMap()
+        }
+      },
+      typeSearch() {
+        this.value = [0,500000]
+        this.filter(this.typeSearch, this.value)
+        if(this.list.length > 0) {
+          this.getAllMarkerCoordinates(this.list)
+          this.generateMap()
+        }
+      },
+      value() {
+        this.filter(this.typeSearch, this.value)
       }
     }
   }
@@ -112,6 +235,15 @@
     display: table;
     clear: both;
   } 
+
+  .filter {
+    padding-left: 90px;
+    width: 100%;
+  }
+
+  .vue-slider-component .vue-slider {
+    z-index: 0 !important;
+  }
 
   .search-result {
     padding: 100px 0;
