@@ -117,10 +117,7 @@
     computed: {
       ...mapState({
         workspace:state => state.workspace.workspaceDetail
-      }),
-      isLogin() {
-        return localStorage.getItem("token")
-      }
+      })
     },
     methods: {
       ...mapActions({
@@ -154,7 +151,8 @@
         && this.workspaceDetail.open_thurs == this.workspaceDetail.open_fri
       },
       openOrderModal(office) {
-        if (this.isLogin) {
+        let isLogin = localStorage.getItem("token")
+        if (isLogin) {
           this.currentOffice = office
           this.$root.$emit('bv::show::modal', 'orderModal')
         } else {

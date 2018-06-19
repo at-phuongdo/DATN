@@ -76,7 +76,6 @@
           if (len > 2) {
             district = ac[len - 3]["long_name"]
           }
-          // this.searchByLocations(city)
           this.$router.push('/search/' + city + '/' + district)
         }
       },

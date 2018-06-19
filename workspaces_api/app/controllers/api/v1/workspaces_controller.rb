@@ -15,6 +15,7 @@ class Api::V1::WorkspacesController < ApplicationController
     workspace.user_id = @current_user.id
     if workspace.save
       workspace.update_info
+      @current_user.update(role: 'partner')
       WorkspaceImage.create_workspace_photos(params[:photo], workspace.id)
       WorkspaceConvenient.create_workspace_convenient(params[:amenities], workspace.id)
       WorkspaceType.create_workspace_type(params[:nameRoom], params[:numberPeople], params[:price], workspace.id)

@@ -21,7 +21,7 @@
               <h4>How much? </h4>
             </b-col>
             <b-col md="10" v-if="typeSearch==='1'">
-              <vue-slider ref="slider" v-model="value" :min="0" :max="5000000" :interval="500000" :piecewise="true"></vue-slider>
+              <vue-slider ref="slider" v-model="value" :min="0" :max="10000000" :interval="500000" :piecewise="true"></vue-slider>
               <span>From <strong>{{priceMin}} VND</strong> to <strong>{{priceMax}} VND per month</strong></span>
             </b-col>
             <b-col md="10" v-else>
@@ -215,13 +215,15 @@
           this.generateMap()
         }
       },
-      typeSearch() {
-        this.value = [0,500000]
-        this.filter(this.typeSearch, this.value)
-        if(this.list.length > 0) {
+      list() {
+        if (this.list.length > 0) {
           this.getAllMarkerCoordinates(this.list)
           this.generateMap()
         }
+      },
+      typeSearch() {
+        this.value = [0,500000]
+        this.filter(this.typeSearch, this.value)
       },
       value() {
         this.filter(this.typeSearch, this.value)
@@ -241,9 +243,7 @@
     width: 100%;
   }
 
-  .vue-slider-component .vue-slider {
-    z-index: 0 !important;
-  }
+
 
   .search-result {
     padding: 100px 0;
