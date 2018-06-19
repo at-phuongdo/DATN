@@ -15,9 +15,11 @@
             </b-col>
           </b-row>
         </div>
+
         <div class="filter-price" v-if="typeSearch!=='all'">
           <b-row>
             <b-col md="2">
+            ppp
               <h4>How much? </h4>
             </b-col>
             <b-col md="10" v-if="typeSearch==='1'">
@@ -106,8 +108,10 @@
       isPriceDay() {
         console.log('a')
         return this.typeSearch === '1'
+        console.log('b')
       },
       isPriceMonth() {
+        console.log('p')
         return this.typeSearch === '2' || this.typeSearch === '3'
       },
       listWorkspaceToDisplay() {
