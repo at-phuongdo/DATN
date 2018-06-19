@@ -113,6 +113,7 @@
       },
       listWorkspaceToDisplay() {
         return this.list
+        console.log('abc')
       },
       priceMin() {
         return this.formatPrice(this.value[0])
