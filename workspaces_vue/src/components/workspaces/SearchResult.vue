@@ -105,6 +105,7 @@
         return this.value.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
       },
       isPriceDay() {
+        console.log('a')
         return this.typeSearch === '1'
       },
       isPriceMonth() {
