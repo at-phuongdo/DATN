@@ -15,7 +15,6 @@
             </b-col>
           </b-row>
         </div>
-
         <div class="filter-price" v-if="typeSearch!=='all'">
           <b-row>
             <b-col md="2">
